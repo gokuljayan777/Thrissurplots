@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-cormorant: var(--font-cormorant);
+
+  --color-gold-50: #fdfaee;
+  --color-gold-100: #fbf3d5;
+  --color-gold-200: #f5e4ab;
+  --color-gold-300: #efcf7a;
+  --color-gold-400: #eab84f;
+  --color-gold-500: #e5a12d;
+  --color-gold-600: #cd8321;
+  --color-gold-700: #aa611c;
+  --color-gold-800: #8c4e1d;
+  --color-gold-900: #73411b;
+}
+
+/* Force dark theme for the Black/Gold requirement */
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), serif;
+  @apply antialiased;
+}
