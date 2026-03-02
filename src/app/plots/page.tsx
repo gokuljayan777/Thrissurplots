@@ -99,18 +99,15 @@ export default function PlotsPage() {
 
     // Filter Logic
     const { filteredProperties, otherProperties } = useMemo(() => {
-        // We duplicate mock properties just for demo grid filling if there's only 3
-        const allResult = [...mockProperties, ...mockProperties.map(p => ({ ...p, id: `${p.id}-dup` }))];
-
         const hasFilters = searchLocation || selectedPurpose.length > 0 || roadAccess || priceCategory || minArea > 0 || maxArea < 500;
 
         let exactMatches: typeof mockProperties = [];
         const others: typeof mockProperties = [];
 
         if (!hasFilters) {
-            exactMatches = [...allResult];
+            exactMatches = [...mockProperties];
         } else {
-            allResult.forEach(p => {
+            mockProperties.forEach(p => {
                 let matches = true;
 
                 if (searchLocation) {
@@ -183,7 +180,7 @@ export default function PlotsPage() {
         const sortFn = (a: typeof mockProperties[0], b: typeof mockProperties[0]) => {
             if (sortBy === "price-low") return parsePrice(a.price) - parsePrice(b.price);
             if (sortBy === "price-high") return parsePrice(b.price) - parsePrice(a.price);
-            return 0; // Default or "latest" logic
+            return 0;
         };
 
         if (sortBy !== "latest") {
