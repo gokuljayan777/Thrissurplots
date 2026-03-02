@@ -8,16 +8,16 @@ export const metadata: Metadata = {
 
 export default function BlogListingPage() {
     return (
-        <div className="min-h-screen bg-[#050505] text-gray-300 font-sans pb-24 pt-32">
+        <div className="min-h-screen bg-primary text-text-main font-sans pb-24 pt-32 transition-colors duration-300">
 
             {/* Header Section */}
             <section className="px-6 text-center mb-16">
                 <div className="max-w-4xl mx-auto">
-                    <h1 className="text-4xl md:text-6xl font-serif font-bold italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 tracking-wide mb-6">
+                    <h1 className="text-4xl md:text-6xl font-serif font-bold italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-600 via-gold-500 to-gold-400 dark:from-gold-300 dark:via-gold-500 dark:to-gold-600 tracking-wide mb-6">
                         Market Insights & Guides
                     </h1>
-                    <p className="text-lg text-gray-400 font-light max-w-2xl mx-auto">
-                        Expert analysis, investment strategies, and deep dives into Thrissur's evolving real estate landscape.
+                    <p className="text-lg text-text-muted font-light max-w-2xl mx-auto">
+                        Expert analysis, investment strategies, and deep dives into Thrissur&apos;s evolving real estate landscape.
                     </p>
                 </div>
             </section>

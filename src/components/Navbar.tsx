@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const NAV_LINKS = [
     { name: "Home", href: "/" },
@@ -49,9 +50,9 @@ export default function Navbar() {
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-                    ? "bg-black/90 backdrop-blur-md py-4 shadow-[0_4px_30px_rgba(0,0,0,0.5)] border-b border-gold-900/30"
-                    : "bg-transparent py-4"
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled || pathname !== "/"
+                    ? "bg-primary/90 backdrop-blur-md py-4 shadow-[0_4px_30px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)] border-b border-border-strong/30"
+                    : "bg-transparent py-4 text-white"
                     }`}
             >
                 <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -69,7 +70,7 @@ export default function Navbar() {
                             <li key={link.name}>
                                 <Link
                                     href={link.href}
-                                    className={`relative text-sm font-medium uppercase tracking-wider transition-colors hover:text-gold-400 group ${pathname === link.href ? "text-gold-400" : "text-gray-200"
+                                    className={`relative text-sm font-medium uppercase tracking-wider transition-colors hover:text-gold-400 group ${isScrolled || pathname !== "/" ? "text-text-main" : "text-white"} ${pathname === link.href ? "text-gold-500 dark:text-gold-400" : ""
                                         }`}
                                 >
                                     {link.name}
@@ -82,8 +83,9 @@ export default function Navbar() {
                         ))}
                     </ul>
 
-                    {/* CTA Button Desktop */}
-                    <div className="hidden lg:block">
+                    {/* Actions Container Desktop */}
+                    <div className="hidden lg:flex items-center space-x-6">
+                        <ThemeToggle />
                         <Link href="/contact" passHref>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
@@ -95,18 +97,22 @@ export default function Navbar() {
                         </Link>
                     </div>
 
-                    {/* Mobile Menu Toggle */}
-                    <button
-                        title="Mobile Menu"
-                        className="lg:hidden relative z-50 text-gold-400 p-2"
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    >
-                        {isMobileMenuOpen ? (
-                            <X className="w-8 h-8" />
-                        ) : (
-                            <Menu className="w-8 h-8 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" />
-                        )}
-                    </button>
+                    {/* Mobile Header Rights */}
+                    <div className="lg:hidden flex items-center space-x-4">
+                        <ThemeToggle />
+                        {/* Mobile Menu Toggle */}
+                        <button
+                            title="Mobile Menu"
+                            className="relative z-50 text-gold-400 p-2"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        >
+                            {isMobileMenuOpen ? (
+                                <X className="w-8 h-8" />
+                            ) : (
+                                <Menu className="w-8 h-8 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" />
+                            )}
+                        </button>
+                    </div>
                 </div>
             </motion.nav>
 

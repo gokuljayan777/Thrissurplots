@@ -17,7 +17,7 @@ export function Hero() {
                     sizes="100vw"
                 />
                 {/* Heavy dark overlay for text contrast */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-[#050505]"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-primary"></div>
             </div>
 
             <motion.div
@@ -30,8 +30,8 @@ export function Hero() {
                     Invest in the <br />
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-400">Cultural Capital</span>
                 </h1>
-                <p className="text-xl md:text-2xl text-gray-300 font-light font-serif italic max-w-2xl mx-auto">
-                    "Where enduring heritage meets exponential growth."
+                <p className="text-xl md:text-2xl text-text-muted font-light font-serif italic max-w-2xl mx-auto">
+                    &quot;Where enduring heritage meets exponential growth.&quot;
                 </p>
             </motion.div>
         </section>
@@ -68,7 +68,7 @@ export function Section({ alignment, imageUrl, title, content }: SectionProps) {
                         sizes="(max-width: 1024px) 100vw, 50vw"
                     />
                     {/* Subtle gold gradient overlay at bottom */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-700"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-700"></div>
                     <div className="absolute inset-0 border border-gold-600/20 rounded-3xl pointer-events-none group-hover:border-gold-500/50 transition-colors duration-700"></div>
                 </div>
             </motion.div>
@@ -81,11 +81,11 @@ export function Section({ alignment, imageUrl, title, content }: SectionProps) {
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                 className="w-full lg:w-1/2 space-y-6"
             >
-                <h2 className="text-3xl md:text-5xl font-serif font-bold text-white leading-tight mb-8">
+                <h2 className="text-3xl md:text-5xl font-serif font-bold text-text-main leading-tight mb-8">
                     {title}
                 </h2>
                 {content.map((paragraph, idx) => (
-                    <p key={idx} className="text-lg text-gray-400 font-light leading-relaxed">
+                    <p key={idx} className="text-lg text-text-muted font-light leading-relaxed">
                         {paragraph}
                     </p>
                 ))}
@@ -109,11 +109,11 @@ export function KeyPlacesGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="bg-[#0a0a0a] border border-[#222] rounded-3xl p-10 md:p-16 relative overflow-hidden my-20"
+            className="bg-secondary border border-border-strong rounded-3xl p-10 md:p-16 relative overflow-hidden my-20 transition-colors duration-300"
         >
             {/* Decorative background grid */}
-            <div className="absolute inset-0 opacity-[0.03]"
-                style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
+            <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
+                style={{ backgroundImage: 'linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
             </div>
 
             <div className="relative z-10">
@@ -126,13 +126,13 @@ export function KeyPlacesGrid() {
                         <motion.div
                             key={idx}
                             whileHover={{ y: -5 }}
-                            className="bg-[#111] border border-[#333] p-8 rounded-2xl hover:border-gold-500/50 transition-all shadow-lg hover:shadow-[0_10px_30px_rgba(229,161,45,0.1)] group text-center"
+                            className="bg-primary border border-border-subtle p-8 rounded-2xl hover:border-gold-500/50 transition-all shadow-lg hover:shadow-[0_10px_30px_rgba(229,161,45,0.1)] group text-center"
                         >
                             <div className="w-12 h-1 bg-gold-600 rounded-full mx-auto mb-6 group-hover:bg-gold-400 transition-colors"></div>
-                            <h3 className="text-xl font-serif text-white font-semibold mb-3 group-hover:text-gold-400 transition-colors">
+                            <h3 className="text-xl font-serif text-text-main font-semibold mb-3 group-hover:text-gold-400 transition-colors">
                                 {place.name}
                             </h3>
-                            <p className="text-sm text-gray-400 font-light leading-relaxed">
+                            <p className="text-sm text-text-muted font-light leading-relaxed">
                                 {place.desc}
                             </p>
                         </motion.div>

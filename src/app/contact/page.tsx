@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { MapPin, Phone, Mail, Clock, ArrowRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { ContactForm } from './ContactClientComponents';
 
 export const metadata: Metadata = {
@@ -9,15 +9,15 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
     return (
-        <div className="min-h-screen bg-[#050505] text-gray-300 font-sans pb-24 pt-32">
+        <div className="min-h-screen bg-primary text-text-main font-sans pb-24 pt-32 transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-6">
 
                 {/* Header Section */}
                 <section className="text-center mb-16 max-w-3xl mx-auto">
-                    <h1 className="text-4xl md:text-6xl font-serif font-bold text-white tracking-wide mb-6">
+                    <h1 className="text-4xl md:text-6xl font-serif font-bold text-text-main tracking-wide mb-6">
                         Get in Touch
                     </h1>
-                    <p className="text-lg text-gray-400 font-light leading-relaxed">
+                    <p className="text-lg text-text-muted font-light leading-relaxed">
                         Whether you are looking to buy a premium plot, sell your property, or simply need expert advice, our team is ready to assist you.
                     </p>
                 </section>
@@ -26,11 +26,10 @@ export default function ContactPage() {
                 <div className="flex flex-col lg:flex-row gap-12 lg:gap-8">
 
                     {/* Left Column: Contact Form */}
-                    <div className="w-full lg:w-3/5">
-                        <div className="bg-[#0A0A0A] border border-[#222] border-t-4 border-t-gold-500 rounded-2xl p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-
-                            <h2 className="text-3xl font-serif text-white font-bold mb-8">Send a Message</h2>
-
+                    <div className="w-full lg:w-[60%] order-2 lg:order-1 relative z-10">
+                        <div className="bg-secondary border border-border-strong rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none transition-opacity duration-700 opacity-50 group-hover:opacity-100"></div>
+                            <h2 className="text-3xl font-serif font-bold text-text-main mb-8 group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors duration-500">Send us a Message</h2>
                             <ContactForm />
                         </div>
                     </div>
@@ -39,15 +38,15 @@ export default function ContactPage() {
                     <div className="w-full lg:w-2/5 space-y-8">
 
                         {/* Business Details Card */}
-                        <div className="bg-[#111] border border-[#222] rounded-2xl p-8 space-y-8">
+                        <div className="bg-secondary border border-border-strong rounded-2xl p-8 space-y-8">
 
                             <div className="flex items-start space-x-4">
                                 <div className="w-12 h-12 rounded-full bg-gold-600/10 flex items-center justify-center flex-shrink-0">
-                                    <MapPin className="w-5 h-5 text-gold-500" />
+                                    <MapPin className="w-5 h-5 text-gold-600 dark:text-gold-500" />
                                 </div>
                                 <div>
-                                    <h4 className="text-white font-semibold uppercase tracking-wider text-sm mb-2">Office Address</h4>
-                                    <p className="text-gray-400 leading-relaxed font-light">
+                                    <h4 className="text-text-main font-semibold uppercase tracking-wider text-sm mb-2">Office Address</h4>
+                                    <p className="text-text-muted leading-relaxed font-light">
                                         Swaraj Round North,<br />
                                         Thrissur, Kerala 680001
                                     </p>
@@ -56,24 +55,24 @@ export default function ContactPage() {
 
                             <div className="flex items-start space-x-4">
                                 <div className="w-12 h-12 rounded-full bg-gold-600/10 flex items-center justify-center flex-shrink-0">
-                                    <Phone className="w-5 h-5 text-gold-500" />
+                                    <Phone className="w-5 h-5 text-gold-600 dark:text-gold-500" />
                                 </div>
                                 <div>
-                                    <h4 className="text-white font-semibold uppercase tracking-wider text-sm mb-2">Phone Numbers</h4>
-                                    <p className="text-gray-400 leading-relaxed font-light">
-                                        <a href="tel:+919876543210" className="hover:text-gold-400 transition-colors">+91 98765 43210</a><br />
-                                        <a href="tel:+914872345678" className="hover:text-gold-400 transition-colors">0487 234 5678</a>
+                                    <h4 className="text-text-main font-semibold uppercase tracking-wider text-sm mb-2">Phone Numbers</h4>
+                                    <p className="text-text-muted leading-relaxed font-light">
+                                        <a href="tel:+919876543210" className="hover:text-gold-600 dark:hover:text-gold-400 transition-colors">+91 98765 43210</a><br />
+                                        <a href="tel:+914872345678" className="hover:text-gold-600 dark:hover:text-gold-400 transition-colors">0487 234 5678</a>
                                     </p>
                                 </div>
                             </div>
 
                             <div className="flex items-start space-x-4">
                                 <div className="w-12 h-12 rounded-full bg-gold-600/10 flex items-center justify-center flex-shrink-0">
-                                    <Mail className="w-5 h-5 text-gold-500" />
+                                    <Mail className="w-5 h-5 text-gold-600 dark:text-gold-500" />
                                 </div>
                                 <div>
-                                    <h4 className="text-white font-semibold uppercase tracking-wider text-sm mb-2">Email Address</h4>
-                                    <a href="mailto:info@thrissurplots.com" className="text-gray-400 hover:text-gold-400 transition-colors font-light">
+                                    <h4 className="text-text-main font-semibold uppercase tracking-wider text-sm mb-2">Email Address</h4>
+                                    <a href="mailto:info@thrissurplots.com" className="text-text-muted hover:text-gold-600 dark:hover:text-gold-400 transition-colors font-light">
                                         info@thrissurplots.com
                                     </a>
                                 </div>
@@ -81,11 +80,11 @@ export default function ContactPage() {
 
                             <div className="flex items-start space-x-4">
                                 <div className="w-12 h-12 rounded-full bg-gold-600/10 flex items-center justify-center flex-shrink-0">
-                                    <Clock className="w-5 h-5 text-gold-500" />
+                                    <Clock className="w-5 h-5 text-gold-600 dark:text-gold-500" />
                                 </div>
                                 <div>
-                                    <h4 className="text-white font-semibold uppercase tracking-wider text-sm mb-2">Working Hours</h4>
-                                    <p className="text-gray-400 leading-relaxed font-light">
+                                    <h4 className="text-text-main font-semibold uppercase tracking-wider text-sm mb-2">Working Hours</h4>
+                                    <p className="text-text-muted leading-relaxed font-light">
                                         Mon - Sat: 9:30 AM - 6:30 PM<br />
                                         Sunday: By Appointment Only
                                     </p>
@@ -111,12 +110,12 @@ export default function ContactPage() {
                         </div>
 
                         {/* Simulated Map Container */}
-                        <div className="w-full h-64 rounded-2xl overflow-hidden border border-[#222] relative group">
-                            <div className="absolute inset-0 bg-[#111] animate-pulse"></div>
+                        <div className="w-full h-64 rounded-2xl overflow-hidden border border-border-strong relative group shadow-sm hover:shadow-md transition-shadow">
+                            <div className="absolute inset-0 bg-secondary animate-pulse opacity-50 dark:opacity-100"></div>
                             <div className="absolute inset-0 flex items-center justify-center">
                                 <div className="text-center">
-                                    <MapPin className="w-8 h-8 text-gray-500 mx-auto mb-2 opacity-50" />
-                                    <span className="text-gray-500 text-sm tracking-wider uppercase">Interactive Map Placeholder</span>
+                                    <MapPin className="w-8 h-8 text-text-muted mx-auto mb-2 opacity-50" />
+                                    <span className="text-text-muted text-sm tracking-wider uppercase">Interactive Map Placeholder</span>
                                 </div>
                             </div>
                         </div>

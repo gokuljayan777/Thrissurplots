@@ -12,12 +12,30 @@ const parsePrice = (priceStr: string) => {
     const match = priceStr.match(/[\d.]+/);
     if (!match) return 0;
     const value = parseFloat(match[0]);
-    if (priceStr.toLowerCase().includes('crore')) {
+    if (priceStr.toLowerCase().includes('crore') || priceStr.toLowerCase().includes('cr')) {
         return value * 10000000;
-    } else if (priceStr.toLowerCase().includes('lakh')) {
+    } else if (priceStr.toLowerCase().includes('lakh') || priceStr.toLowerCase().includes('l')) {
         return value * 100000;
     }
     return value;
+};
+
+const parseAreaToCents = (areaStr: string) => {
+    const match = areaStr.match(/[\d.]+/);
+    if (!match) return 0;
+    const value = parseFloat(match[0]);
+    if (areaStr.toLowerCase().includes('acre')) {
+        return value * 100; // 1 Acre = 100 Cents
+    }
+    return value; // Assume Cents by default
+};
+
+const formatArea = (cents: number) => {
+    if (cents >= 100) {
+        const acres = cents / 100;
+        return `${acres % 1 === 0 ? acres : acres.toFixed(2)} Acre${acres > 1 ? 's' : ''}`;
+    }
+    return `${cents} Cent${cents > 1 ? 's' : ''}`;
 };
 
 export default function PlotsPage() {
@@ -26,10 +44,10 @@ export default function PlotsPage() {
 
     // Filter states
     const [searchLocation, setSearchLocation] = useState("");
-    const [minPrice, setMinPrice] = useState("");
-    const [maxPrice, setMaxPrice] = useState("");
+    const [priceCategory, setPriceCategory] = useState("");
     const [selectedPurpose, setSelectedPurpose] = useState<string[]>([]);
-    const [plotSizeUnit, setPlotSizeUnit] = useState<"Cents" | "Acres">("Cents");
+    const [minArea, setMinArea] = useState<number>(0);
+    const [maxArea, setMaxArea] = useState<number>(500); // 500 cents = 5 acres
     const [roadAccess, setRoadAccess] = useState("");
 
     // Sort states
@@ -64,79 +82,127 @@ export default function PlotsPage() {
 
     const clearFilters = () => {
         setSearchLocation("");
-        setMinPrice("");
-        setMaxPrice("");
+        setPriceCategory("");
         setSelectedPurpose([]);
-        setPlotSizeUnit("Cents");
+        setMinArea(0);
+        setMaxArea(500);
         setRoadAccess("");
     };
 
-    // Extract unique location names for autocomplete
-    const locationOptions = useMemo(() => {
+    // Extract unique location names and property titles for autocomplete
+    const searchOptions = useMemo(() => {
         // Strip out the ", Thrissur" part for cleaner dropdowns, or keep entire strings
         const locs = mockProperties.map(p => p.location.split(',')[0].trim());
-        return Array.from(new Set(locs));
+        const titles = mockProperties.map(p => p.title.trim());
+        return Array.from(new Set([...locs, ...titles]));
     }, []);
 
     // Filter Logic
-    const filteredProperties = useMemo(() => {
+    const { filteredProperties, otherProperties } = useMemo(() => {
         // We duplicate mock properties just for demo grid filling if there's only 3
-        let result = [...mockProperties, ...mockProperties.map(p => ({ ...p, id: `${p.id}-dup` }))];
+        const allResult = [...mockProperties, ...mockProperties.map(p => ({ ...p, id: `${p.id}-dup` }))];
 
-        if (searchLocation) {
-            const lowerSearch = searchLocation.toLowerCase();
-            result = result.filter(p => p.location.toLowerCase().includes(lowerSearch) || p.title.toLowerCase().includes(lowerSearch));
-        }
+        const hasFilters = searchLocation || selectedPurpose.length > 0 || roadAccess || priceCategory || minArea > 0 || maxArea < 500;
 
-        if (selectedPurpose.length > 0) {
-            result = result.filter(p => selectedPurpose.includes(p.type));
-        }
+        let exactMatches: typeof mockProperties = [];
+        const others: typeof mockProperties = [];
 
-        if (roadAccess) {
-            result = result.filter(p => {
-                const features = p.features.map(f => f.toLowerCase());
-                if (roadAccess === "highway") return features.some(f => f.includes("highway"));
-                if (roadAccess === "tar") return features.some(f => f.includes("tar"));
-                if (roadAccess === "panchayat") return features.some(f => f.includes("panchayat"));
-                return true;
-            });
-        }
+        if (!hasFilters) {
+            exactMatches = [...allResult];
+        } else {
+            allResult.forEach(p => {
+                let matches = true;
 
-        const minP = parseFloat(minPrice);
-        const maxP = parseFloat(maxPrice);
-        if (!isNaN(minP) || !isNaN(maxP)) {
-            result = result.filter(p => {
-                const priceVal = parsePrice(p.price);
-                // Assume inputs are in Lakhs for simplicity if value < 1000, else exact
-                // To keep it simple, let's treat input as pure numbers comparing directly if large, or multiply by 100000 if small
-                const normalizedMin = (minP && minP < 1000) ? minP * 100000 : minP;
-                const normalizedMax = (maxP && maxP < 1000) ? maxP * 100000 : maxP;
+                if (searchLocation) {
+                    const lowerSearch = searchLocation.toLowerCase();
+                    if (!p.location.toLowerCase().includes(lowerSearch) && !p.title.toLowerCase().includes(lowerSearch)) {
+                        matches = false;
+                    }
+                }
 
-                if (!isNaN(minP) && priceVal < normalizedMin) return false;
-                if (!isNaN(maxP) && priceVal > normalizedMax) return false;
-                return true;
+                if (matches && selectedPurpose.length > 0) {
+                    if (!selectedPurpose.includes(p.type)) matches = false;
+                }
+
+                if (matches && roadAccess) {
+                    const features = p.features.map(f => f.toLowerCase());
+                    if (roadAccess === "highway" && !features.some(f => f.includes("highway"))) matches = false;
+                    else if (roadAccess === "tar" && !features.some(f => f.includes("tar"))) matches = false;
+                    else if (roadAccess === "panchayat" && !features.some(f => f.includes("panchayat"))) matches = false;
+                }
+
+                if (matches && priceCategory) {
+                    const priceVal = parsePrice(p.price);
+                    let minP = 0;
+                    let maxP = Infinity;
+
+                    switch (priceCategory) {
+                        case "Under 50 Lakh":
+                            maxP = 50 * 100000;
+                            break;
+                        case "50 Lakh - 1 Crore":
+                            minP = 50 * 100000;
+                            maxP = 1 * 10000000;
+                            break;
+                        case "1 Crore - 2 Crore":
+                            minP = 1 * 10000000;
+                            maxP = 2 * 10000000;
+                            break;
+                        case "2 Crore - 3 Crore":
+                            minP = 2 * 10000000;
+                            maxP = 3 * 10000000;
+                            break;
+                        case "3 Crore - 5 Crore":
+                            minP = 3 * 10000000;
+                            maxP = 5 * 10000000;
+                            break;
+                        case "Above 5 Crore":
+                            minP = 5 * 10000000;
+                            break;
+                    }
+
+                    if (priceVal < minP || priceVal > maxP) {
+                        matches = false;
+                    }
+                }
+
+                if (matches && (minArea > 0 || maxArea < 500)) {
+                    const areaVal = parseAreaToCents(p.area);
+                    if (areaVal < minArea || areaVal > maxArea) matches = false;
+                }
+
+                if (matches) {
+                    exactMatches.push(p);
+                } else {
+                    others.push(p);
+                }
             });
         }
 
         // Sorting
-        if (sortBy === "price-low") {
-            result.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
-        } else if (sortBy === "price-high") {
-            result.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+        const sortFn = (a: typeof mockProperties[0], b: typeof mockProperties[0]) => {
+            if (sortBy === "price-low") return parsePrice(a.price) - parsePrice(b.price);
+            if (sortBy === "price-high") return parsePrice(b.price) - parsePrice(a.price);
+            return 0; // Default or "latest" logic
+        };
+
+        if (sortBy !== "latest") {
+            exactMatches.sort(sortFn);
+            others.sort(sortFn);
         }
 
-        return result;
-    }, [searchLocation, selectedPurpose, roadAccess, minPrice, maxPrice, sortBy]);
+        return { filteredProperties: exactMatches, otherProperties: others };
+    }, [searchLocation, selectedPurpose, roadAccess, priceCategory, minArea, maxArea, sortBy]);
 
     const activeSortLabel = sortOptions.find(o => o.value === sortBy)?.label || "Sort By";
 
     return (
-        <div className="min-h-screen bg-[#050505] text-white pt-24 pb-16">
+        <div className="min-h-screen bg-primary text-text-main pt-24 pb-16 transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-6">
 
                 {/* Top Bar */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 border-b border-white/5 pb-6">
-                    <h1 className="text-3xl md:text-4xl font-serif font-bold italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 mb-4 sm:mb-0">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 border-b border-border-subtle pb-6">
+                    <h1 className="text-3xl md:text-4xl font-serif font-bold italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-600 to-gold-400 dark:from-gold-300 dark:via-gold-500 dark:to-gold-600 mb-4 sm:mb-0">
                         Land Listings
                     </h1>
 
@@ -144,7 +210,7 @@ export default function PlotsPage() {
 
                         {/* Mobile Filters Toggle */}
                         <button
-                            className="lg:hidden flex justify-center items-center space-x-2 bg-gradient-to-r hover:from-gold-600 hover:to-gold-500 bg-[#111] border border-[#333] hover:border-gold-500/50 hover:text-black transition-all px-4 py-2.5 rounded-lg text-sm w-full sm:w-auto"
+                            className="lg:hidden flex justify-center items-center space-x-2 bg-gradient-to-r hover:from-gold-600 hover:to-gold-500 bg-secondary border border-border-strong hover:border-gold-500/50 hover:text-white transition-all px-4 py-2.5 rounded-lg text-sm w-full sm:w-auto"
                             onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
                         >
                             <Filter className="w-4 h-4" />
@@ -154,7 +220,7 @@ export default function PlotsPage() {
                         {/* Desktop Filters Toggle (Visible only if desktop filters are hidden) */}
                         {!isDesktopFiltersOpen && (
                             <button
-                                className="hidden lg:flex items-center space-x-2 bg-gradient-to-r hover:from-gold-600 hover:to-gold-500 bg-[#111] border border-[#333] hover:border-gold-500/50 hover:text-black transition-all px-4 py-2.5 rounded-lg text-sm"
+                                className="hidden lg:flex items-center space-x-2 bg-gradient-to-r hover:from-gold-600 hover:to-gold-500 bg-secondary border border-border-strong hover:border-gold-500/50 hover:text-black transition-all px-4 py-2.5 rounded-lg text-sm"
                                 onClick={() => setIsDesktopFiltersOpen(true)}
                             >
                                 <Filter className="w-4 h-4" />
@@ -166,7 +232,7 @@ export default function PlotsPage() {
                         <div className="relative w-full sm:w-auto z-20" ref={sortDropdownRef}>
                             <button
                                 onClick={() => setIsSortOpen(!isSortOpen)}
-                                className="w-full sm:w-56 flex items-center justify-between bg-[#111] border border-[#333] hover:border-gold-500/50 text-sm text-gray-300 px-4 py-2.5 rounded-lg transition-colors outline-none"
+                                className="w-full sm:w-56 flex items-center justify-between bg-secondary border border-border-strong hover:border-gold-500/50 text-sm text-text-muted px-4 py-2.5 rounded-lg transition-colors outline-none"
                             >
                                 <span>{activeSortLabel}</span>
                                 <ChevronDown className={`w-4 h-4 text-gold-500 transition-transform duration-300 ${isSortOpen ? "rotate-180" : ""}`} />
@@ -188,7 +254,7 @@ export default function PlotsPage() {
                                                     setSortBy(option.value);
                                                     setIsSortOpen(false);
                                                 }}
-                                                className={`w-full text-left px-4 py-3 text-sm transition-colors flex items-center justify-between ${sortBy === option.value ? "bg-gold-500/10 text-gold-400" : "text-gray-400 hover:bg-[#111] hover:text-white"}`}
+                                                className={`w-full text-left px-4 py-3 text-sm transition-colors flex items-center justify-between ${sortBy === option.value ? "bg-gold-500/10 text-gold-600 dark:text-gold-400" : "text-text-muted hover:bg-black/5 dark:hover:bg-white/5 hover:text-text-main"}`}
                                             >
                                                 <span>{option.label}</span>
                                                 {sortBy === option.value && <Check className="w-4 h-4 text-gold-500" />}
@@ -217,17 +283,17 @@ export default function PlotsPage() {
                                 <FilterSidebarContent
                                     searchLocation={searchLocation}
                                     setSearchLocation={setSearchLocation}
-                                    locationOptions={locationOptions}
-                                    minPrice={minPrice}
-                                    setMinPrice={setMinPrice}
-                                    maxPrice={maxPrice}
-                                    setMaxPrice={setMaxPrice}
+                                    searchOptions={searchOptions}
+                                    priceCategory={priceCategory}
+                                    setPriceCategory={setPriceCategory}
                                     roadAccess={roadAccess}
                                     setRoadAccess={setRoadAccess}
                                     selectedPurpose={selectedPurpose}
                                     togglePurpose={togglePurpose}
-                                    plotSizeUnit={plotSizeUnit}
-                                    setPlotSizeUnit={setPlotSizeUnit}
+                                    minArea={minArea}
+                                    setMinArea={setMinArea}
+                                    maxArea={maxArea}
+                                    setMaxArea={setMaxArea}
                                     clearFilters={clearFilters}
                                     onClose={() => setIsDesktopFiltersOpen(false)}
                                     isDesktop
@@ -244,29 +310,31 @@ export default function PlotsPage() {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: "-100%" }}
                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                className="fixed inset-y-0 left-0 z-50 w-full max-w-sm bg-[#0a0a0a] shadow-[10px_0_30px_rgba(0,0,0,0.8)] border-r border-[#222] p-6 overflow-y-auto lg:hidden"
+                                className="fixed inset-y-0 left-0 z-50 w-full max-w-sm bg-primary shadow-2xl border-r border-border-strong p-6 overflow-y-auto lg:hidden"
                             >
                                 <div className="flex justify-between items-center mb-8 border-b border-[#222] pb-6">
-                                    <h2 className="text-xl font-serif text-gold-400">Filters</h2>
-                                    <button onClick={() => setIsMobileFiltersOpen(false)} className="text-gray-400 hover:text-white p-2 hover:bg-[#111] rounded-full transition-colors">
+                                    <h2 className="text-xl font-serif text-gold-600 dark:text-gold-400">Filters</h2>
+                                    <button onClick={() => { setRoadAccess(""); setIsMobileFiltersOpen(false); }} className="text-text-muted hover:text-text-main p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-full transition-colors">
                                         <X className="w-5 h-5" />
                                     </button>
                                 </div>
                                 <FilterSidebarContent
                                     searchLocation={searchLocation}
                                     setSearchLocation={setSearchLocation}
-                                    locationOptions={locationOptions}
-                                    minPrice={minPrice}
-                                    setMinPrice={setMinPrice}
-                                    maxPrice={maxPrice}
-                                    setMaxPrice={setMaxPrice}
+                                    searchOptions={searchOptions}
+                                    priceCategory={priceCategory}
+                                    setPriceCategory={setPriceCategory}
                                     roadAccess={roadAccess}
                                     setRoadAccess={setRoadAccess}
                                     selectedPurpose={selectedPurpose}
                                     togglePurpose={togglePurpose}
-                                    plotSizeUnit={plotSizeUnit}
-                                    setPlotSizeUnit={setPlotSizeUnit}
+                                    minArea={minArea}
+                                    setMinArea={setMinArea}
+                                    maxArea={maxArea}
+                                    setMaxArea={setMaxArea}
                                     clearFilters={clearFilters}
+                                    onClose={() => setIsMobileFiltersOpen(false)}
+                                    isDesktop={false}
                                 />
                             </motion.div>
                         )}
@@ -308,23 +376,38 @@ export default function PlotsPage() {
                                 </AnimatePresence>
                             </div>
                         ) : (
-                            <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-[#111]/50 border border-white/5 rounded-2xl">
+                            <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-secondary/50 border border-border-subtle rounded-2xl">
                                 <Filter className="w-12 h-12 text-gray-600 mb-4" />
-                                <h3 className="text-xl font-serif text-white mb-2">No properties found</h3>
-                                <p className="text-gray-400 font-light max-w-md mb-6">We couldn't find any plots matching your current filter criteria. Try adjusting your filters to see more results.</p>
-                                <button onClick={clearFilters} className="text-gold-500 hover:text-gold-400 uppercase tracking-widest font-semibold text-sm border-b border-gold-500 hover:border-gold-400 pb-1">
+                                <h3 className="text-xl font-serif text-text-main mb-2">No exact matches found</h3>
+                                <p className="text-text-muted font-light max-w-md mb-6">We couldn&apos;t find any exact matches for your filters, but here are some other properties you might like.</p>
+                                <button onClick={clearFilters} className="text-gold-600 dark:text-gold-500 hover:text-gold-400 uppercase tracking-widest font-semibold text-sm border-b border-gold-600 dark:border-gold-500 hover:border-gold-400 pb-1">
                                     Clear all filters
                                 </button>
                             </div>
                         )}
 
+                        {otherProperties.length > 0 && (
+                            <div className="mt-16">
+                                <div className="flex items-center space-x-4 mb-8">
+                                    <div className="flex-grow h-px bg-white/10"></div>
+                                    <h2 className="text-2xl font-serif text-gold-400 font-bold whitespace-nowrap">Also you may like</h2>
+                                    <div className="flex-grow h-px bg-white/10"></div>
+                                </div>
+                                <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 transition-all ${isDesktopFiltersOpen ? "xl:grid-cols-2" : "xl:grid-cols-3 lg:grid-cols-3"}`}>
+                                    {otherProperties.map((plot) => (
+                                        <PlotCard key={`other-${plot.id}`} plot={plot} />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Pagination Placeholder (only show if there are results) */}
-                        {filteredProperties.length > 0 && (
+                        {(filteredProperties.length > 0 || otherProperties.length > 0) && (
                             <div className="mt-12 flex justify-center">
                                 <div className="flex items-center space-x-2">
                                     <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-gold-600 font-semibold text-black">1</button>
-                                    <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-[#111] border border-[#333] text-gray-400 hover:border-gold-500 hover:text-white transition-colors">2</button>
-                                    <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-[#111] border border-[#333] text-gray-400 hover:border-gold-500 hover:text-white transition-colors">3</button>
+                                    <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-secondary border border-border-strong text-text-muted hover:border-gold-500 hover:text-text-main transition-colors">2</button>
+                                    <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-secondary border border-border-strong text-text-muted hover:border-gold-500 hover:text-text-main transition-colors">3</button>
                                 </div>
                             </div>
                         )}
@@ -337,18 +420,46 @@ export default function PlotsPage() {
 }
 
 function FilterSidebarContent({
-    searchLocation, setSearchLocation, locationOptions,
-    minPrice, setMinPrice,
-    maxPrice, setMaxPrice,
+    searchLocation, setSearchLocation, searchOptions,
+    priceCategory, setPriceCategory,
     roadAccess, setRoadAccess,
     selectedPurpose, togglePurpose,
-    plotSizeUnit, setPlotSizeUnit,
+    minArea, setMinArea,
+    maxArea, setMaxArea,
     clearFilters,
     onClose,
     isDesktop
-}: any) {
+}: {
+    searchLocation: string;
+    setSearchLocation: (val: string) => void;
+    searchOptions: string[];
+    priceCategory: string;
+    setPriceCategory: (val: string) => void;
+    roadAccess: string;
+    setRoadAccess: (val: string) => void;
+    selectedPurpose: string[];
+    togglePurpose: (val: string) => void;
+    minArea: number;
+    setMinArea: (val: number) => void;
+    maxArea: number;
+    setMaxArea: (val: number) => void;
+    clearFilters: () => void;
+    onClose: () => void;
+    isDesktop: boolean;
+}) {
     const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+    const [isPriceDropdownOpen, setIsPriceDropdownOpen] = useState(false);
     const locationFilterRef = useRef<HTMLDivElement>(null);
+    const priceDropdownRef = useRef<HTMLDivElement>(null);
+
+    const priceOptions = [
+        { label: "Under 50 Lakh" },
+        { label: "50 Lakh - 1 Crore" },
+        { label: "1 Crore - 2 Crore" },
+        { label: "2 Crore - 3 Crore" },
+        { label: "3 Crore - 5 Crore" },
+        { label: "Above 5 Crore" },
+    ];
 
     // Close location dropdown when clicking outside
     useEffect(() => {
@@ -356,26 +467,29 @@ function FilterSidebarContent({
             if (locationFilterRef.current && !locationFilterRef.current.contains(event.target as Node)) {
                 setIsLocationDropdownOpen(false);
             }
+            if (priceDropdownRef.current && !priceDropdownRef.current.contains(event.target as Node)) {
+                setIsPriceDropdownOpen(false);
+            }
         }
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const filteredLocationOptions = useMemo(() => {
-        if (!searchLocation) return locationOptions;
-        return locationOptions.filter((loc: string) => loc.toLowerCase().includes(searchLocation.toLowerCase()));
-    }, [searchLocation, locationOptions]);
+    const filteredSearchOptions = useMemo(() => {
+        if (!searchLocation) return searchOptions;
+        return searchOptions.filter((opt: string) => opt.toLowerCase().includes(searchLocation.toLowerCase()));
+    }, [searchLocation, searchOptions]);
 
     return (
-        <div className="bg-[#111] border border-white/5 rounded-2xl p-6 shadow-xl relative">
+        <div className="bg-secondary border border-border-subtle rounded-2xl p-6 shadow-xl relative transition-colors duration-300">
 
             <div className="flex justify-between items-center mb-6">
-                <div className="flex items-center space-x-2 text-gold-400">
+                <div className="flex items-center space-x-2 text-gold-600 dark:text-gold-400">
                     <SlidersHorizontal className="w-5 h-5" />
                     <h2 className="font-serif text-xl tracking-wide">Refine Search</h2>
                 </div>
                 {isDesktop && (
-                    <button onClick={onClose} className="p-2 text-gray-400 hover:text-white hover:bg-[#222] rounded-full transition-colors" title="Minimize Filters">
+                    <button onClick={onClose} className="p-2 text-text-muted hover:text-text-main hover:bg-black/5 dark:hover:bg-white/5 rounded-full transition-colors" title="Minimize Filters">
                         <X className="w-5 h-5" />
                     </button>
                 )}
@@ -394,27 +508,27 @@ function FilterSidebarContent({
                             setIsLocationDropdownOpen(true);
                         }}
                         onFocus={() => setIsLocationDropdownOpen(true)}
-                        placeholder="Search area..."
-                        className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg p-3 text-sm text-white placeholder-gray-500 outline-none focus:border-gold-500/50 transition-colors"
+                        placeholder="Location or Property Name..."
+                        className="w-full bg-primary border border-border-strong rounded-lg p-3 text-sm text-text-main placeholder-text-muted outline-none focus:border-gold-500/50 transition-colors"
                     />
                     <AnimatePresence>
-                        {isLocationDropdownOpen && filteredLocationOptions.length > 0 && (
+                        {isLocationDropdownOpen && filteredSearchOptions.length > 0 && (
                             <motion.div
                                 initial={{ opacity: 0, y: -5 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -5 }}
-                                className="absolute z-50 left-0 right-0 top-full mt-2 max-h-48 overflow-y-auto bg-[#0a0a0a] border border-[#333] rounded-lg shadow-xl"
+                                className="absolute z-50 left-0 right-0 top-full mt-2 max-h-48 overflow-y-auto bg-primary border border-border-strong rounded-lg shadow-xl"
                             >
-                                {filteredLocationOptions.map((loc: string) => (
+                                {filteredSearchOptions.map((opt: string) => (
                                     <button
-                                        key={loc}
+                                        key={opt}
                                         onClick={() => {
-                                            setSearchLocation(loc);
+                                            setSearchLocation(opt);
                                             setIsLocationDropdownOpen(false);
                                         }}
-                                        className="w-full text-left px-4 py-3 hover:bg-[#1a1a1a] hover:text-gold-400 transition-colors text-sm text-gray-300 border-b border-[#222] last:border-none"
+                                        className="w-full text-left px-4 py-3 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gold-600 dark:hover:text-gold-400 transition-colors text-sm text-text-muted border-b border-border-subtle last:border-none"
                                     >
-                                        {loc}
+                                        {opt}
                                     </button>
                                 ))}
                             </motion.div>
@@ -422,26 +536,91 @@ function FilterSidebarContent({
                     </AnimatePresence>
                 </div>
 
-                {/* Price Range */}
-                <div>
-                    <label className="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider flex justify-between">
-                        <span>Price Range</span>
-                        <span className="text-gray-500 normal-case text-xs font-normal">(in Lakhs)</span>
+                {/* Price Range Dropdown */}
+                <div className="relative" ref={priceDropdownRef}>
+                    <label className="block text-sm font-semibold text-text-main mb-3 uppercase tracking-wider">
+                        Price Range
                     </label>
 
-                    <div className="mb-6 px-2 mt-4">
+                    <button
+                        type="button"
+                        onClick={() => setIsPriceDropdownOpen((prev) => !prev)}
+                        className="w-full flex items-center justify-between bg-primary border border-border-strong rounded-lg p-3 text-sm text-text-main outline-none focus:border-gold-500/50 transition-colors"
+                    >
+                        <span className={priceCategory ? "text-text-main" : "text-text-muted"}>
+                            {priceCategory || "Select Range"}
+                        </span>
+                        <ChevronDown className={`w-4 h-4 text-gold-500 transition-transform ${isPriceDropdownOpen ? "rotate-180" : ""}`} />
+                    </button>
+
+                    <AnimatePresence>
+                        {isPriceDropdownOpen && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -5 }}
+                                className="absolute z-50 left-0 w-full top-full mt-2 bg-primary border border-border-strong rounded-lg shadow-xl overflow-hidden"
+                            >
+                                {priceOptions.map((opt) => (
+                                    <button
+                                        key={opt.label}
+                                        onClick={() => {
+                                            setPriceCategory(opt.label);
+                                            setIsPriceDropdownOpen(false);
+                                        }}
+                                        className={`w-full text-left px-4 py-3 hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-sm border-b border-border-subtle last:border-none ${priceCategory === opt.label ? "text-gold-600 dark:text-gold-400" : "text-text-muted hover:text-gold-600 dark:hover:text-gold-400"
+                                            }`}
+                                    >
+                                        {opt.label}
+                                    </button>
+                                ))}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                {/* Area Range (Cents to Acres) */}
+                <div>
+                    <label className="block text-sm font-semibold text-text-main mb-2 uppercase tracking-wider flex justify-between">
+                        <span>Plot Size</span>
+                        <span className="text-gold-600 dark:text-gold-500 normal-case text-xs font-semibold">
+                            {formatArea(minArea)} - {maxArea >= 500 ? "5+ Acres" : formatArea(maxArea)}
+                        </span>
+                    </label>
+
+                    {/* Area Histogram */}
+                    <div className="flex items-end justify-between h-12 gap-[2px] px-2 mb-2">
+                        {/* Mock histogram data distribution */}
+                        {[2, 5, 8, 12, 20, 35, 45, 60, 40, 25, 15, 10, 8, 5, 3, 2, 1, 1, 1, 2].map((height, i) => {
+                            // Map the histogram bars (20 bars) to the area range (0-500)
+                            const barMin = (i / 20) * 500;
+                            const barMax = ((i + 1) / 20) * 500;
+                            const inRange = maxArea >= barMin && minArea <= barMax;
+
+                            return (
+                                <motion.div
+                                    key={i}
+                                    initial={{ height: 0 }}
+                                    animate={{ height: `${height}%` }}
+                                    transition={{ duration: 0.5, delay: i * 0.02 }}
+                                    className={`flex-1 rounded-t-sm transition-colors duration-300 ${inRange ? "bg-gold-500/80" : "bg-black/10 dark:bg-white/10"}`}
+                                />
+                            );
+                        })}
+                    </div>
+
+                    <div className="px-2 mb-2">
                         <Slider
                             range
                             min={0}
                             max={500}
-                            step={10}
-                            value={[
-                                minPrice ? Number(minPrice) : 0,
-                                maxPrice ? Number(maxPrice) : 500
-                            ]}
-                            onChange={(val: any) => {
-                                setMinPrice(val[0].toString());
-                                setMaxPrice(val[1].toString());
+                            step={5}
+                            value={[minArea, maxArea]}
+                            onChange={(val: number | number[]) => {
+                                if (Array.isArray(val)) {
+                                    setMinArea(val[0]);
+                                    setMaxArea(val[1]);
+                                }
                             }}
                             styles={{
                                 track: { backgroundColor: '#e5a12d', height: 4 },
@@ -458,48 +637,11 @@ function FilterSidebarContent({
                             }}
                         />
                     </div>
-
-                    <div className="flex items-center space-x-2">
-                        <input
-                            type="number"
-                            value={minPrice}
-                            onChange={(e) => setMinPrice(e.target.value)}
-                            placeholder="Min ₹"
-                            className="w-1/2 bg-[#0a0a0a] border border-[#333] rounded-lg p-3 text-sm text-white placeholder-gray-500 outline-none focus:border-gold-500/50 transition-colors"
-                        />
-                        <span className="text-gray-500">-</span>
-                        <input
-                            type="number"
-                            value={maxPrice}
-                            onChange={(e) => setMaxPrice(e.target.value)}
-                            placeholder="Max ₹"
-                            className="w-1/2 bg-[#0a0a0a] border border-[#333] rounded-lg p-3 text-sm text-white placeholder-gray-500 outline-none focus:border-gold-500/50 transition-colors"
-                        />
-                    </div>
-                </div>
-
-                {/* Plot Size Unit Toggle */}
-                <div>
-                    <label className="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">Plot Size Focus</label>
-                    <div className="flex p-1 bg-[#0a0a0a] rounded-lg border border-[#333]">
-                        {["Cents", "Acres"].map((unit) => (
-                            <button
-                                key={unit}
-                                onClick={() => setPlotSizeUnit(unit as any)}
-                                className={`flex-1 text-xs py-2 rounded-md font-medium transition-colors ${plotSizeUnit === unit
-                                    ? "bg-[#222] text-gold-400 shadow-sm border border-gold-500/20"
-                                    : "text-gray-500 hover:text-gray-300"
-                                    }`}
-                            >
-                                {unit}
-                            </button>
-                        ))}
-                    </div>
                 </div>
 
                 {/* Purpose */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">Purpose</label>
+                    <label className="block text-sm font-semibold text-text-main mb-3 uppercase tracking-wider">Purpose</label>
                     <div className="space-y-3 mt-2">
                         {["Residential", "Commercial", "Agricultural"].map((purpose) => {
                             const checked = selectedPurpose.includes(purpose);
@@ -515,7 +657,7 @@ function FilterSidebarContent({
                                         checked={checked}
                                         onChange={() => togglePurpose(purpose)}
                                     />
-                                    <span className={`text-sm ${checked ? "text-white" : "text-gray-400 group-hover:text-gray-300"}`}>
+                                    <span className={`text-sm ${checked ? "text-text-main" : "text-text-muted group-hover:text-text-main"}`}>
                                         {purpose}
                                     </span>
                                 </label>
@@ -526,11 +668,11 @@ function FilterSidebarContent({
 
                 {/* Road Access */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">Road Access</label>
+                    <label className="block text-sm font-semibold text-text-main mb-3 uppercase tracking-wider">Road Access</label>
                     <select
                         value={roadAccess}
                         onChange={(e) => setRoadAccess(e.target.value)}
-                        className="w-full appearance-none bg-[#0a0a0a] border border-[#333] text-sm text-gray-400 p-3 pr-10 rounded-lg outline-none focus:border-gold-500/50 cursor-pointer"
+                        className="w-full appearance-none bg-primary border border-border-strong text-sm text-text-muted p-3 pr-10 rounded-lg outline-none focus:border-gold-500/50 cursor-pointer transition-colors"
                     >
                         <option value="">Any Access</option>
                         <option value="highway">Highway Frontage</option>
@@ -541,10 +683,10 @@ function FilterSidebarContent({
 
             </div>
 
-            <div className="mt-8 pt-6 border-t border-[#2a2a2a]">
+            <div className="mt-8 pt-6 border-t border-border-subtle">
                 <button
                     onClick={clearFilters}
-                    className="w-full text-sm text-gray-500 hover:text-gold-400 uppercase tracking-widest font-semibold pb-1 border-b border-transparent hover:border-gold-400/50 transition-colors inline-block text-center"
+                    className="w-full text-sm text-text-muted hover:text-gold-600 dark:hover:text-gold-400 uppercase tracking-widest font-semibold pb-1 border-b border-transparent hover:border-gold-400/50 transition-colors inline-block text-center"
                 >
                     Clear All Filters
                 </button>

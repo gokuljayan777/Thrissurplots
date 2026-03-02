@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function WhyThrissurPage() {
     return (
-        <div className="min-h-screen bg-[#050505] text-gray-300 font-sans pb-16">
+        <div className="min-h-screen bg-primary text-text-main font-sans pb-16 transition-colors duration-300">
 
             {/* Editorial Hero Section */}
             <Hero />

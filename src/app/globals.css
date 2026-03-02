@@ -7,22 +7,47 @@
   --font-serif: var(--font-serif);
   --font-cormorant: var(--font-cormorant);
 
-  --color-gold-50: #fdfaee;
-  --color-gold-100: #fbf3d5;
-  --color-gold-200: #f5e4ab;
-  --color-gold-300: #efcf7a;
-  --color-gold-400: #eab84f;
-  --color-gold-500: #e5a12d;
-  --color-gold-600: #cd8321;
-  --color-gold-700: #aa611c;
-  --color-gold-800: #8c4e1d;
-  --color-gold-900: #73411b;
+  --color-gold-50: #fcf9f2;
+  --color-gold-100: #f6eedc;
+  --color-gold-200: #ebd9b4;
+  --color-gold-300: #ddbd84;
+  --color-gold-400: #cfa459;
+  --color-gold-500: #b7872a;
+  --color-gold-600: #9b6e1f;
+  --color-gold-700: #7a5419;
+  --color-gold-800: #5c4015;
+  --color-gold-900: #422d11;
+
+  --color-primary: var(--bg-primary);
+  --color-secondary: var(--bg-secondary);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
 }
 
-/* Force dark theme for the Black/Gold requirement */
+/* Light Theme (Default) */
 :root {
+  --background: #ffffff;
+  --foreground: #111111;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f4f6;
+  --border-subtle: rgba(0, 0, 0, 0.1);
+  --border-strong: rgba(0, 0, 0, 0.2);
+  --text-main: #111111;
+  --text-muted: #6b7280;
+}
+
+/* Dark Theme */
+.dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --bg-primary: #050505;
+  --bg-secondary: #111111;
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  --text-main: #ffffff;
+  --text-muted: #9ca3af;
 }
 
 body {

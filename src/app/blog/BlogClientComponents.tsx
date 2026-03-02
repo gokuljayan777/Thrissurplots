@@ -77,10 +77,10 @@ export function BlogGrid() {
                         hidden: { opacity: 0, y: 30 },
                         visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
                     }}
-                    className="flex flex-col bg-[#111] border border-[#222] rounded-2xl overflow-hidden group hover:border-gold-600/40 transition-colors duration-500 shadow-lg"
+                    className="flex flex-col bg-secondary border border-border-strong rounded-2xl overflow-hidden group hover:border-gold-600/40 dark:hover:border-gold-500/40 transition-colors duration-500 shadow-lg"
                 >
                     {/* Image Container */}
-                    <Link href={`/blog/${post.slug}`} className="block relative h-64 overflow-hidden bg-[#0a0a0a]">
+                    <Link href={`/blog/${post.slug}`} className="block relative h-64 overflow-hidden bg-primary">
                         <motion.div
                             className="w-full h-full"
                             whileHover={{ scale: 1.05 }}
@@ -96,31 +96,31 @@ export function BlogGrid() {
                         </motion.div>
 
                         {/* Category Badge */}
-                        <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md border border-gold-500/30 text-gold-400 text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-sm">
+                        <div className="absolute top-4 left-4 bg-primary/90 backdrop-blur-md border border-gold-600/30 dark:border-gold-500/30 text-gold-600 dark:text-gold-400 text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-sm">
                             {post.category}
                         </div>
                     </Link>
 
                     {/* Content */}
                     <div className="p-8 flex flex-col flex-grow relative z-10">
-                        <div className="text-gray-500 text-sm mb-3 font-medium">
+                        <div className="text-text-muted text-sm mb-3 font-medium">
                             {post.date}
                         </div>
 
-                        <Link href={`/blog/${post.slug}`} className="group-hover:text-gold-400 transition-colors duration-300">
-                            <h2 className="text-xl md:text-2xl font-serif text-white font-bold leading-snug mb-4">
+                        <Link href={`/blog/${post.slug}`} className="group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors duration-300">
+                            <h2 className="text-xl md:text-2xl font-serif text-text-main font-bold leading-snug mb-4">
                                 {post.title}
                             </h2>
                         </Link>
 
-                        <p className="text-gray-400 font-light leading-relaxed mb-8 flex-grow">
+                        <p className="text-text-muted font-light leading-relaxed mb-8 flex-grow">
                             {post.excerpt}
                         </p>
 
                         {/* Read More CTA */}
                         <Link
                             href={`/blog/${post.slug}`}
-                            className="mt-auto flex items-center space-x-2 text-sm font-semibold uppercase tracking-wider text-white group-hover:text-gold-400 transition-colors w-max"
+                            className="mt-auto flex items-center space-x-2 text-sm font-semibold uppercase tracking-wider text-text-main group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors w-max"
                         >
                             <span>Read Article</span>
                             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />

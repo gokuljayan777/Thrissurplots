@@ -19,7 +19,7 @@ export default function DetailClientComponents({ images }: ImageProps) {
             className="space-y-4"
         >
             {/* Main Image */}
-            <div className="relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden bg-[#111] border border-gold-600/30 shadow-2xl">
+            <div className="relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden bg-secondary border border-gold-600/30 shadow-2xl">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={activeImageIndex}

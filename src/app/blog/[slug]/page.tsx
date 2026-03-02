@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 
 interface PageProps {
@@ -33,13 +32,13 @@ export default async function BlogPostPage({ params }: PageProps) {
     const imageUrl = "https://images.unsplash.com/photo-1579589882956-2e8c1ab16cff?q=80&w=2000&auto=format&fit=crop";
 
     return (
-        <div className="min-h-screen bg-[#050505] text-gray-300 font-sans pb-24 pt-32">
+        <div className="min-h-screen bg-primary text-text-main font-sans pb-24 pt-32 transition-colors duration-300">
             <article className="max-w-3xl mx-auto px-6">
 
                 {/* Back Link */}
                 <Link
                     href="/blog"
-                    className="inline-flex items-center space-x-2 text-gold-500 hover:text-gold-400 transition-colors uppercase tracking-wider text-sm font-semibold mb-10"
+                    className="inline-flex items-center space-x-2 text-gold-600 dark:text-gold-500 hover:text-gold-400 transition-colors uppercase tracking-wider text-sm font-semibold mb-10"
                 >
                     <ArrowLeft className="w-4 h-4" />
                     <span>Back to Blog</span>
@@ -47,31 +46,31 @@ export default async function BlogPostPage({ params }: PageProps) {
 
                 {/* Header Metadata */}
                 <header className="mb-12">
-                    <div className="flex items-center space-x-4 text-sm font-medium text-gray-500 mb-6 uppercase tracking-widest">
-                        <span className="text-gold-400">Market Insights</span>
+                    <div className="flex items-center space-x-4 text-sm font-medium text-text-muted mb-6 uppercase tracking-widest">
+                        <span className="text-gold-600 dark:text-gold-400">Market Insights</span>
                         <span>•</span>
                         <span>Oct 12, 2025</span>
                         <span>•</span>
                         <span>5 Min Read</span>
                     </div>
 
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight mb-8">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-text-main leading-tight mb-8">
                         {title}
                     </h1>
 
-                    <div className="flex items-center space-x-4 bg-[#111] p-4 rounded-xl border border-white/5 inline-flex">
-                        <div className="w-12 h-12 rounded-full bg-gold-600/20 border border-gold-500/30 flex items-center justify-center text-gold-500 font-serif font-bold text-xl">
+                    <div className="flex items-center space-x-4 bg-secondary p-4 rounded-xl border border-border-subtle inline-flex">
+                        <div className="w-12 h-12 rounded-full bg-gold-600/10 border border-gold-600/30 dark:border-gold-500/30 flex items-center justify-center text-gold-600 dark:text-gold-500 font-serif font-bold text-xl">
                             TP
                         </div>
                         <div>
-                            <div className="text-white font-medium">Thrissur Plots Editorial</div>
-                            <div className="text-xs text-gray-400">Real Estate Expert</div>
+                            <div className="text-text-main font-medium">Thrissur Plots Editorial</div>
+                            <div className="text-xs text-text-muted">Real Estate Expert</div>
                         </div>
                     </div>
                 </header>
 
                 {/* Featured Image */}
-                <div className="relative w-full h-[300px] md:h-[450px] rounded-2xl overflow-hidden mb-16 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
+                <div className="relative w-full h-[300px] md:h-[450px] rounded-2xl overflow-hidden mb-16 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-border-strong">
                     <Image
                         src={imageUrl}
                         alt={title}
@@ -83,9 +82,9 @@ export default async function BlogPostPage({ params }: PageProps) {
                 </div>
 
                 {/* Content Body - Simulated Rich Text using prose-like custom classes */}
-                <div className="space-y-8 text-lg font-light leading-relaxed text-gray-300">
+                <div className="space-y-8 text-lg font-light leading-relaxed text-text-muted">
 
-                    <p className="text-xl md:text-2xl text-white font-medium leading-relaxed mb-10 border-l-4 border-gold-500 pl-6 bg-gradient-to-r from-gold-500/10 to-transparent py-4">
+                    <p className="text-xl md:text-2xl text-text-main font-medium leading-relaxed mb-10 border-l-4 border-gold-500 pl-6 bg-gradient-to-r from-gold-500/10 to-transparent py-4">
                         Thrissur is undergoing a rapid metamorphosis. What was once seen purely as a quiet cultural haven is now fiercely emerging as one of the most lucrative real estate investment hubs in South India.
                     </p>
 
@@ -93,7 +92,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                         The expansion of infrastructure networks, specifically the widening of National Highway 66 and the development of state-of-the-art commercial micro-markets, has catalyzed land value appreciation across the district. For strategic investors, understanding these micro-market dynamics is the key to maximizing ROI over the next decade.
                     </p>
 
-                    <h3 className="text-2xl md:text-3xl font-serif text-gold-400 font-bold mt-12 mb-6">
+                    <h3 className="text-2xl md:text-3xl font-serif text-gold-600 dark:text-gold-400 font-bold mt-12 mb-6">
                         The Infrastructure Boom
                     </h3>
 
@@ -102,10 +101,10 @@ export default async function BlogPostPage({ params }: PageProps) {
                     </p>
 
                     <p>
-                        This decentralization of commercial activity means that <a href="#" className="text-gold-500 border-b border-gold-500 hover:text-white hover:border-white transition-colors pb-0.5">residential plots</a> previously considered "outskirts" are now prime real estate, attracting massive interest from non-resident Indians (NRIs) seeking secure footholds in their home state.
+                        This decentralization of commercial activity means that <Link href="#" className="text-gold-600 dark:text-gold-500 border-b border-gold-600 dark:border-gold-500 hover:text-text-main hover:border-text-main transition-colors pb-0.5">residential plots</Link> previously considered &quot;outskirts&quot; are now prime real estate, attracting massive interest from non-resident Indians (NRIs) seeking secure footholds in their home state.
                     </p>
 
-                    <h3 className="text-2xl md:text-3xl font-serif text-gold-400 font-bold mt-12 mb-6">
+                    <h3 className="text-2xl md:text-3xl font-serif text-gold-600 dark:text-gold-400 font-bold mt-12 mb-6">
                         Zoning and Documentation
                     </h3>
 
@@ -113,9 +112,9 @@ export default async function BlogPostPage({ params }: PageProps) {
                         Despite the boom, investing blindly carries risks. The importance of verified documentation cannot be overstated. From securing an Encumbrance Certificate (EC) covering the last 30 years to ensuring clear demarcation in the village records (Patta), every buyer must engage in rigorous due diligence.
                     </p>
 
-                    <div className="bg-[#111] border border-white/10 rounded-xl p-8 my-10">
-                        <h4 className="text-white font-semibold text-xl mb-4">Investment Checklist:</h4>
-                        <ul className="list-disc list-inside space-y-3 text-gray-400">
+                    <div className="bg-secondary border border-border-strong rounded-xl p-8 my-10 shadow-sm">
+                        <h4 className="text-text-main font-semibold text-xl mb-4">Investment Checklist:</h4>
+                        <ul className="list-disc list-inside space-y-3 text-text-muted">
                             <li>Verify the title deeds and previous ownership history.</li>
                             <li>Ensure the land falls under appropriate residential or commercial zoning (avoiding protected agricultural/wetlands).</li>
                             <li>Confirm access to basic utilities and the width of the approach road.</li>

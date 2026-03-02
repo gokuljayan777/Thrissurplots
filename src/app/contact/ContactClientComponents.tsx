@@ -41,12 +41,12 @@ export function ContactForm() {
                         type="text"
                         id="name"
                         placeholder=" "
-                        className="peer w-full bg-transparent border-b border-gray-700 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors"
+                        className="peer w-full bg-transparent border-b border-border-strong py-3 text-text-main focus:outline-none focus:border-gold-500 transition-colors"
                         required
                     />
                     <label
                         htmlFor="name"
-                        className="absolute left-0 top-3 text-gray-500 text-sm uppercase tracking-wider transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold-500 peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gray-300"
+                        className="absolute left-0 top-3 text-text-muted text-sm uppercase tracking-wider transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold-500 peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-text-main"
                     >
                         Full Name
                     </label>
@@ -57,12 +57,12 @@ export function ContactForm() {
                         type="tel"
                         id="phone"
                         placeholder=" "
-                        className="peer w-full bg-transparent border-b border-gray-700 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors"
+                        className="peer w-full bg-transparent border-b border-border-strong py-3 text-text-main focus:outline-none focus:border-gold-500 transition-colors"
                         required
                     />
                     <label
                         htmlFor="phone"
-                        className="absolute left-0 top-3 text-gray-500 text-sm uppercase tracking-wider transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold-500 peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gray-300"
+                        className="absolute left-0 top-3 text-text-muted text-sm uppercase tracking-wider transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold-500 peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-text-main"
                     >
                         Phone Number
                     </label>
@@ -74,12 +74,12 @@ export function ContactForm() {
                     type="email"
                     id="email"
                     placeholder=" "
-                    className="peer w-full bg-transparent border-b border-gray-700 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors"
+                    className="peer w-full bg-transparent border-b border-border-strong py-3 text-text-main focus:outline-none focus:border-gold-500 transition-colors"
                     required
                 />
                 <label
                     htmlFor="email"
-                    className="absolute left-0 top-3 text-gray-500 text-sm uppercase tracking-wider transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold-500 peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gray-300"
+                    className="absolute left-0 top-3 text-text-muted text-sm uppercase tracking-wider transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold-500 peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-text-main"
                 >
                     Email Address
                 </label>
@@ -96,12 +96,12 @@ export function ContactForm() {
                     }}
                     onFocus={() => setIsLocationDropdownOpen(true)}
                     placeholder=" "
-                    className="peer w-full bg-transparent border-b border-gray-700 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors z-10 relative bg-transparent"
+                    className="peer w-full bg-transparent border-b border-border-strong py-3 text-text-main focus:outline-none focus:border-gold-500 transition-colors z-10 relative bg-transparent"
                     autoComplete="off"
                 />
                 <label
                     htmlFor="location"
-                    className="absolute left-0 top-3 text-gray-500 text-sm uppercase tracking-wider transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold-500 peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gray-300"
+                    className="absolute left-0 top-3 text-text-muted text-sm uppercase tracking-wider transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold-500 peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-text-main"
                 >
                     Preferred Location / Area
                 </label>
@@ -111,7 +111,7 @@ export function ContactForm() {
                             initial={{ opacity: 0, y: -5 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -5 }}
-                            className="absolute z-50 left-0 right-0 top-full mt-2 max-h-48 overflow-y-auto bg-[#0a0a0a] border border-[#333] rounded-lg shadow-xl"
+                            className="absolute z-50 left-0 right-0 top-full mt-2 max-h-48 overflow-y-auto bg-primary border border-border-strong rounded-lg shadow-xl"
                         >
                             {filteredLocationOptions.map((loc: string) => (
                                 <button
@@ -121,7 +121,7 @@ export function ContactForm() {
                                         setSearchLocation(loc);
                                         setIsLocationDropdownOpen(false);
                                     }}
-                                    className="w-full text-left px-4 py-3 hover:bg-[#1a1a1a] hover:text-gold-400 transition-colors text-sm text-gray-300 border-b border-[#222] last:border-none"
+                                    className="w-full text-left px-4 py-3 hover:bg-secondary hover:text-gold-600 dark:hover:text-gold-400 transition-colors text-sm text-text-main border-b border-border-subtle last:border-none"
                                 >
                                     {loc}
                                 </button>
@@ -136,12 +136,12 @@ export function ContactForm() {
                     id="message"
                     rows={4}
                     placeholder=" "
-                    className="peer w-full bg-transparent border-b border-gray-700 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors resize-none"
+                    className="peer w-full bg-transparent border-b border-border-strong py-3 text-text-main focus:outline-none focus:border-gold-500 transition-colors resize-none"
                     required
                 ></textarea>
                 <label
                     htmlFor="message"
-                    className="absolute left-0 top-6 text-gray-500 text-sm uppercase tracking-wider transition-all peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gold-500 peer-placeholder-shown:text-sm peer-placeholder-shown:top-6 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gray-300"
+                    className="absolute left-0 top-6 text-text-muted text-sm uppercase tracking-wider transition-all peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gold-500 peer-placeholder-shown:text-sm peer-placeholder-shown:top-6 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-text-main"
                 >
                     Your Message / Subject
                 </label>
@@ -149,13 +149,13 @@ export function ContactForm() {
 
             {/* Site Visit Checkbox */}
             <label className="flex items-start space-x-3 cursor-pointer group mt-6">
-                <div className="mt-0.5 w-5 h-5 rounded border border-[#444] bg-transparent flex justify-center items-center group-hover:border-gold-500 relative">
+                <div className="mt-0.5 w-5 h-5 rounded border border-border-strong bg-transparent flex justify-center items-center group-hover:border-gold-500 relative">
                     <input type="checkbox" className="appearance-none absolute inset-0 cursor-pointer peer" />
                     <svg className="w-4 h-4 text-gold-500 opacity-0 peer-checked:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
                 </div>
-                <span className="text-sm text-gray-400 group-hover:text-white transition-colors">
+                <span className="text-sm text-text-muted group-hover:text-text-main transition-colors">
                     I would like to schedule a site visit with an expert.
                 </span>
             </label>

@@ -62,7 +62,7 @@ export function ServicesGrid() {
             }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-            {services.map((service, idx) => (
+            {services.map((service) => (
                 <motion.div
                     key={service.id}
                     variants={{
@@ -81,7 +81,7 @@ export function ServicesGrid() {
                     />
 
                     {/* Gradient Overlays for readability and premium feel */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/60 to-[#050505] opacity-90 group-hover:opacity-80 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/60 to-primary opacity-90 group-hover:opacity-80 transition-opacity duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80" />
 
                     {/* Content Container */}
