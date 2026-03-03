@@ -1,12 +1,9 @@
-import type { Config } from "tailwindcss";
-
-// Note: Next.js + Tailwind v4 uses globals.css for configuration via @theme inline.
-// This config exists for backward compatibility if needed.
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+const config = {
     content: [
-        "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-        "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-        "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/pages/**/*.{js,jsx,mdx}",
+        "./src/components/**/*.{js,jsx,mdx}",
+        "./src/app/**/*.{js,jsx,mdx}",
     ],
     theme: {
         extend: {

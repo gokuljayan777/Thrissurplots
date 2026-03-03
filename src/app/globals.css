@@ -56,3 +56,16 @@ body {
   font-family: var(--font-sans), serif;
   @apply antialiased;
 }
+
+/* Force Numbers to natively use DM-Sans and increase baseline weight */
+/* `unicode-range` selectively applies this font only to numerals 0-9 */
+@font-face {
+  font-family: 'NumFont';
+  src: local('DM Sans');
+  unicode-range: U+0030-0039;
+  font-weight: 500;
+}
+
+body {
+  font-family: 'NumFont', var(--font-sans), serif;
+}
