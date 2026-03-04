@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -385,6 +388,28 @@ export function ServicesDetail() {
    OUR PROCESS — 6 Steps
 ══════════════════════════════════════════ */
 export function OurProcess() {
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".gsap-process-step",
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".gsap-process-grid",
+            start: "top 85%",
+            once: true,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+    });
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section className="py-28 px-6 bg-secondary relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -425,19 +450,15 @@ export function OurProcess() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="gsap-process-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {processSteps.map((step, i) => {
             const StepIcon = step.Icon;
             return (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="relative bg-primary border border-border-subtle hover:border-gold-500/40 rounded-2xl p-8 group transition-all duration-500 hover:shadow-[0_8px_30px_rgba(229,161,45,0.08)] overflow-hidden"
+                className="gsap-process-step relative bg-primary border border-border-subtle hover:border-gold-500/40 rounded-2xl p-8 group transition-all duration-500 overflow-hidden"
               >
-                <div className="absolute top-4 right-4 text-[80px] font-serif text-gold-500/[0.06] leading-none select-none pointer-events-none">{step.num}</div>
+                <div className="absolute top-4 right-4 text-[80px] font-serif text-gold-500/[0.15] leading-none select-none pointer-events-none">{step.num}</div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 rounded-2xl bg-secondary border border-border-strong flex items-center justify-center mb-6 group-hover:bg-gold-500/10 group-hover:border-gold-500/30 transition-all">
                     <StepIcon className="w-7 h-7 text-gold-500" />
@@ -446,7 +467,7 @@ export function OurProcess() {
                   <h3 className="text-lg font-serif font-semibold text-text-main mb-3 group-hover:text-gold-400 transition-colors">{step.title}</h3>
                   <p className="text-text-muted text-sm font-light leading-relaxed">{step.desc}</p>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -521,7 +542,7 @@ export function WhyChooseUs() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="bg-secondary border border-border-subtle hover:border-gold-500/30 rounded-2xl p-6 group transition-all duration-500 hover:shadow-[0_8px_20px_rgba(229,161,45,0.08)] hover:-translate-y-1"
+                  className="bg-secondary border border-border-subtle hover:border-gold-500/30 rounded-2xl p-6 group transition-all duration-500 hover:-translate-y-1"
                 >
                   <div className="w-11 h-11 rounded-xl bg-primary border border-border-strong flex items-center justify-center mb-4 group-hover:border-gold-500/30 transition-colors">
                     <HIcon className="w-5 h-5 text-gold-500" />

@@ -1,7 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -239,6 +242,29 @@ export function WhyHero() {
    KEY REASONS — 6-card grid
 ══════════════════════════════════════════ */
 export function InvestmentReasons() {
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Reasons grid — stagger from below
+      gsap.fromTo(".gsap-reason-card",
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.75,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".gsap-reasons-grid",
+            start: "top 85%",
+            once: true,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+    });
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section className="py-28 px-6 bg-primary relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -263,20 +289,16 @@ export function InvestmentReasons() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="gsap-reasons-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {investmentReasons.map((reason, i) => {
             const Icon = reason.Icon;
             return (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="relative bg-secondary border border-border-subtle hover:border-gold-500/40 rounded-2xl p-8 group transition-all duration-500 hover:shadow-[0_8px_30px_rgba(229,161,45,0.08)] overflow-hidden"
+                className="gsap-reason-card relative bg-secondary border border-border-subtle hover:border-gold-500/40 rounded-2xl p-8 group transition-all duration-500 overflow-hidden"
               >
                 {/* Watermark stat */}
-                <div className="absolute top-4 right-5 text-[56px] font-serif text-gold-500/[0.07] leading-none select-none font-bold">{reason.stat}</div>
+                <div className="absolute top-4 right-5 text-[56px] font-serif text-gold-500/[0.15] leading-none select-none font-bold">{reason.stat}</div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 rounded-2xl bg-primary border border-border-strong flex items-center justify-center mb-6 group-hover:bg-gold-500/10 group-hover:border-gold-500/30 transition-all">
                     <Icon className="w-7 h-7 text-gold-500" />
@@ -288,7 +310,7 @@ export function InvestmentReasons() {
                     <span className="text-text-muted text-xs uppercase tracking-widest font-semibold">{reason.statLabel}</span>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -358,7 +380,7 @@ export function CultureSection() {
           >
             <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl group">
               <Image
-                src="https://images.unsplash.com/photo-1596423735880-5f2a689b903e?q=80&w=2000&auto=format&fit=crop"
+                src="/images/thrissur-pooram-new.png"
                 alt="Thrissur Pooram"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"

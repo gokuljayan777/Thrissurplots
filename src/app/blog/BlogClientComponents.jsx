@@ -1,13 +1,17 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect, useCallback } from "react";
+import { motion, useScroll, useTransform, AnimatePresence, useMotionValueEvent } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight, ArrowDown, Mail, Calendar, TrendingUp, Compass,
   BookOpen, Clock, ChevronRight, Zap, Map, FileText, Home,
-  BarChart2, Shield, Search, Star, Bookmark, Share2, Eye
+  BarChart2, Shield, Search, Star, Bookmark, Share2, Eye,
+  X, ChevronLeft, Quote, Flame, Award, TrendingDown, Activity
 } from "lucide-react";
 
 /* ══════════════════════════════════════════
@@ -22,7 +26,7 @@ const categories = [
   { label: "Infrastructure", count: 1 },
 ];
 
-const posts = [
+export const posts = [
   {
     slug: "why-thrissur-is-keralas-next-real-estate-hotspot",
     title: "Why Thrissur is Kerala's Next Real Estate Hotspot",
@@ -34,6 +38,8 @@ const posts = [
     Icon: TrendingUp,
     imageUrl: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=2000&auto=format&fit=crop",
     featured: true,
+    editorsPick: true,
+    pullQuote: "The Cultural Capital is now the fastest-appreciating real estate micro-market in South India.",
   },
   {
     slug: "guide-to-buying-agricultural-land-in-kerala",
@@ -45,6 +51,8 @@ const posts = [
     category: "Investment Guide",
     Icon: Compass,
     imageUrl: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop",
+    editorsPick: true,
+    pullQuote: "Verified soil reports and EC documents are now non-negotiable for any serious buyer.",
   },
   {
     slug: "commercial-vs-residential-where-to-invest",
@@ -56,6 +64,8 @@ const posts = [
     category: "Analysis",
     Icon: BarChart2,
     imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop",
+    editorsPick: true,
+    pullQuote: "Commercial ROI outpaces residential by 2.3× in Thrissur's core micro-markets this year.",
   },
   {
     slug: "understanding-clear-titles-and-documents",
@@ -99,11 +109,132 @@ const trendingTopics = [
 ];
 
 const stats = [
-  { value: "12+", label: "Articles Published", Icon: BookOpen },
-  { value: "18K+", label: "Monthly Readers", Icon: Eye },
-  { value: "4.9★", label: "Avg. Insight Rating", Icon: Star },
-  { value: "100%", label: "Expert-Authored", Icon: Shield },
+  { value: 12, suffix: "+", label: "Articles Published", Icon: BookOpen },
+  { value: 18, suffix: "K+", label: "Monthly Readers", Icon: Eye },
+  { value: 4.9, suffix: "★", label: "Avg. Insight Rating", Icon: Star },
+  { value: 100, suffix: "%", label: "Expert-Authored", Icon: Shield },
 ];
+
+const tickerItems = [
+  { icon: "📈", label: "NH-66 Corridor", value: "+18% YoY" },
+  { icon: "🏠", label: "Avg Plot Price Thrissur", value: "₹48 L" },
+  { icon: "🔥", label: "Demand Index Q1 2026", value: "High" },
+  { icon: "📊", label: "NRI Buyer Share", value: "34%" },
+  { icon: "🏗️", label: "New DTCP Approvals", value: "↑22%" },
+  { icon: "🌿", label: "Agri Land ROI 5yr", value: "2.8×" },
+  { icon: "🚗", label: "Peechi–Vadakkanchery Corridor", value: "Emerging" },
+  { icon: "💼", label: "Commercial Rental Yield", value: "7.2% PA" },
+];
+
+/* ══════════════════════════════════════════
+   READING PROGRESS BAR
+══════════════════════════════════════════ */
+export function ReadingProgressBar() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const update = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 w-full h-[3px] z-[9999] bg-black/20">
+      <motion.div
+        className="h-full bg-gradient-to-r from-gold-600 via-gold-400 to-gold-300 shadow-[0_0_8px_rgba(229,161,45,0.8)]"
+        style={{ width: `${progress}%` }}
+        transition={{ ease: "linear" }}
+      />
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════
+   MARKET PULSE TICKER
+══════════════════════════════════════════ */
+export function MarketPulseTicker() {
+  const items = [...tickerItems, ...tickerItems]; // duplicate for seamless loop
+
+  return (
+    <div className="relative bg-black border-y border-gold-500/20 overflow-hidden py-3 group">
+      {/* Left fade */}
+      <div className="absolute left-0 top-0 h-full w-20 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+      {/* Right fade */}
+      <div className="absolute right-0 top-0 h-full w-20 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+
+      {/* Label */}
+      <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-gold-500 text-black text-[9px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-sm flex items-center gap-1.5">
+        <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+        LIVE
+      </div>
+
+      <motion.div
+        className="flex gap-10 pl-28"
+        animate={{ x: [0, "-50%"] }}
+        transition={{ duration: 28, ease: "linear", repeat: Infinity }}
+        style={{ width: "max-content" }}
+      >
+        {items.map((item, i) => (
+          <div key={i} className="flex items-center gap-2.5 text-sm whitespace-nowrap">
+            <span>{item.icon}</span>
+            <span className="text-white/50 font-light">{item.label}</span>
+            <span className="text-gold-400 font-bold font-sans">{item.value}</span>
+            <span className="text-white/10 ml-4">|</span>
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════
+   ANIMATED COUNTER
+══════════════════════════════════════════ */
+function AnimatedCounter({ value, suffix, duration = 2 }) {
+  const [display, setDisplay] = useState(0);
+  const ref = useRef(null);
+  const [hasRun, setHasRun] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasRun) {
+          setHasRun(true);
+          const start = 0;
+          const end = value;
+          const range = end - start;
+          const stepTime = (duration * 1000) / 60;
+          let current = start;
+          const step = range / (duration * 60);
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= end) {
+              setDisplay(end);
+              clearInterval(timer);
+            } else {
+              setDisplay(parseFloat(current.toFixed(1)));
+            }
+          }, stepTime);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [value, duration, hasRun]);
+
+  const displayValue = Number.isInteger(value) ? Math.round(display) : display.toFixed(1);
+
+  return (
+    <span ref={ref} className="tabular-nums">
+      {displayValue}{suffix}
+    </span>
+  );
+}
 
 /* ══════════════════════════════════════════
    HERO — Full Cinematic
@@ -194,20 +325,25 @@ export function BlogHero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 1.1 }}
-          className="hidden lg:block absolute bottom-24 right-6 w-80 bg-black/70 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden"
+          className="hidden lg:block absolute bottom-24 right-6 w-80 z-20 shadow-2xl"
         >
-          <div className="relative h-36 overflow-hidden">
-            <Image src={posts[0].imageUrl} alt={posts[0].title} fill className="object-cover opacity-60" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
-          </div>
-          <div className="p-5">
-            <span className="text-gold-400 text-[10px] font-bold uppercase tracking-widest">Featured · {posts[0].category}</span>
-            <p className="text-white text-sm font-serif font-semibold mt-1 leading-snug line-clamp-2">{posts[0].title}</p>
-            <div className="flex items-center gap-3 mt-3 text-white/40 text-xs">
-              <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{posts[0].readTime}</span>
-              <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{posts[0].views}</span>
+          <Link href={`/blog/${posts[0].slug}`} className="block w-full h-full bg-black/70 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:border-gold-500/50 transition-all duration-300 group cursor-pointer">
+            <div className="relative h-36 overflow-hidden">
+              <Image src={posts[0].imageUrl} alt={posts[0].title} fill className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
             </div>
-          </div>
+            <div className="p-5">
+              <span className="text-gold-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
+                Featured · {posts[0].category}
+              </span>
+              <p className="text-white text-sm font-serif font-semibold mt-1 leading-snug line-clamp-2 group-hover:text-gold-200 transition-colors">{posts[0].title}</p>
+              <div className="flex items-center gap-3 mt-3 text-white/40 text-[11px]">
+                <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{posts[0].readTime}</span>
+                <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{posts[0].views}</span>
+              </div>
+            </div>
+          </Link>
         </motion.div>
       </motion.div>
 
@@ -224,14 +360,13 @@ export function BlogHero() {
         </motion.div>
       </motion.div>
 
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-primary to-transparent z-10" />
+
     </section>
   );
 }
 
 /* ══════════════════════════════════════════
-   STATS STRIP
+   STATS STRIP — Animated Counters
 ══════════════════════════════════════════ */
 export function BlogStats() {
   return (
@@ -256,7 +391,9 @@ export function BlogStats() {
                 <Icon className="w-5 h-5 text-gold-500" />
               </div>
               <div>
-                <p className="text-2xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">{s.value}</p>
+                <p className="text-2xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">
+                  <AnimatedCounter value={s.value} suffix={s.suffix} />
+                </p>
                 <p className="text-text-muted text-xs uppercase tracking-wider font-semibold">{s.label}</p>
               </div>
             </motion.div>
@@ -268,22 +405,263 @@ export function BlogStats() {
 }
 
 /* ══════════════════════════════════════════
+   EDITOR'S PICK CAROUSEL
+══════════════════════════════════════════ */
+export function EditorsPicks() {
+  const picks = posts.filter((p) => p.editorsPick);
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = useCallback(() => {
+    if (!scrollRef.current) return;
+    setCanScrollLeft(scrollRef.current.scrollLeft > 0);
+    setCanScrollRight(
+      scrollRef.current.scrollLeft < scrollRef.current.scrollWidth - scrollRef.current.clientWidth - 10
+    );
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.addEventListener("scroll", checkScroll, { passive: true });
+    return () => el?.removeEventListener("scroll", checkScroll);
+  }, [checkScroll]);
+
+  const scroll = (dir) => {
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollBy({ left: dir * 420, behavior: "smooth" });
+  };
+
+  return (
+    <section className="py-16 px-6 bg-primary relative overflow-hidden">
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <span className="text-gold-500 text-xs font-bold uppercase tracking-widest block mb-1.5 flex items-center gap-2">
+              <Award className="w-3.5 h-3.5" /> Editor&apos;s Picks
+            </span>
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-text-main">
+              Must-Read Intelligence
+            </h2>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => scroll(-1)}
+              disabled={!canScrollLeft}
+              className="w-10 h-10 rounded-full border border-border-strong flex items-center justify-center text-text-muted hover:border-gold-500/50 hover:text-gold-400 disabled:opacity-30 transition-all"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => scroll(1)}
+              disabled={!canScrollRight}
+              className="w-10 h-10 rounded-full border border-border-strong flex items-center justify-center text-text-muted hover:border-gold-500/50 hover:text-gold-400 disabled:opacity-30 transition-all"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable Row */}
+        <div
+          ref={scrollRef}
+          className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {picks.map((post, i) => {
+            const PIcon = post.Icon;
+            return (
+              <motion.article
+                key={post.slug}
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12 }}
+                className="group relative w-[380px] flex-shrink-0 snap-start rounded-3xl overflow-hidden border border-white/5 hover:border-gold-500/40 transition-all duration-500 shadow-2xl"
+                style={{ height: "480px" }}
+              >
+                <Image
+                  src={post.imageUrl}
+                  alt={post.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="380px"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
+                {/* Gold top bar */}
+                <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-gold-500 via-gold-300 to-transparent" />
+
+                {/* Badge */}
+                <div className="absolute top-5 left-5 flex items-center gap-2">
+                  <span className="bg-gold-500/90 text-black text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full flex items-center gap-1">
+                    <Award className="w-2.5 h-2.5" /> Editor&apos;s Pick
+                  </span>
+                </div>
+
+                {/* Pull Quote */}
+                {post.pullQuote && (
+                  <div className="absolute top-16 left-5 right-5">
+                    <div className="bg-black/60 backdrop-blur-md border border-gold-500/20 rounded-xl p-4">
+                      <Quote className="w-4 h-4 text-gold-400 mb-2 opacity-80" />
+                      <p className="text-white/80 text-xs font-light italic leading-relaxed line-clamp-2">
+                        {post.pullQuote}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Bottom content */}
+                <div className="absolute bottom-0 left-0 right-0 p-7">
+                  <span className="text-gold-400 text-[10px] font-bold uppercase tracking-widest mb-2 flex items-center gap-1">
+                    <PIcon className="w-3 h-3" /> {post.category}
+                  </span>
+                  <Link href={`/blog/${post.slug}`}>
+                    <h3 className="text-xl font-serif font-bold text-white leading-snug mb-3 group-hover:text-gold-200 transition-colors">
+                      {post.title}
+                    </h3>
+                  </Link>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-white/40 text-[11px]">
+                      <span>{post.date}</span>
+                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{post.readTime}</span>
+                      <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{post.views}</span>
+                    </div>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="w-8 h-8 rounded-full bg-gold-500/20 border border-gold-500/40 flex items-center justify-center group-hover:bg-gold-500 group-hover:border-gold-500 transition-all"
+                    >
+                      <ArrowRight className="w-3.5 h-3.5 text-gold-400 group-hover:text-black transition-colors" />
+                    </Link>
+                  </div>
+                </div>
+              </motion.article>
+            );
+          })}
+        </div>
+
+        {/* Scroll hint dots */}
+        <div className="flex gap-2 justify-center mt-4">
+          {picks.map((_, i) => (
+            <div key={i} className="w-1.5 h-1.5 rounded-full bg-border-strong" />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════
+   LIVE SEARCH BAR
+══════════════════════════════════════════ */
+export function BlogSearch({ query, setQuery }) {
+  const inputRef = useRef(null);
+
+  return (
+    <div className="relative">
+      <div className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl border transition-all duration-300 ${query
+        ? "border-gold-500/60 bg-gold-500/5 shadow-[0_0_16px_rgba(229,161,45,0.15)]"
+        : "border-border-strong bg-secondary"
+        }`}>
+        <Search className={`w-4 h-4 flex-shrink-0 transition-colors ${query ? "text-gold-400" : "text-text-muted"}`} />
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Search articles, topics, or categories…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="flex-1 bg-transparent text-text-main text-sm placeholder:text-text-muted outline-none"
+        />
+        <AnimatePresence>
+          {query && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              onClick={() => setQuery("")}
+              className="w-5 h-5 rounded-full bg-text-muted/20 flex items-center justify-center hover:bg-gold-500/20 transition-colors"
+            >
+              <X className="w-3 h-3 text-text-muted" />
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </div>
+      {query && (
+        <motion.div
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute right-0 -bottom-7 text-text-muted text-xs"
+        >
+          {posts.filter(p =>
+            p.title.toLowerCase().includes(query.toLowerCase()) ||
+            p.excerpt.toLowerCase().includes(query.toLowerCase()) ||
+            p.category.toLowerCase().includes(query.toLowerCase())
+          ).length} result(s) found
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════
+   BOOKMARK HOOK
+══════════════════════════════════════════ */
+function useBookmarks() {
+  const [bookmarks, setBookmarks] = useState([]);
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("tp_bookmarks") || "[]");
+      setBookmarks(stored);
+    } catch { }
+  }, []);
+
+  const toggle = useCallback((slug) => {
+    setBookmarks((prev) => {
+      const next = prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug];
+      try { localStorage.setItem("tp_bookmarks", JSON.stringify(next)); } catch { }
+      return next;
+    });
+  }, []);
+
+  return { bookmarks, toggle };
+}
+
+/* ══════════════════════════════════════════
    MAGAZINE GRID — Featured + Sidebar
 ══════════════════════════════════════════ */
-export function BlogGrid({ activeCategory }) {
-  const filtered = activeCategory === "All"
-    ? posts
-    : posts.filter(p => p.category === activeCategory);
+export function BlogGrid({ activeCategory, searchQuery }) {
+  const { bookmarks, toggle } = useBookmarks();
+
+  let filtered = activeCategory === "All" ? posts : posts.filter((p) => p.category === activeCategory);
+
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    filtered = filtered.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.excerpt.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q)
+    );
+  }
 
   const featured = filtered[0];
   const secondary = filtered.slice(1, 3);
   const rest = filtered.slice(3);
 
   if (!featured) return (
-    <div className="text-center py-24 text-text-muted">No articles in this category yet.</div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="text-center py-24 text-text-muted"
+    >
+      <Search className="w-10 h-10 mx-auto mb-4 opacity-20" />
+      <p className="text-lg">No articles found{searchQuery ? ` for "${searchQuery}"` : " in this category"}.</p>
+    </motion.div>
   );
 
   const FIcon = featured.Icon;
+  const isBookmarked = bookmarks.includes(featured.slug);
 
   return (
     <div className="space-y-12">
@@ -303,6 +681,15 @@ export function BlogGrid({ activeCategory }) {
 
           {/* Gold top bar */}
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-gold-500 via-gold-300 to-transparent" />
+
+          {/* Bookmark button */}
+          <button
+            onClick={() => toggle(featured.slug)}
+            className="absolute top-5 right-5 w-9 h-9 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center hover:border-gold-500/50 transition-all z-10"
+            aria-label="Bookmark"
+          >
+            <Bookmark className={`w-4 h-4 transition-colors ${isBookmarked ? "text-gold-400 fill-gold-400" : "text-white/50"}`} />
+          </button>
 
           <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end">
             <div className="flex items-center gap-3 mb-4">
@@ -330,6 +717,7 @@ export function BlogGrid({ activeCategory }) {
         <div className="lg:col-span-2 flex flex-col gap-6">
           {(secondary.length > 0 ? secondary : posts.slice(1, 3)).map((post, i) => {
             const PIcon = post.Icon;
+            const isSaved = bookmarks.includes(post.slug);
             return (
               <motion.article
                 key={post.slug}
@@ -341,6 +729,16 @@ export function BlogGrid({ activeCategory }) {
                 <Image src={post.imageUrl} alt={post.title} fill className="object-cover transition-transform duration-700 group-hover:scale-110" sizes="40vw" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/10" />
                 <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gold-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                {/* Bookmark */}
+                <button
+                  onClick={() => toggle(post.slug)}
+                  className="absolute top-3 right-3 w-7 h-7 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center z-10"
+                  aria-label="Bookmark"
+                >
+                  <Bookmark className={`w-3 h-3 transition-colors ${isSaved ? "text-gold-400 fill-gold-400" : "text-white/50"}`} />
+                </button>
+
                 <div className="absolute inset-0 p-6 flex flex-col justify-end">
                   <span className="text-gold-400 text-[10px] font-bold uppercase tracking-widest mb-2 flex items-center gap-1"><PIcon className="w-3 h-3" /> {post.category}</span>
                   <Link href={`/blog/${post.slug}`}>
@@ -368,6 +766,7 @@ export function BlogGrid({ activeCategory }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {rest.map((post, idx) => {
               const GIcon = post.Icon;
+              const isSaved = bookmarks.includes(post.slug);
               return (
                 <motion.article
                   key={post.slug}
@@ -378,15 +777,25 @@ export function BlogGrid({ activeCategory }) {
                   className="group flex flex-col bg-secondary border border-border-strong rounded-2xl overflow-hidden hover:border-gold-500/40 transition-all duration-500 shadow-lg hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(0,0,0,0.3)]"
                 >
                   {/* Image */}
-                  <Link href={`/blog/${post.slug}`} className="relative h-52 overflow-hidden block">
-                    <Image src={post.imageUrl} alt={post.title} fill className="object-cover transition-transform duration-700 group-hover:scale-110" sizes="33vw" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    <div className="absolute top-4 left-4 flex items-center gap-1.5 text-[10px] bg-black/70 backdrop-blur-md text-gold-400 font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gold-500/20">
-                      <GIcon className="w-3 h-3" />{post.category}
-                    </div>
-                    {/* top accent */}
-                    <div className="absolute top-0 left-0 w-0 group-hover:w-full h-[2px] bg-gradient-to-r from-gold-500 to-gold-300 transition-all duration-500" />
-                  </Link>
+                  <div className="relative">
+                    <Link href={`/blog/${post.slug}`} className="relative h-52 overflow-hidden block">
+                      <Image src={post.imageUrl} alt={post.title} fill className="object-cover transition-transform duration-700 group-hover:scale-110" sizes="33vw" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      <div className="absolute top-4 left-4 flex items-center gap-1.5 text-[10px] bg-black/70 backdrop-blur-md text-gold-400 font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gold-500/20">
+                        <GIcon className="w-3 h-3" />{post.category}
+                      </div>
+                      {/* top accent */}
+                      <div className="absolute top-0 left-0 w-0 group-hover:w-full h-[2px] bg-gradient-to-r from-gold-500 to-gold-300 transition-all duration-500" />
+                    </Link>
+                    {/* Bookmark overlay on card image */}
+                    <button
+                      onClick={() => toggle(post.slug)}
+                      className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center hover:border-gold-500/50 transition-all z-10"
+                      aria-label="Bookmark"
+                    >
+                      <Bookmark className={`w-3.5 h-3.5 transition-colors ${isSaved ? "text-gold-400 fill-gold-400" : "text-white/50"}`} />
+                    </button>
+                  </div>
 
                   {/* Content */}
                   <div className="p-7 flex flex-col flex-grow">
@@ -426,7 +835,9 @@ export function TrendingTopics() {
       }} />
       <div className="max-w-5xl mx-auto relative z-10 text-center">
         <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10">
-          <span className="text-gold-500 text-xs font-bold uppercase tracking-widest block mb-3">Trending Topics</span>
+          <span className="text-gold-500 text-xs font-bold uppercase tracking-widest block mb-3 flex items-center justify-center gap-2">
+            <Flame className="w-3.5 h-3.5" /> Trending Topics
+          </span>
           <h2 className="text-3xl md:text-4xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600">
             What Investors Are Reading
           </h2>
@@ -522,21 +933,35 @@ export function NewsletterCTA() {
 }
 
 /* ══════════════════════════════════════════
-   FULL BLOG PAGE — exported as component  
-   Used by page.jsx (the category filter lives here)
+   FULL BLOG PAGE
 ══════════════════════════════════════════ */
 export function BlogPageContent() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // When search is active, show All category
+  useEffect(() => {
+    if (searchQuery) setActiveCategory("All");
+  }, [searchQuery]);
 
   return (
     <>
+      {/* Reading Progress Bar */}
+      <ReadingProgressBar />
+
       {/* ── Hero ── */}
       <BlogHero />
+
+      {/* ── Market Pulse Ticker ── */}
+      <MarketPulseTicker />
 
       {/* ── Stats Strip ── */}
       <BlogStats />
 
-      {/* ── Category Filter + Grid ── */}
+      {/* ── Editor's Picks Carousel ── */}
+      <EditorsPicks />
+
+      {/* ── Category Filter + Search + Grid ── */}
       <section className="py-24 px-6 bg-primary relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.015]" style={{
           backgroundImage: "repeating-linear-gradient(45deg, #e5a12d 0, #e5a12d 1px, transparent 0, transparent 50%)",
@@ -545,8 +970,8 @@ export function BlogPageContent() {
         <div className="absolute right-0 top-0 w-[500px] h-[500px] rounded-full bg-gold-500/[0.03] blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto relative z-10">
-          {/* Section heading */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+          {/* Section heading + Search */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
             <div>
               <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-gold-500 uppercase tracking-widest text-sm font-semibold mb-2">
                 Editorial
@@ -557,34 +982,42 @@ export function BlogPageContent() {
               </motion.h2>
             </div>
 
-            {/* Category filter chips */}
-            <div className="flex flex-wrap gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat.label}
-                  onClick={() => setActiveCategory(cat.label)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all border
-                    ${activeCategory === cat.label
-                      ? "bg-gold-500 border-gold-500 text-black shadow-[0_0_12px_rgba(229,161,45,0.4)]"
-                      : "border-border-strong text-text-muted hover:border-gold-500/40 hover:text-gold-400"
-                    }`}
-                >
-                  {cat.label} <span className="opacity-60 ml-1 font-normal">({cat.count})</span>
-                </button>
-              ))}
+            {/* Search + Category row */}
+            <div className="flex flex-col gap-4 md:items-end w-full md:w-auto">
+              {/* Search bar */}
+              <div className="w-full md:w-80">
+                <BlogSearch query={searchQuery} setQuery={setSearchQuery} />
+              </div>
+
+              {/* Category filter chips */}
+              <div className="flex flex-wrap gap-2">
+                {categories.map((cat) => (
+                  <button
+                    key={cat.label}
+                    onClick={() => { setActiveCategory(cat.label); setSearchQuery(""); }}
+                    className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all border
+                      ${activeCategory === cat.label && !searchQuery
+                        ? "bg-gold-500 border-gold-500 text-black shadow-[0_0_12px_rgba(229,161,45,0.4)]"
+                        : "border-border-strong text-text-muted hover:border-gold-500/40 hover:text-gold-400"
+                      }`}
+                  >
+                    {cat.label} <span className="opacity-60 ml-1 font-normal">({cat.count})</span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Grid with AnimatePresence for category switching */}
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeCategory}
+              key={`${activeCategory}-${searchQuery}`}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.35 }}
             >
-              <BlogGrid activeCategory={activeCategory} />
+              <BlogGrid activeCategory={activeCategory} searchQuery={searchQuery} />
             </motion.div>
           </AnimatePresence>
         </div>

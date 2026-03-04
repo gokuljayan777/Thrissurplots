@@ -63,22 +63,7 @@ export default function TiltCard({ children, className = "" }) {
         {children}
       </div>
 
-      {/* Dynamic Glare Effect */}
-      <motion.div
-        style={{
-          opacity: useTransform([x, y], ([latestX, latestY]) =>
-            Math.abs(latestX) + Math.abs(latestY) > 0.1 ? 0.15 : 0,
-          ),
-          background: useTransform([x, y], ([latestX, latestY]) => {
-            const percentX = (latestX + 1) * 50;
-            const percentY = (latestY + 1) * 50;
-            return `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 60%)`;
-          }),
-          zIndex: 20,
-          pointerEvents: "none",
-        }}
-        className="absolute inset-0 rounded-xl transition-opacity duration-300 pointer-events-none"
-      />
+
     </motion.div>
   );
 }

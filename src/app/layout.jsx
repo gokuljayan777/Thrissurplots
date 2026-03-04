@@ -7,6 +7,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 
 const sans = DM_Sans({
   subsets: ["latin"],
@@ -39,9 +41,12 @@ export default function RootLayout({ children }) {
         className={`${sans.variable} ${serif.variable} ${cormorant.variable} font-sans antialiased min-h-screen bg-background text-foreground flex flex-col`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Navbar />
-          <main className="flex-grow">{children}</main>
-          <Footer />
+          <SmoothScrollProvider>
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+            <FloatingWhatsApp />
+          </SmoothScrollProvider>
         </ThemeProvider>
       </body>
     </html>

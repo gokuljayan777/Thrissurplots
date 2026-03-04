@@ -11,7 +11,7 @@ export default function FavoriteButton({ plotId }) {
   return (
     <button
       onClick={() => toggleFavorite(plotId)}
-      className="flex items-center space-x-2 px-6 py-2.5 rounded-sm border border-white/10 text-white hover:bg-white/5 hover:border-gold-500/50 hover:text-gold-400 transition-all font-semibold uppercase tracking-wider text-sm group"
+      className="flex items-center space-x-2 px-6 py-2.5 rounded-sm border border-border-strong text-text-main hover:bg-black/5 dark:hover:bg-white/5 hover:border-gold-500/50 hover:text-gold-400 transition-all font-semibold uppercase tracking-wider text-sm group"
     >
       <Heart
         className={`w-4 h-4 transition-colors ${saved ? "fill-gold-500 text-gold-500" : "group-hover:text-gold-400"}`}

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { MapPin, Maximize2, MoveRight } from "lucide-react";
-import TiltCard from "./TiltCard";
+
 
 export default function PlotCard({ plot }) {
   const cardRef = useRef(null);
@@ -19,6 +19,9 @@ export default function PlotCard({ plot }) {
   return (
     <motion.div
       ref={cardRef}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-50px" }}
       variants={{
         hidden: { opacity: 0, y: 40 },
         visible: {
@@ -29,7 +32,12 @@ export default function PlotCard({ plot }) {
       }}
       className="group"
     >
-      <TiltCard className="relative flex flex-col bg-secondary border border-border-subtle rounded-xl overflow-hidden hover:border-gold-600/50 transition-colors duration-500 shadow-lg hover:shadow-[0_8px_30px_rgba(229,161,45,0.15)] h-full">
+      <motion.div
+        whileHover={{ y: -8 }}
+        whileTap={{ scale: 0.98 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="relative flex flex-col bg-secondary border border-border-subtle rounded-xl overflow-hidden hover:border-gold-500/40 transition-shadow duration-500 shadow-sm hover:shadow-xl h-full"
+      >
         {/* Image Container */}
         <div className="relative w-full h-64 overflow-hidden bg-primary">
           <motion.div
@@ -38,8 +46,8 @@ export default function PlotCard({ plot }) {
           >
             <motion.div
               className="w-full h-full relative"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
               <Image
                 src={plot.imageUrl}
@@ -67,7 +75,7 @@ export default function PlotCard({ plot }) {
 
         {/* Content Details */}
         <div className="p-6 flex flex-col flex-grow relative z-10 bg-gradient-to-t from-primary to-secondary">
-          <h3 className="text-xl font-serif text-text-main font-semibold leading-tight mb-2 group-hover:text-gold-400 dark:group-hover:text-gold-400 transition-colors">
+          <h3 className="text-xl font-serif text-text-main font-semibold leading-tight mb-2 transition-colors">
             {plot.title}
           </h3>
 
@@ -98,7 +106,7 @@ export default function PlotCard({ plot }) {
               {plot.features.slice(0, 2).map((feature, idx) => (
                 <span
                   key={idx}
-                  className="text-xs bg-white/5 border border-white/10 text-gray-400 px-2 py-1 rounded-sm"
+                  className="text-xs bg-secondary border border-border-strong text-text-muted px-2 py-1 rounded-sm shadow-sm"
                 >
                   {feature}
                 </span>
@@ -113,14 +121,23 @@ export default function PlotCard({ plot }) {
 
           <div className="mt-auto">
             <Link href={`/plots/${plot.id}`} className="block w-full">
-              <button className="w-full flex items-center justify-center space-x-2 py-3 border border-gold-600/50 text-gold-400 hover:bg-gradient-to-r hover:from-gold-500 hover:to-gold-400 hover:text-black hover:border-transparent font-semibold uppercase tracking-wider text-sm rounded-sm transition-all duration-300">
+              <button className="w-full flex items-center justify-center space-x-2 py-3 border border-gold-600/60 text-gold-600 dark:text-gold-400 hover:bg-gold-500/10 hover:border-gold-500 font-bold uppercase tracking-widest text-sm rounded-sm transition-all duration-300 shadow-sm">
                 <span>View Details</span>
-                <MoveRight className="w-4 h-4" />
+                <motion.div
+                  variants={{
+                    initial: { x: 0 },
+                    hover: { x: 4 }
+                  }}
+                  initial="initial"
+                  whileHover="hover"
+                >
+                  <MoveRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </motion.div>
               </button>
             </Link>
           </div>
         </div>
-      </TiltCard>
+      </motion.div>
     </motion.div>
   );
 }

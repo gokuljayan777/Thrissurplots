@@ -27,6 +27,9 @@ import {
   Leaf,
   Home as HomeIcon,
   TreePine,
+  Flame,
+  Train,
+  Landmark,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -237,6 +240,14 @@ export default function Home() {
   const heroY = useTransform(scrollY, [0, 1000], ["0%", "30%"]);
   const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
 
+  // CTA background parallax using Framer Motion
+  const ctaRef = useRef(null);
+  const { scrollYProgress: ctaScroll } = useScroll({
+    target: ctaRef,
+    offset: ["start end", "end start"]
+  });
+  const ctaBgY = useTransform(ctaScroll, [0, 1], ["-10%", "10%"]);
+
   const priceOptions = [
     { label: "Under 50 Lakh" },
     { label: "50 Lakh - 1 Crore" },
@@ -283,8 +294,8 @@ export default function Home() {
         {/* Parallax Background */}
         <motion.div style={{ y: heroY }} className="absolute inset-x-0 top-[-20%] bottom-[-20%] z-0 h-[140%]">
           <Image
-            src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=2600&auto=format&fit=crop"
-            alt="Premium Real Estate Kerala"
+            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2600&auto=format&fit=crop"
+            alt="Premium Plot Land Kerala"
             fill
             className="object-cover"
             priority
@@ -292,7 +303,7 @@ export default function Home() {
         </motion.div>
 
         {/* Dark Gradient Overlay */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/60 via-black/50 to-black" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/40 via-black/30 to-black/65" />
 
         {/* Subtle dot grid pattern */}
         <div className="absolute inset-0 z-0 opacity-[0.04]" style={{
@@ -360,9 +371,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full max-w-5xl bg-black/60 backdrop-blur-xl border border-white/10 p-4 md:p-5 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.8)] z-20 relative"
+            className="w-full max-w-5xl bg-white/90 dark:bg-black backdrop-blur-3xl border border-white/20 dark:border-gold-500/30 p-4 md:p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.9)] z-20 relative"
           >
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-3 text-left px-2">Find Your Perfect Plot</p>
+            <p className="text-black/40 dark:text-white/30 text-xs uppercase tracking-widest mb-3 text-left px-2">Find Your Perfect Plot</p>
             <form
               className="flex flex-col md:flex-row gap-3 items-center"
               onSubmit={(e) => e.preventDefault()}
@@ -379,7 +390,7 @@ export default function Home() {
                     onChange={(e) => { setSearchLocation(e.target.value); setIsLocationDropdownOpen(true); }}
                     onFocus={() => setIsLocationDropdownOpen(true)}
                     placeholder="Location, Area, or Property Name"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder-gray-400 outline-none focus:border-gold-500/50 focus:bg-white/10 transition-all font-sans"
+                    className="w-full bg-black/[0.03] dark:bg-black border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-black dark:text-white placeholder-black/30 dark:placeholder-white/20 outline-none focus:border-gold-500/50 focus:bg-black/[0.05] dark:focus:bg-white/[0.02] transition-all font-sans"
                     autoComplete="off"
                   />
                 </div>
@@ -389,7 +400,7 @@ export default function Home() {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="absolute z-50 left-4 md:left-6 w-[calc(100%-2rem)] md:w-[calc(41.666%-1.5rem)] top-full mt-2 max-h-48 overflow-y-auto bg-primary border border-border-strong rounded-xl shadow-2xl overflow-hidden"
+                      className="absolute z-50 left-4 md:left-6 w-[calc(100%-2rem)] md:w-[calc(41.666%-1.5rem)] top-full mt-2 max-h-48 overflow-y-auto bg-primary dark:bg-black border border-border-strong rounded-xl shadow-2xl overflow-hidden"
                     >
                       {filteredSearchOptions.map((opt) => (
                         <button
@@ -411,12 +422,12 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setIsPriceDropdownOpen((prev) => !prev)}
-                  className="w-full flex items-center justify-between bg-white/5 border border-white/10 rounded-xl py-4 pl-4 pr-4 text-white outline-none focus:border-gold-500/50 transition-all font-sans"
+                  className="w-full flex items-center justify-between bg-black/[0.03] dark:bg-black border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-4 pr-4 text-black dark:text-white outline-none focus:border-gold-500/50 focus:bg-black/[0.05] dark:focus:bg-white/[0.02] transition-all font-sans"
                 >
-                  <span className={priceCategory ? "text-white" : "text-gray-400"}>
+                  <span className={priceCategory ? "text-black dark:text-white" : "text-black/30 dark:text-white/20"}>
                     {priceCategory || "Price Range"}
                   </span>
-                  <ChevronDown className={`w-5 h-5 text-gold-500 transition-transform ${isPriceDropdownOpen ? "rotate-180" : ""}`} />
+                  <ChevronDown className={`w-5 h-5 text-gold-600 dark:text-gold-500 transition-transform ${isPriceDropdownOpen ? "rotate-180" : ""}`} />
                 </button>
                 <AnimatePresence>
                   {isPriceDropdownOpen && (
@@ -424,7 +435,7 @@ export default function Home() {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="absolute z-50 left-0 w-full top-full mt-2 bg-primary border border-border-strong rounded-xl shadow-2xl overflow-hidden"
+                      className="absolute z-50 left-0 w-full top-full mt-2 bg-primary dark:bg-black border border-border-strong rounded-xl shadow-2xl overflow-hidden"
                     >
                       {priceOptions.map((opt) => (
                         <button
@@ -516,17 +527,19 @@ export default function Home() {
             {stats.map((stat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
                 className="text-center group"
               >
                 <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/20 mb-4 group-hover:bg-gold-500/20 transition-colors">
                   <stat.icon className="w-6 h-6 text-gold-500" />
                 </div>
-                <h3 className="text-3xl md:text-4xl font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-1">{stat.value}</h3>
-                <p className="text-text-muted text-sm font-sans">{stat.label}</p>
+                <h3 className="text-3xl md:text-4xl font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-1 leading-none">
+                  {stat.value}
+                </h3>
+                <p className="text-text-main/80 dark:text-text-muted text-sm font-sans font-medium">{stat.label}</p>
               </motion.div>
             ))}
           </div>
@@ -568,9 +581,9 @@ export default function Home() {
             {categories.map((cat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                initial={{ opacity: 0, y: 30, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
                 <Link href={cat.href} className="group flex flex-col h-full bg-primary border border-border-subtle hover:border-gold-500/50 rounded-2xl p-8 transition-all duration-500 hover:shadow-[0_8px_30px_rgba(229,161,45,0.1)] relative overflow-hidden">
@@ -580,7 +593,7 @@ export default function Home() {
                       <cat.icon className="w-6 h-6 text-gold-500" />
                     </div>
                     <h3 className="text-xl font-serif text-text-main font-semibold mb-3 group-hover:text-gold-400 transition-colors">{cat.title}</h3>
-                    <p className="text-text-muted text-sm font-light leading-relaxed mb-6">{cat.desc}</p>
+                    <p className="text-text-main/70 dark:text-text-muted text-sm font-light leading-relaxed mb-6">{cat.desc}</p>
                     <div className="flex items-center gap-2 text-gold-500 text-sm font-semibold mt-auto">
                       Explore <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -600,14 +613,16 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           SECURE PARADISE CTA
       ══════════════════════════════════════════ */}
-      <section className="relative w-full overflow-hidden min-h-[560px] flex items-center bg-black">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop"
-            alt="Luxury Modern Home"
-            fill
-            className="object-cover object-right"
-          />
+      <section ref={ctaRef} className="relative w-full overflow-hidden min-h-[560px] flex items-center bg-black">
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <motion.div style={{ y: ctaBgY }} className="absolute inset-[-20%] w-[140%] h-[140%]">
+            <Image
+              src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop"
+              alt="Green open plot land"
+              fill
+              className="object-cover object-center"
+            />
+          </motion.div>
         </div>
         <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/95 to-transparent" />
         {/* accent line */}
@@ -686,11 +701,11 @@ export default function Home() {
             {steps.map((step, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
-                className="relative flex flex-col items-center text-center z-10"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                className="relative flex flex-col items-center text-center z-10 group"
               >
                 <div className="relative mb-6">
                   <div className="w-20 h-20 rounded-2xl bg-secondary border border-border-strong flex items-center justify-center group-hover:border-gold-500/50 transition-colors shadow-xl">
@@ -701,7 +716,7 @@ export default function Home() {
                   </span>
                 </div>
                 <h3 className="text-lg font-serif font-semibold text-text-main mb-3">{step.title}</h3>
-                <p className="text-text-muted text-sm font-light leading-relaxed">{step.desc}</p>
+                <p className="text-text-main/70 dark:text-text-muted text-sm font-light leading-relaxed">{step.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -723,86 +738,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          VIDEO HIGHLIGHTS
-      ══════════════════════════════════════════ */}
-      <section className="py-24 px-6 bg-secondary transition-colors duration-300 relative">
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: "radial-gradient(circle, #e5a12d 1px, transparent 1px)",
-          backgroundSize: "32px 32px"
-        }} />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <motion.p
-              initial={{ y: "100%", opacity: 0 }}
-              whileInView={{ y: "0%", opacity: 1 }}
-              viewport={{ once: true }}
-              className="text-gold-500 uppercase tracking-widest text-sm font-semibold mb-3"
-            >
-              Discover
-            </motion.p>
-            <motion.h2
-              initial={{ y: "100%", opacity: 0 }}
-              whileInView={{ y: "0%", opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 tracking-wide"
-            >
-              Thrissur Culture &amp; Places
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="text-text-muted mt-4 max-w-xl mx-auto font-light"
-            >
-              Experience the vibrant traditions, historic landmarks, and scenic beauty that make Thrissur the Cultural Capital of Kerala.
-            </motion.p>
-          </div>
 
-          {/* Video + side info grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="lg:col-span-2 w-full rounded-3xl overflow-hidden border border-border-strong shadow-2xl relative aspect-video"
-            >
-              <iframe
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&mute=1&loop=1"
-                title="Thrissur Culture Highlights"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-
-            {/* Side cards */}
-            <div className="flex flex-col gap-4">
-              {[
-                { title: "Thrissur Pooram", desc: "Kerala's grandest elephant festival — spectacular and unmissable.", emoji: "🐘" },
-                { title: "KISS Infrastructure", desc: "NH bypass, metro rail & tech park — all set to triple property values.", emoji: "🚆" },
-                { title: "Cultural Heritage", desc: "Home to Vadakkunnathan Temple, Sahitya Akademi & top-rated schools.", emoji: "🏛️" },
-              ].map((card, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.15 }}
-                  className="bg-primary border border-border-subtle hover:border-gold-500/30 rounded-2xl p-6 transition-colors"
-                >
-                  <div className="text-3xl mb-3">{card.emoji}</div>
-                  <h3 className="font-serif font-semibold text-text-main mb-1">{card.title}</h3>
-                  <p className="text-text-muted text-sm font-light">{card.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ══════════════════════════════════════════
           TESTIMONIALS — Marquee Style

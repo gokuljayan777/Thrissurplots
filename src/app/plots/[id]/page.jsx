@@ -481,7 +481,7 @@ export default async function PlotDetailPage({ params }) {
         </div>
 
         {/* Map Section */}
-        <div className="mt-24 border-t border-border-subtle pt-16">
+        <div className="mt-12 border-t border-border-subtle pt-12">
           <h3 className="text-3xl font-serif text-text-main font-bold mb-8 text-center">
             Location in Thrissur
           </h3>
