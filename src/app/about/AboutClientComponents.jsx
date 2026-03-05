@@ -440,10 +440,10 @@ export function JourneyTimeline() {
             {timeline.map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -80 : 80 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: i * 0.08 }}
+                transition={{ duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 className={`relative flex flex-col md:flex-row ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-8`}
               >
                 {/* Content card */}
@@ -456,7 +456,13 @@ export function JourneyTimeline() {
                 </div>
 
                 {/* Year bubble on line */}
-                <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 w-8 h-8 rounded-full bg-gold-500 border-4 border-primary flex items-center justify-center shadow-[0_0_15px_rgba(229,161,45,0.5)] flex-shrink-0" />
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.08 + 0.3 }}
+                  className="absolute left-4 md:left-1/2 md:-translate-x-1/2 w-8 h-8 rounded-full bg-gold-500 border-4 border-primary flex items-center justify-center shadow-[0_0_15px_rgba(229,161,45,0.5)] flex-shrink-0"
+                />
 
                 {/* Empty side for alternating layout */}
                 <div className="hidden md:block w-[calc(50%-2rem)]" />

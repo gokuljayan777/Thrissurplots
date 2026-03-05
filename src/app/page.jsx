@@ -46,7 +46,7 @@ const blogPosts = [
     date: "Oct 12, 2025",
     category: "Market Trends",
     imageUrl:
-      "https://images.unsplash.com/photo-1579589882956-2e8c1ab16cff?q=80&w=2000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2000&auto=format&fit=crop",
   },
   {
     slug: "guide-to-buying-agricultural-land-in-kerala",
