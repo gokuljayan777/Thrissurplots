@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
@@ -185,7 +185,7 @@ export function WhyHero() {
             initial={{ y: "100%" }}
             animate={{ y: "0%" }}
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
-            className="text-5xl md:text-7xl lg:text-[88px] font-serif text-white tracking-tight leading-[1.0]"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-[88px] font-serif text-white tracking-tight leading-[1.0]"
           >
             Invest in the<br />
             <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-200 via-gold-400 to-gold-600">
@@ -266,7 +266,7 @@ export function InvestmentReasons() {
   }, []);
 
   return (
-    <section className="py-28 px-6 bg-primary relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: "radial-gradient(circle, #e5a12d 1px, transparent 1px)",
         backgroundSize: "32px 32px"
@@ -324,7 +324,7 @@ export function InvestmentReasons() {
 ══════════════════════════════════════════ */
 export function CultureSection() {
   return (
-    <section className="py-24 px-6 bg-secondary border-y border-border-subtle relative overflow-hidden">
+    <section className="py-14 md:py-24 px-4 sm:px-6 bg-secondary border-y border-border-subtle relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.025]" style={{
         backgroundImage: "repeating-linear-gradient(45deg, #e5a12d 0, #e5a12d 1px, transparent 0, transparent 50%)",
         backgroundSize: "18px 18px"
@@ -393,7 +393,7 @@ export function CultureSection() {
               </div>
             </div>
             {/* Floating badge */}
-            <div className="absolute -bottom-6 -right-6 bg-secondary border border-gold-500/30 rounded-2xl p-5 shadow-2xl z-10">
+            <div className="hidden sm:block absolute -bottom-6 -right-6 bg-secondary border border-gold-500/30 rounded-2xl p-5 shadow-2xl z-10">
               <p className="text-3xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-1">1,000+</p>
               <p className="text-text-muted text-xs uppercase tracking-wide font-semibold">Years of Heritage</p>
             </div>
@@ -418,7 +418,7 @@ export function InfrastructureSection() {
   ];
 
   return (
-    <section className="py-28 px-6 bg-primary relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 relative overflow-hidden" style={{ background: '#00022e' }}>
       <div className="absolute left-0 bottom-0 w-96 h-96 rounded-full bg-gold-500/[0.04] blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -446,9 +446,9 @@ export function InfrastructureSection() {
               </div>
             </div>
             {/* Floating stat */}
-            <div className="absolute -top-6 -right-6 bg-secondary border border-gold-500/30 rounded-2xl p-5 shadow-2xl z-10">
+            <div className="hidden sm:block absolute -top-6 -right-6 rounded-2xl p-5 shadow-2xl z-10" style={{ background: '#00022e', border: '1px solid rgba(229,161,45,0.3)' }}>
               <p className="text-3xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-1">₹8,000Cr</p>
-              <p className="text-text-muted text-xs uppercase tracking-wide font-semibold">Infrastructure Pipeline</p>
+              <p className="text-white/40 text-xs uppercase tracking-wide font-semibold">Infrastructure Pipeline</p>
             </div>
           </motion.div>
 
@@ -463,7 +463,7 @@ export function InfrastructureSection() {
             <h2 className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 mb-6 leading-tight">
               Built for the<br />Next 50 Years
             </h2>
-            <p className="text-text-muted font-light text-lg leading-relaxed mb-10">
+            <p className="text-white/50 font-light text-lg leading-relaxed mb-10">
               Thrissur is in the middle of an unprecedented infrastructure boom. Every road widened, every metro planned, every KIIFB project launched — is a catalyst for land value appreciation that benefits early investors.
             </p>
 
@@ -477,14 +477,14 @@ export function InfrastructureSection() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.08 }}
-                    className="flex gap-3 p-4 bg-secondary rounded-xl border border-border-subtle hover:border-gold-500/30 transition-colors group"
+                    className="flex gap-3 p-4 rounded-xl border hover:border-gold-500/30 transition-colors group" style={{ background: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.08)' }}
                   >
-                    <div className="w-9 h-9 rounded-lg bg-primary border border-border-strong flex items-center justify-center flex-shrink-0 group-hover:border-gold-500/30 transition-colors">
+                    <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:border-gold-500/30 transition-colors" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(229,161,45,0.2)' }}>
                       <IIcon className="w-4 h-4 text-gold-500" />
                     </div>
                     <div>
-                      <h4 className="font-serif font-semibold text-sm text-text-main group-hover:text-gold-400 transition-colors">{item.title}</h4>
-                      <p className="text-text-muted text-xs font-light leading-relaxed mt-1">{item.desc}</p>
+                      <h4 className="font-serif font-semibold text-sm text-white group-hover:text-gold-400 transition-colors">{item.title}</h4>
+                      <p className="text-white/50 text-xs font-light leading-relaxed mt-1">{item.desc}</p>
                     </div>
                   </motion.div>
                 );
@@ -502,7 +502,7 @@ export function InfrastructureSection() {
 ══════════════════════════════════════════ */
 export function InvestmentHubs() {
   return (
-    <section className="py-28 px-6 bg-secondary border-y border-border-subtle relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 bg-secondary border-y border-border-subtle relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: "linear-gradient(#e5a12d 1px, transparent 1px), linear-gradient(90deg, #e5a12d 1px, transparent 1px)",
         backgroundSize: "40px 40px"
@@ -573,7 +573,7 @@ export function LifestyleSection() {
   ];
 
   return (
-    <section className="py-28 px-6 bg-primary relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary relative overflow-hidden">
       <div className="absolute right-0 top-0 w-96 h-96 rounded-full bg-gold-500/[0.04] blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -619,7 +619,7 @@ export function LifestyleSection() {
 ══════════════════════════════════════════ */
 export function InvestorTestimonials() {
   return (
-    <section className="py-20 px-6 bg-secondary border-y border-border-subtle">
+    <section className="py-14 md:py-20 px-4 sm:px-6 bg-secondary border-y border-border-subtle">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
           <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
@@ -669,7 +669,7 @@ export function InvestorTestimonials() {
 ══════════════════════════════════════════ */
 export function WhyCTA() {
   return (
-    <section className="relative py-36 px-6 bg-black overflow-hidden">
+    <section className="relative py-16 md:py-36 px-4 sm:px-6 bg-black overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
           src="https://images.unsplash.com/photo-1681283685652-326e0e0f34de?q=80&w=2600&auto=format&fit=crop"
@@ -700,7 +700,7 @@ export function WhyCTA() {
             <span className="text-gold-400 text-sm font-semibold tracking-widest uppercase">Plots Available Now · Limited Stock</span>
           </div>
 
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-200 via-gold-400 to-gold-600 mb-6 leading-[1.05]">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-200 via-gold-400 to-gold-600 mb-6 leading-[1.05]">
             Your Plot in<br />Thrissur Awaits
           </h2>
           <p className="text-white/60 font-light text-xl mb-12 max-w-2xl mx-auto">
@@ -729,3 +729,5 @@ export function WhyCTA() {
     </section>
   );
 }
+
+

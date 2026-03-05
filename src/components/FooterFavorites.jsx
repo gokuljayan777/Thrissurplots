@@ -38,10 +38,10 @@ export default function FooterFavorites() {
   if (!isLoaded || favorites.length === 0) {
     return (
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-text-main uppercase tracking-wider">
+        <h3 className="text-lg font-serif text-white uppercase tracking-widest">
           Saved Plots
         </h3>
-        <p className="text-sm text-text-muted italic">No plots saved yet.</p>
+        <p className="text-sm text-white/50 italic font-light">No plots saved yet.</p>
       </div>
     );
   }
@@ -53,10 +53,10 @@ export default function FooterFavorites() {
 
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold text-text-main uppercase tracking-wider">
+      <h3 className="text-lg font-serif text-white uppercase tracking-widest">
         Saved Plots
       </h3>
-      <ul className="space-y-3 text-sm text-text-muted">
+      <ul className="space-y-4 text-sm text-white/60 font-light">
         {savedPlots.map(
           (plot) =>
             plot && (

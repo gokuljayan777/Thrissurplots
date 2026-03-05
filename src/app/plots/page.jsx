@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
   Filter,
@@ -66,15 +67,27 @@ const trustItems = [
 const quickFilters = ["All", "Residential", "Commercial", "Agricultural", "Investment"];
 
 export default function PlotsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-primary flex items-center justify-center text-gold-500">Loading plots...</div>}>
+      <Plots />
+    </Suspense>
+  );
+}
+
+function Plots() {
+  const searchParams = useSearchParams();
+  const initialLocation = searchParams.get("location") || "";
+  const initialPriceCategory = searchParams.get("priceCategory") || "";
+  const initialType = searchParams.get("type");
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [isDesktopFiltersOpen, setIsDesktopFiltersOpen] = useState(true);
   const [viewMode, setViewMode] = useState("grid"); // grid | list
 
   // Filter states
-  const [searchLocation, setSearchLocation] = useState("");
-  const [priceCategory, setPriceCategory] = useState("");
-  const [selectedPurpose, setSelectedPurpose] = useState([]);
-  const [quickFilter, setQuickFilter] = useState("All");
+  const [searchLocation, setSearchLocation] = useState(initialLocation);
+  const [priceCategory, setPriceCategory] = useState(initialPriceCategory);
+  const [selectedPurpose, setSelectedPurpose] = useState(initialType ? [initialType] : []);
+  const [quickFilter, setQuickFilter] = useState(initialType || "All");
   const [minArea, setMinArea] = useState(0);
   const [maxArea, setMaxArea] = useState(500);
   const [roadAccess, setRoadAccess] = useState("");
@@ -119,8 +132,7 @@ export default function PlotsPage() {
 
   const searchOptions = useMemo(() => {
     const locs = mockProperties.map((p) => p.location.split(",")[0].trim());
-    const titles = mockProperties.map((p) => p.title.trim());
-    return Array.from(new Set([...locs, ...titles]));
+    return Array.from(new Set(locs));
   }, []);
 
   // Filter Logic
@@ -684,7 +696,7 @@ function FilterSidebarContent({
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -5 }}
-                className="absolute z-50 left-0 right-0 top-full mt-1 max-h-44 overflow-y-auto bg-primary border border-border-strong rounded-xl shadow-2xl"
+                className="absolute z-50 left-0 right-0 top-full mt-1 max-h-[350px] overflow-y-auto overscroll-contain bg-primary border border-border-strong rounded-xl shadow-2xl"
               >
                 {filteredSearchOptions.map((opt) => (
                   <button
@@ -717,7 +729,7 @@ function FilterSidebarContent({
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -5 }}
-                className="absolute z-50 left-0 w-full top-full mt-1 bg-primary border border-border-strong rounded-xl shadow-2xl overflow-hidden"
+                className="absolute z-50 left-0 w-full top-full mt-1 max-h-[350px] overflow-y-auto overscroll-contain bg-primary border border-border-strong rounded-xl shadow-2xl"
               >
                 {priceOptions.map((opt) => (
                   <button

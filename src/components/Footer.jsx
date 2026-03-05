@@ -1,20 +1,26 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, Instagram, Facebook, Twitter, Linkedin, ArrowRight } from "lucide-react";
 import FooterFavorites from "@/components/FooterFavorites";
 
 export default function Footer() {
   return (
-    <footer className="bg-primary border-t border-border-strong transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-6 py-16 lg:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+    <footer className="relative overflow-hidden pt-20 pb-0" style={{ background: '#00022e' }}>
+      {/* Top glowing accent line */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gold-500/50 to-transparent" />
+
+      {/* Background radial glow */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        <div className="w-[800px] h-[300px] rounded-full blur-[100px]" style={{ background: 'rgba(229,161,45,0.03)' }} />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-10 pb-16">
+
           {/* Column 1: Brand & Info */}
-          <div className="space-y-6">
-            <Link
-              href="/"
-              className="inline-block flex flex-col items-start group"
-            >
-              <div className="relative w-20 h-20 md:w-24 md:h-24">
+          <div className="flex flex-col items-start lg:pr-6">
+            <Link href="/" className="group mb-6 flex flex-col items-start">
+              <div className="relative w-28 h-28 mix-blend-screen opacity-90 group-hover:opacity-100 transition-opacity">
                 <Image
                   src="/logo.png"
                   alt="Thrissur Plots Logo"
@@ -22,105 +28,104 @@ export default function Footer() {
                   className="object-contain"
                 />
               </div>
-              <span className="text-sm text-gold-500 dark:text-gold-400 mt-2 tracking-widest uppercase font-serif group-hover:text-gold-600 dark:group-hover:text-gold-300 transition-colors">
+              <span className="text-sm text-gold-500 mt-2 tracking-[0.2em] uppercase font-serif group-hover:text-gold-400 transition-colors">
                 Premium Lands
               </span>
             </Link>
-            <p className="text-sm leading-relaxed text-text-muted pr-4">
-              Your trusted partner for premium lands in the Cultural Capital of
-              Kerala. We specialize in exclusive residential plots, commercial
-              spaces, and high-yield investment opportunities.
+            <p className="text-white/50 text-sm font-light leading-relaxed mb-8">
+              Curating exclusive land portfolios in Kerala's Cultural Capital. Transparency, legal rigor, and unmatched advisory for modern investors.
             </p>
+            {/* Social Icons */}
+            <div className="flex items-center gap-4">
+              {[Instagram, Facebook, Twitter, Linkedin].map((Icon, idx) => (
+                <a key={idx} href="#" className="w-10 h-10 rounded-full flex items-center justify-center border border-white/10 text-white/60 hover:border-gold-500/50 hover:text-gold-400 hover:bg-gold-500/10 transition-all duration-300">
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Column 2: Quick Links */}
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-text-main uppercase tracking-wider">
-              Quick Links
+          <div className="lg:pl-8">
+            <h3 className="text-lg font-serif text-white uppercase tracking-widest mb-6 relative inline-block">
+              Navigation
+              <span className="absolute -bottom-2 left-0 w-1/2 h-[1px] bg-gold-500/50" />
             </h3>
-            <ul className="space-y-3 text-sm text-text-muted">
-              <li>
-                <Link
-                  href="/"
-                  className="hover:text-gold-600 dark:hover:text-gold-400 transition-colors"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="hover:text-gold-600 dark:hover:text-gold-400 transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/plots"
-                  className="hover:text-gold-600 dark:hover:text-gold-400 transition-colors"
-                >
-                  Exclusive Plots
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="hover:text-gold-600 dark:hover:text-gold-400 transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
+            <ul className="space-y-4">
+              {[
+                { name: "Home", path: "/" },
+                { name: "About Us", path: "/about" },
+                { name: "Exclusive Plots", path: "/plots" },
+                { name: "Our Services", path: "/services" },
+                { name: "Why Thrissur", path: "/why-thrissur" },
+                { name: "Contact", path: "/contact" }
+              ].map((link, idx) => (
+                <li key={idx}>
+                  <Link href={link.path} className="group flex items-center text-sm font-light text-white/60 hover:text-gold-400 transition-colors">
+                    <ArrowRight className="w-3 h-3 mr-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-gold-500" />
+                    <span className="group-hover:-translate-x-1 transition-transform">{link.name}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Column 3: Saved Favorites */}
-          <FooterFavorites />
+          <div>
+            <div className="mb-6 relative inline-block">
+              {/* The heading is rendered inside FooterFavorites, so we let it handle itself, but we ensure wrapper matches */}
+            </div>
+            <FooterFavorites />
+          </div>
 
           {/* Column 4: Contact Info */}
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-text-main uppercase tracking-wider">
-              Contact Info
+          <div>
+            <h3 className="text-lg font-serif text-white uppercase tracking-widest mb-6 relative inline-block">
+              Get in Touch
+              <span className="absolute -bottom-2 left-0 w-1/2 h-[1px] bg-gold-500/50" />
             </h3>
-            <ul className="space-y-4 text-sm text-text-muted">
-              <li className="flex items-start space-x-3 group">
-                <MapPin className="w-5 h-5 text-gold-600 dark:text-gold-500 mt-0.5 flex-shrink-0 group-hover:text-gold-500 dark:group-hover:text-gold-400 transition-colors" />
-                <span className="leading-relaxed">
-                  Swaraj Round North, Thrissur
-                  <br />
-                  Kerala 680001
+            <ul className="space-y-6">
+              <li className="flex items-start gap-4 group">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center border border-white/10 group-hover:border-gold-500/30 group-hover:bg-gold-500/10 transition-all flex-shrink-0">
+                  <MapPin className="w-4 h-4 text-gold-500" />
+                </div>
+                <span className="text-sm font-light text-white/60 leading-relaxed pt-1">
+                  Swaraj Round North, Thrissur<br />Kerala 680001
                 </span>
               </li>
-              <li className="flex items-center space-x-3 group">
-                <Phone className="w-5 h-5 text-gold-600 dark:text-gold-500 flex-shrink-0 group-hover:text-gold-500 dark:group-hover:text-gold-400 transition-colors" />
-                <a
-                  href="tel:+919876543210"
-                  className="hover:text-gold-600 dark:hover:text-gold-400 transition-colors"
-                >
+              <li className="flex items-center gap-4 group">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center border border-white/10 group-hover:border-gold-500/30 group-hover:bg-gold-500/10 transition-all flex-shrink-0">
+                  <Phone className="w-4 h-4 text-gold-500" />
+                </div>
+                <a href="tel:+919876543210" className="text-sm font-light text-white/60 hover:text-gold-400 transition-colors pt-1">
                   +91 98765 43210
                 </a>
               </li>
-              <li className="flex items-center space-x-3 group">
-                <Mail className="w-5 h-5 text-gold-600 dark:text-gold-500 flex-shrink-0 group-hover:text-gold-500 dark:group-hover:text-gold-400 transition-colors" />
-                <a
-                  href="mailto:info@thrissurplots.com"
-                  className="hover:text-gold-600 dark:hover:text-gold-400 transition-colors"
-                >
+              <li className="flex items-center gap-4 group">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center border border-white/10 group-hover:border-gold-500/30 group-hover:bg-gold-500/10 transition-all flex-shrink-0">
+                  <Mail className="w-4 h-4 text-gold-500" />
+                </div>
+                <a href="mailto:info@thrissurplots.com" className="text-sm font-light text-white/60 hover:text-gold-400 transition-colors pt-1">
                   info@thrissurplots.com
                 </a>
               </li>
             </ul>
           </div>
+
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-border-subtle py-6">
-        <div className="max-w-7xl mx-auto px-6 text-center text-xs text-text-muted">
-          <p>
-            &copy; {new Date().getFullYear()} Thrissur Plots. All rights
-            reserved.
+      {/* Bottom Legal Bar */}
+      <div className="border-t border-white/10 py-6 relative z-10 bg-black/20">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs font-light text-white/40 tracking-wide">
+            &copy; {new Date().getFullYear()} Thrissur Plots. All rights reserved.
           </p>
+          <div className="flex items-center gap-6 text-xs text-white/40 font-light tracking-wide">
+            <Link href="/privacy" className="hover:text-gold-400 transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-gold-400 transition-colors">Terms of Service</Link>
+            <Link href="/sitemap" className="hover:text-gold-400 transition-colors">Sitemap</Link>
+          </div>
         </div>
       </div>
     </footer>

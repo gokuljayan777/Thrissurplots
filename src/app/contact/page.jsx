@@ -21,7 +21,7 @@ export default function ContactPage() {
       {/* ══════════════════════════════════════════
           CINEMATIC HERO
       ══════════════════════════════════════════ */}
-      <section className="relative w-full overflow-hidden bg-[#030305] pt-32 pb-24 px-6">
+      <section className="relative w-full overflow-hidden bg-[#030305] pt-28 pb-16 md:pt-32 md:pb-24 px-4 sm:px-6">
         {/* Radial glow orbs */}
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-gold-500/10 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-gold-600/8 blur-[100px] pointer-events-none" />
@@ -47,7 +47,7 @@ export default function ContactPage() {
           </div>
 
           {/* Main heading */}
-          <h1 className="text-5xl md:text-7xl lg:text-[90px] font-serif font-bold text-white leading-[0.95] tracking-tight mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-[90px] font-serif font-bold text-white leading-[0.95] tracking-tight mb-6">
             Let&apos;s{" "}
             <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-200 via-gold-400 to-gold-600">
               Connect.
@@ -283,7 +283,7 @@ export default function ContactPage() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title="Thrissur Plots Office Location"
-              className="grayscale-[0.2] contrast-[1.1] brightness-[0.9] group-hover:grayscale-0 transition-all duration-700"
+              className="grayscale-[0.2] contrast-[1.1] brightness-[0.9] group-hover:grayscale-0 transition-all duration-700 h-[250px] sm:h-[350px] md:h-[450px]"
             />
           </div>
         </div>

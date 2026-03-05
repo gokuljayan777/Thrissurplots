@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import {
@@ -216,14 +216,14 @@ const steps = [
 
 /* ─── Ticker items ─── */
 const tickerItems = [
-  "🏆 500+ Premium Plots Listed",
-  "✅ 100% Legal Clearance Guarantee",
-  "🌴 Prime Thrissur Locations",
-  "🏠 12+ Years of Trusted Legacy",
-  "💼 NRI-Friendly Services Available",
-  "📜 DTCP Approved Layouts",
-  "🌿 Eco & Farm Land Specialists",
-  "⚡ Same-Day Site Visit Booking",
+  { icon: Award, label: "500+ Premium Plots" },
+  { icon: CheckCircle2, label: "100% Legal Clearance" },
+  { icon: MapPin, label: "Prime Thrissur Locations" },
+  { icon: Shield, label: "12+ Years of Trust" },
+  { icon: Users, label: "NRI-Friendly Services" },
+  { icon: FileText, label: "DTCP Approved Layouts" },
+  { icon: Leaf, label: "Eco & Farm Land Specialists" },
+  { icon: TrendingUp, label: "Same-Day Site Visit" },
 ];
 
 export default function Home() {
@@ -238,7 +238,6 @@ export default function Home() {
 
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 1000], ["0%", "30%"]);
-  const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
 
   // CTA background parallax using Framer Motion
   const ctaRef = useRef(null);
@@ -259,8 +258,7 @@ export default function Home() {
 
   const searchOptions = useMemo(() => {
     const locs = mockProperties.map((p) => p.location.split(",")[0].trim());
-    const titles = mockProperties.map((p) => p.title.trim());
-    return Array.from(new Set([...locs, ...titles]));
+    return Array.from(new Set(locs));
   }, []);
 
   const filteredSearchOptions = useMemo(() => {
@@ -289,32 +287,34 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           HERO — Cinematic, Full-Screen
       ══════════════════════════════════════════ */}
-      <div className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-black">
+      <div className="relative w-full min-h-screen flex flex-col items-center justify-center bg-black">
 
-        {/* Parallax Background */}
-        <motion.div style={{ y: heroY }} className="absolute inset-x-0 top-[-20%] bottom-[-20%] z-0 h-[140%]">
-          <Image
-            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2600&auto=format&fit=crop"
-            alt="Premium Plot Land Kerala"
-            fill
-            className="object-cover"
-            priority
-          />
-        </motion.div>
+        {/* Background Layers Wrapper */}
+        <div className="absolute inset-0 overflow-hidden z-0">
+          {/* Parallax Background */}
+          <motion.div style={{ y: heroY }} className="absolute inset-x-0 top-[-20%] bottom-[-20%] h-[140%]">
+            <Image
+              src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2600&auto=format&fit=crop"
+              alt="Premium Plot Land Kerala"
+              fill
+              className="object-cover"
+              priority
+            />
+          </motion.div>
 
-        {/* Dark Gradient Overlay */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/40 via-black/30 to-black/65" />
+          {/* Dark Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/65" />
 
-        {/* Subtle dot grid pattern */}
-        <div className="absolute inset-0 z-0 opacity-[0.04]" style={{
-          backgroundImage: "radial-gradient(circle, #e5a12d 1px, transparent 1px)",
-          backgroundSize: "40px 40px"
-        }} />
+          {/* Subtle dot grid pattern */}
+          <div className="absolute inset-0 opacity-[0.04]" style={{
+            backgroundImage: "radial-gradient(circle, #e5a12d 1px, transparent 1px)",
+            backgroundSize: "40px 40px"
+          }} />
+        </div>
 
         {/* Hero Content */}
-        <motion.div
-          style={{ opacity: heroOpacity }}
-          className="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col items-center justify-center text-center mt-20 lg:mt-0"
+        <div
+          className="relative z-50 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center text-center mt-20 lg:mt-0"
         >
           {/* Eyebrow badge */}
           <motion.div
@@ -342,7 +342,7 @@ export default function Home() {
                   hidden: { y: "100%" },
                   visible: { y: "0%", transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } },
                 }}
-                className="text-5xl md:text-7xl lg:text-8xl font-serif text-white tracking-tight leading-[1.05] drop-shadow-lg"
+                className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif text-white tracking-tight leading-[1.05] drop-shadow-lg"
               >
                 Discover{" "}
                 <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-600">
@@ -368,12 +368,13 @@ export default function Home() {
 
           {/* Quick Search Bar */}
           <motion.div
+            id="hero-search-bar"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full max-w-5xl bg-white/90 dark:bg-black backdrop-blur-3xl border border-white/20 dark:border-gold-500/30 p-4 md:p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.9)] z-20 relative"
+            className="w-full max-w-5xl bg-white/90 dark:bg-black border border-white/20 dark:border-gold-500/30 p-3 md:p-5 rounded-2xl md:rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.9)] z-20 relative"
           >
-            <p className="text-black/40 dark:text-white/30 text-xs uppercase tracking-widest mb-3 text-left px-2">Find Your Perfect Plot</p>
+            <p className="text-black dark:text-white/30 text-xs uppercase tracking-widest mb-3 text-left px-2 font-bold">Find Your Perfect Plot</p>
             <form
               className="flex flex-col md:flex-row gap-3 items-center"
               onSubmit={(e) => e.preventDefault()}
@@ -390,7 +391,7 @@ export default function Home() {
                     onChange={(e) => { setSearchLocation(e.target.value); setIsLocationDropdownOpen(true); }}
                     onFocus={() => setIsLocationDropdownOpen(true)}
                     placeholder="Location, Area, or Property Name"
-                    className="w-full bg-black/[0.03] dark:bg-black border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-black dark:text-white placeholder-black/30 dark:placeholder-white/20 outline-none focus:border-gold-500/50 focus:bg-black/[0.05] dark:focus:bg-white/[0.02] transition-all font-sans"
+                    className="w-full bg-black/[0.03] dark:bg-black border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-black dark:text-white font-semibold placeholder-black/70 dark:placeholder-white/20 outline-none focus:border-gold-500/50 focus:bg-black/[0.05] dark:focus:bg-white/[0.02] transition-all font-sans"
                     autoComplete="off"
                   />
                 </div>
@@ -400,7 +401,7 @@ export default function Home() {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="absolute z-50 left-4 md:left-6 w-[calc(100%-2rem)] md:w-[calc(41.666%-1.5rem)] top-full mt-2 max-h-48 overflow-y-auto bg-primary dark:bg-black border border-border-strong rounded-xl shadow-2xl overflow-hidden"
+                      className="absolute z-50 left-4 md:left-6 w-[calc(100%-2rem)] md:w-[calc(41.666%-1.5rem)] top-full mt-2 max-h-[350px] overflow-x-hidden overflow-y-auto overscroll-contain bg-primary dark:bg-black border border-border-strong rounded-xl shadow-2xl"
                     >
                       {filteredSearchOptions.map((opt) => (
                         <button
@@ -422,9 +423,9 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setIsPriceDropdownOpen((prev) => !prev)}
-                  className="w-full flex items-center justify-between bg-black/[0.03] dark:bg-black border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-4 pr-4 text-black dark:text-white outline-none focus:border-gold-500/50 focus:bg-black/[0.05] dark:focus:bg-white/[0.02] transition-all font-sans"
+                  className="w-full flex items-center justify-between bg-black/[0.03] dark:bg-black border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-4 pr-4 text-black dark:text-white font-semibold outline-none focus:border-gold-500/50 transition-all font-sans"
                 >
-                  <span className={priceCategory ? "text-black dark:text-white" : "text-black/30 dark:text-white/20"}>
+                  <span className={priceCategory ? "text-black dark:text-white font-semibold" : "text-black/80 dark:text-white/20 font-semibold"}>
                     {priceCategory || "Price Range"}
                   </span>
                   <ChevronDown className={`w-5 h-5 text-gold-600 dark:text-gold-500 transition-transform ${isPriceDropdownOpen ? "rotate-180" : ""}`} />
@@ -435,7 +436,7 @@ export default function Home() {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="absolute z-50 left-0 w-full top-full mt-2 bg-primary dark:bg-black border border-border-strong rounded-xl shadow-2xl overflow-hidden"
+                      className="absolute z-50 left-0 w-full top-full mt-2 max-h-[350px] overflow-y-auto overscroll-contain bg-primary dark:bg-black border border-border-strong rounded-xl shadow-2xl"
                     >
                       {priceOptions.map((opt) => (
                         <button
@@ -500,22 +501,39 @@ export default function Home() {
               className="w-px h-12 bg-gradient-to-b from-gold-500/60 to-transparent"
             />
           </motion.div>
-        </motion.div>
-      </div>
+        </div>
 
-      {/* ══════════════════════════════════════════
-          MARQUEE TICKER
-      ══════════════════════════════════════════ */}
-      <div className="w-full bg-gold-500 overflow-hidden py-3 relative z-10">
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="flex whitespace-nowrap gap-12"
-        >
-          {[...tickerItems, ...tickerItems].map((item, i) => (
-            <span key={i} className="text-black text-sm font-semibold shrink-0 tracking-wide">{item}</span>
-          ))}
-        </motion.div>
+        {/* ══════════════════════════════════════════
+            MARQUEE TICKER — pinned to bottom of hero
+        ══════════════════════════════════════════ */}
+        <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden z-20" style={{ background: "linear-gradient(90deg, #b7872a 0%, #e5c46a 40%, #b7872a 100%)", borderTop: "1px solid rgba(255,255,255,0.2)", borderBottom: "1px solid rgba(255,255,255,0.2)" }}>
+          {/* Left + Right fade masks */}
+          <div className="absolute left-0 top-0 bottom-0 w-20 z-10" style={{ background: "linear-gradient(to right, #b7872a, transparent)" }} />
+          <div className="absolute right-0 top-0 bottom-0 w-20 z-10" style={{ background: "linear-gradient(to left, #b7872a, transparent)" }} />
+
+          <motion.div
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+            className="flex whitespace-nowrap py-3"
+          >
+            {[...tickerItems, ...tickerItems].map((item, i) => (
+              <span key={i} className="inline-flex items-center gap-2 shrink-0">
+                {/* Separator diamond */}
+                <span className="text-black/40 mx-5 text-xs select-none" aria-hidden>◆</span>
+                {/* Icon */}
+                <item.icon className="w-3.5 h-3.5 text-black/70 shrink-0" strokeWidth={2} />
+                {/* Label */}
+                <span
+                  className="text-black text-xs tracking-[0.18em] uppercase"
+                  style={{ fontWeight: 700, letterSpacing: "0.18em", fontFamily: "var(--font-sans)" }}
+                >
+                  {item.label}
+                </span>
+              </span>
+            ))}
+          </motion.div>
+        </div>
+
       </div>
 
       {/* ══════════════════════════════════════════
@@ -549,7 +567,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           PROPERTY CATEGORIES
       ══════════════════════════════════════════ */}
-      <section className="py-24 px-6 bg-secondary transition-colors duration-300 relative overflow-hidden">
+      <section className="py-12 md:py-24 px-4 sm:px-6 relative overflow-hidden" style={{ background: '#00022e' }}>
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: "repeating-linear-gradient(45deg, #e5a12d 0, #e5a12d 1px, transparent 0, transparent 50%)",
@@ -624,11 +642,11 @@ export default function Home() {
             />
           </motion.div>
         </div>
-        <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/95 to-transparent" />
+        <div className="absolute inset-0 z-10" style={{ background: 'linear-gradient(to right, #00022e 0%, rgba(0,2,46,0.92) 55%, transparent 100%)' }} />
         {/* accent line */}
         <div className="absolute left-0 top-0 bottom-0 w-1 z-20 bg-gradient-to-b from-transparent via-gold-500 to-transparent" />
 
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-6 py-28">
+        <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-28">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -637,7 +655,7 @@ export default function Home() {
             className="max-w-2xl"
           >
             <p className="text-gold-500 uppercase tracking-widest text-sm font-semibold mb-4">Exclusive Offer</p>
-            <h2 className="text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6 tracking-tight font-serif">
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6 tracking-tight font-serif">
               Secure Your Piece<br /> of <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500">Paradise</span>
             </h2>
             <p className="text-white/70 text-lg font-light mb-10 max-w-[480px] leading-relaxed font-sans">
@@ -658,10 +676,10 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           HOW IT WORKS
       ══════════════════════════════════════════ */}
-      <section className="py-28 px-6 bg-primary transition-colors duration-300 relative overflow-hidden">
+      <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary transition-colors duration-300 relative overflow-hidden">
         {/* Radial glow */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[600px] h-[600px] rounded-full bg-gold-500/[0.04] blur-3xl" />
+          <div className="w-[600px] h-[600px] rounded-full blur-3xl" style={{ background: 'rgba(229,161,45,0.07)' }} />
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
@@ -708,10 +726,10 @@ export default function Home() {
                 className="relative flex flex-col items-center text-center z-10 group"
               >
                 <div className="relative mb-6">
-                  <div className="w-20 h-20 rounded-2xl bg-secondary border border-border-strong flex items-center justify-center group-hover:border-gold-500/50 transition-colors shadow-xl">
+                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center group-hover:border-gold-500/50 transition-colors shadow-xl" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(229,161,45,0.25)' }}>
                     <step.icon className="w-8 h-8 text-gold-500" />
                   </div>
-                  <span className="absolute -top-3 -right-3 text-xs font-bold font-sans text-gold-500 bg-primary border border-gold-500/30 w-7 h-7 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-3 -right-3 text-xs font-bold font-sans text-gold-500 w-7 h-7 rounded-full flex items-center justify-center" style={{ background: '#00022e', border: '1px solid rgba(229,161,45,0.4)' }}>
                     {step.num}
                   </span>
                 </div>
@@ -743,7 +761,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           TESTIMONIALS — Marquee Style
       ══════════════════════════════════════════ */}
-      <section className="py-24 px-6 bg-primary transition-colors duration-300 overflow-hidden">
+      <section className="py-14 md:py-24 px-4 sm:px-6 overflow-hidden relative" style={{ background: '#00022e' }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <motion.p
@@ -767,8 +785,6 @@ export default function Home() {
 
           {/* Marquee row 1 */}
           <div className="relative">
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-primary to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-primary to-transparent z-10 pointer-events-none" />
             <motion.div
               animate={{ x: ["0%", "-50%"] }}
               transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
@@ -801,7 +817,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           BLOG HIGHLIGHTS
       ══════════════════════════════════════════ */}
-      <section className="py-24 px-6 bg-secondary border-t border-border-subtle transition-colors duration-300">
+      <section className="py-12 md:py-24 px-4 sm:px-6 bg-secondary border-t border-border-subtle transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-14 gap-6">
             <div>
@@ -866,7 +882,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           FAQ
       ══════════════════════════════════════════ */}
-      <section className="py-28 px-6 bg-primary border-t border-border-subtle transition-colors duration-300 relative overflow-hidden">
+      <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary border-t border-border-subtle transition-colors duration-300 relative overflow-hidden">
         <div className="absolute right-0 bottom-0 w-96 h-96 rounded-full bg-gold-500/[0.04] blur-3xl pointer-events-none" />
 
         <div className="max-w-4xl mx-auto relative z-10">
@@ -930,7 +946,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           FINAL CTA
       ══════════════════════════════════════════ */}
-      <section className="relative py-32 px-6 bg-black overflow-hidden">
+      <section className="relative py-16 md:py-32 px-4 sm:px-6 bg-black overflow-hidden">
         {/* Ambient background */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -958,7 +974,7 @@ export default function Home() {
               <span className="text-gold-400 text-sm font-semibold tracking-widest uppercase">Join 1,800+ Satisfied Clients</span>
             </div>
 
-            <h2 className="text-5xl md:text-6xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-600 mb-6 leading-[1.1]">
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-600 mb-6 leading-[1.1]">
               Ready to Find Your<br />Dream Plot?
             </h2>
             <p className="text-white/60 font-light text-lg mb-12 max-w-xl mx-auto">
@@ -988,3 +1004,5 @@ export default function Home() {
     </main>
   );
 }
+
+

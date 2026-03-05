@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -164,7 +164,7 @@ export function ServicesHero() {
             initial={{ y: "100%" }}
             animate={{ y: "0%" }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-serif text-white tracking-tight leading-[1.05]"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif text-white tracking-tight leading-[1.05]"
           >
             Our{" "}
             <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-600">
@@ -271,7 +271,7 @@ export function ServicesDetail() {
               sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent" />
-            <div className="absolute inset-0 p-10 md:p-16 flex flex-col justify-center max-w-xl">
+            <div className="absolute inset-0 p-6 sm:p-10 md:p-16 flex flex-col justify-center max-w-xl">
               <div className="inline-flex items-center gap-2 bg-gold-500/20 border border-gold-500/40 px-3 py-1 rounded-full mb-6 w-fit">
                 <Zap className="w-3 h-3 text-gold-400" />
                 <span className="text-gold-400 text-xs font-bold uppercase tracking-widest">Most Popular</span>
@@ -411,7 +411,7 @@ export function OurProcess() {
   }, []);
 
   return (
-    <section className="py-28 px-6 bg-secondary relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 bg-secondary relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: "radial-gradient(circle, #e5a12d 1px, transparent 1px)",
         backgroundSize: "32px 32px"
@@ -481,7 +481,7 @@ export function OurProcess() {
 ══════════════════════════════════════════ */
 export function WhyChooseUs() {
   return (
-    <section className="py-28 px-6 bg-primary relative overflow-hidden border-t border-border-subtle">
+    <section className="py-14 md:py-28 px-4 sm:px-6 relative overflow-hidden border-t border-white/10" style={{ background: '#00022e' }}>
       <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-gold-500/20 to-transparent" />
       <div className="absolute right-0 bottom-0 w-96 h-96 rounded-full bg-gold-500/[0.03] blur-3xl pointer-events-none" />
 
@@ -497,7 +497,7 @@ export function WhyChooseUs() {
             <h2 className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 mb-6">
               Why 1,800+ Clients<br />Chose Us
             </h2>
-            <p className="text-text-muted font-light text-lg leading-relaxed mb-10">
+            <p className="text-white/50 font-light text-lg leading-relaxed mb-10">
               We don&apos;t just list properties — we build trust. Every interaction with Thrissur Plots is backed by transparency, legal rigor, and genuine care for your financial future.
             </p>
 
@@ -511,11 +511,11 @@ export function WhyChooseUs() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
-                    className="bg-secondary border border-border-subtle rounded-2xl p-5"
+                    className="rounded-2xl p-5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(229,161,45,0.15)' }}
                   >
                     <StatIcon className="w-5 h-5 text-gold-500 mb-3" />
                     <p className="text-3xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-1">{s.value}</p>
-                    <p className="text-text-muted text-xs uppercase tracking-wider font-semibold">{s.label}</p>
+                    <p className="text-white/40 text-xs uppercase tracking-wider font-semibold">{s.label}</p>
                   </motion.div>
                 );
               })}
@@ -542,13 +542,13 @@ export function WhyChooseUs() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="bg-secondary border border-border-subtle hover:border-gold-500/30 rounded-2xl p-6 group transition-all duration-500 hover:-translate-y-1"
+                  className="rounded-2xl p-6 group transition-all duration-500 hover:-translate-y-1" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
                 >
-                  <div className="w-11 h-11 rounded-xl bg-primary border border-border-strong flex items-center justify-center mb-4 group-hover:border-gold-500/30 transition-colors">
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 group-hover:border-gold-500/30 transition-colors" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(229,161,45,0.2)' }}>
                     <HIcon className="w-5 h-5 text-gold-500" />
                   </div>
-                  <h3 className="font-serif font-semibold text-text-main mb-2 group-hover:text-gold-400 transition-colors">{h.title}</h3>
-                  <p className="text-text-muted text-sm font-light leading-relaxed">{h.desc}</p>
+                  <h3 className="font-serif font-semibold text-white mb-2 group-hover:text-gold-400 transition-colors">{h.title}</h3>
+                  <p className="text-white/50 text-sm font-light leading-relaxed">{h.desc}</p>
                 </motion.div>
               );
             })}
@@ -564,7 +564,7 @@ export function WhyChooseUs() {
 ══════════════════════════════════════════ */
 export function TestimonialStrip() {
   return (
-    <section className="py-20 px-6 bg-secondary border-y border-border-subtle overflow-hidden">
+    <section className="py-14 md:py-20 px-4 sm:px-6 bg-secondary border-y border-border-subtle overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
           <motion.p
@@ -626,7 +626,7 @@ export function ServicesFAQ() {
   const [active, setActive] = useState(null);
 
   return (
-    <section className="py-28 px-6 bg-primary relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary relative overflow-hidden">
       <div className="absolute right-0 bottom-0 w-96 h-96 rounded-full bg-gold-500/[0.04] blur-3xl pointer-events-none" />
 
       <div className="max-w-3xl mx-auto relative z-10">
@@ -694,7 +694,7 @@ export function ServicesFAQ() {
 ══════════════════════════════════════════ */
 export function ServicesCTA() {
   return (
-    <section className="relative py-32 px-6 bg-black overflow-hidden">
+    <section className="relative py-16 md:py-32 px-4 sm:px-6 bg-black overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
           src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop"
@@ -720,7 +720,7 @@ export function ServicesCTA() {
             <span className="text-gold-400 text-sm font-semibold tracking-widest uppercase">Free Consultation — No Commitment</span>
           </div>
 
-          <h2 className="text-5xl md:text-6xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-600 mb-6 leading-[1.1]">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-600 mb-6 leading-[1.1]">
             Ready to Secure<br />Your Legacy?
           </h2>
           <p className="text-white/60 font-light text-lg mb-12 max-w-xl mx-auto">
@@ -741,3 +741,5 @@ export function ServicesCTA() {
     </section>
   );
 }
+
+

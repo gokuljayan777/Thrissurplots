@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
@@ -161,25 +161,25 @@ const team = [
     name: "Rajesh Nair",
     role: "Founder & Managing Director",
     bio: "20+ years in Thrissur real estate. Known for ethical practice and deep market intelligence.",
-    img: "https://randomuser.me/api/portraits/men/45.jpg",
+    img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop",
   },
   {
     name: "Anitha Krishnan",
     role: "Head of Legal & Compliance",
     bio: "Retired sub-registrar with 25 years of SRO experience. Guarantees airtight documentation.",
-    img: "https://randomuser.me/api/portraits/women/60.jpg",
+    img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop",
   },
   {
     name: "Subin Mathew",
     role: "NRI Relations Manager",
     bio: "Former expatriate, fluent in the challenges of remote land investment. Trusted by 400+ NRI clients.",
-    img: "https://randomuser.me/api/portraits/men/68.jpg",
+    img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop",
   },
   {
     name: "Divya George",
     role: "Market Research Analyst",
     bio: "IIM Kozhikode alumna. Identifies emerging corridors before prices spike using macro-economic data.",
-    img: "https://randomuser.me/api/portraits/women/35.jpg",
+    img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop",
   },
 ];
 
@@ -236,7 +236,7 @@ export function AboutHero() {
             initial={{ y: "100%" }}
             animate={{ y: "0%" }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-serif text-white tracking-tight leading-[1.05]"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif text-white tracking-tight leading-[1.05]"
           >
             Building a{" "}
             <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-600">
@@ -293,7 +293,7 @@ export function AboutHero() {
 /* ─── Company Story ─── */
 export function CompanyStory() {
   return (
-    <section className="py-28 px-6 bg-primary relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-gold-500/[0.03] blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -326,7 +326,7 @@ export function CompanyStory() {
             </div>
 
             {/* Floating years badge */}
-            <div className="absolute -top-6 -right-6 w-28 h-28 bg-gold-500 rounded-3xl flex flex-col items-center justify-center shadow-[0_0_30px_rgba(229,161,45,0.4)] rotate-3">
+            <div className="hidden sm:flex absolute -top-6 -right-6 w-28 h-28 bg-gold-500 rounded-3xl flex-col items-center justify-center shadow-[0_0_30px_rgba(229,161,45,0.4)] rotate-3">
               <span className="text-3xl font-bold font-sans text-black leading-none">12+</span>
               <span className="text-black text-xs font-semibold mt-1 uppercase tracking-wide">Years</span>
             </div>
@@ -407,7 +407,7 @@ export function StatsRow() {
 /* ─── Journey Timeline ─── */
 export function JourneyTimeline() {
   return (
-    <section className="py-28 px-6 bg-primary relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary relative overflow-hidden">
       {/* Left accent line */}
       <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-gold-500/20 to-transparent" />
 
@@ -472,7 +472,7 @@ export function JourneyTimeline() {
 /* ─── Expertise Cards ─── */
 export function ExpertiseSection() {
   return (
-    <section className="py-28 px-6 bg-secondary relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 relative overflow-hidden" style={{ background: '#00022e' }}>
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: "repeating-linear-gradient(45deg, #e5a12d 0, #e5a12d 1px, transparent 0, transparent 50%)",
         backgroundSize: "20px 20px"
@@ -502,7 +502,7 @@ export function ExpertiseSection() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-text-muted mt-4 max-w-xl mx-auto font-light"
+            className="text-white/50 mt-4 max-w-xl mx-auto font-light"
           >
             Handling diverse real estate portfolios requires unmatched precision. Here is how we excel across different asset classes.
           </motion.p>
@@ -516,18 +516,18 @@ export function ExpertiseSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.15 }}
-              className="bg-primary border border-border-subtle hover:border-gold-600/40 rounded-2xl p-8 group transition-all duration-500 hover:shadow-[0_8px_30px_rgba(229,161,45,0.1)] relative overflow-hidden"
+              className="rounded-2xl p-8 group transition-all duration-500 hover:shadow-[0_8px_30px_rgba(229,161,45,0.15)] relative overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(229,161,45,0.15)' }}
             >
               <div className="absolute top-0 right-0 text-[120px] font-serif text-gold-500/[0.04] leading-none pointer-events-none select-none">{String(i + 1).padStart(2, "0")}</div>
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-2xl bg-secondary border border-border-strong flex items-center justify-center mb-6 group-hover:bg-gold-500/10 group-hover:border-gold-500/30 transition-all">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 group-hover:border-gold-500/30 transition-all" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(229,161,45,0.2)' }}>
                   <item.icon className="w-7 h-7 text-gold-500" />
                 </div>
-                <h3 className="text-xl font-serif text-text-main font-semibold mb-3 group-hover:text-gold-400 transition-colors">{item.title}</h3>
-                <p className="text-text-muted text-sm font-light leading-relaxed mb-6">{item.desc}</p>
-                <div className="pt-6 border-t border-border-subtle">
+                <h3 className="text-xl font-serif text-white font-semibold mb-3 group-hover:text-gold-400 transition-colors">{item.title}</h3>
+                <p className="text-white/50 text-sm font-light leading-relaxed mb-6">{item.desc}</p>
+                <div className="pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                   <span className="text-3xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">{item.stat}</span>
-                  <p className="text-text-muted text-xs uppercase tracking-wider mt-1">{item.statLabel}</p>
+                  <p className="text-white/40 text-xs uppercase tracking-wider mt-1">{item.statLabel}</p>
                 </div>
               </div>
             </motion.div>
@@ -541,7 +541,7 @@ export function ExpertiseSection() {
 /* ─── Our Values ─── */
 export function OurValues() {
   return (
-    <section className="py-28 px-6 bg-primary relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary relative overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="w-[800px] h-[400px] rounded-full bg-gold-500/[0.04] blur-3xl" />
       </div>
@@ -596,7 +596,7 @@ export function OurValues() {
 /* ─── Meet The Team ─── */
 export function MeetTheTeam() {
   return (
-    <section className="py-28 px-6 bg-secondary relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 relative overflow-hidden" style={{ background: '#00022e' }}>
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: "radial-gradient(circle, #e5a12d 1px, transparent 1px)",
         backgroundSize: "32px 32px"
@@ -626,7 +626,7 @@ export function MeetTheTeam() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-text-muted mt-4 max-w-xl mx-auto font-light"
+            className="text-white/50 mt-4 max-w-xl mx-auto font-light"
           >
             Every client deserves access to the finest experts. Our team combines decades of local experience, legal precision, and market acumen.
           </motion.p>
@@ -669,7 +669,7 @@ export function MeetTheTeam() {
 /* ─── Trust Pillars ─── */
 export function TrustPillars() {
   return (
-    <section className="py-28 px-6 bg-primary relative overflow-hidden border-t border-border-subtle">
+    <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary relative overflow-hidden border-t border-border-subtle">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <motion.p
@@ -717,9 +717,9 @@ export function TrustPillars() {
 /* ─── Coverage Areas ─── */
 export function CoverageSection() {
   return (
-    <section className="py-28 px-6 bg-secondary relative overflow-hidden">
+    <section className="py-14 md:py-28 px-4 sm:px-6 bg-secondary relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -787,7 +787,7 @@ export function CoverageSection() {
 /* ─── Final CTA ─── */
 export function AboutCTA() {
   return (
-    <section className="relative py-32 px-6 bg-black overflow-hidden">
+    <section className="relative py-16 md:py-32 px-4 sm:px-6 bg-black overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
           src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000&auto=format&fit=crop"
@@ -834,3 +834,5 @@ export function AboutCTA() {
     </section>
   );
 }
+
+

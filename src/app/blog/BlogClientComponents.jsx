@@ -11,7 +11,8 @@ import {
   ArrowRight, ArrowDown, Mail, Calendar, TrendingUp, Compass,
   BookOpen, Clock, ChevronRight, Zap, Map, FileText, Home,
   BarChart2, Shield, Search, Star, Bookmark, Share2, Eye,
-  X, ChevronLeft, Quote, Flame, Award, TrendingDown, Activity
+  X, ChevronLeft, Quote, Flame, Award, TrendingDown, Activity,
+  Leaf, Car, Briefcase
 } from "lucide-react";
 
 /* ══════════════════════════════════════════
@@ -116,14 +117,14 @@ const stats = [
 ];
 
 const tickerItems = [
-  { icon: "📈", label: "NH-66 Corridor", value: "+18% YoY" },
-  { icon: "🏠", label: "Avg Plot Price Thrissur", value: "₹48 L" },
-  { icon: "🔥", label: "Demand Index Q1 2026", value: "High" },
-  { icon: "📊", label: "NRI Buyer Share", value: "34%" },
-  { icon: "🏗️", label: "New DTCP Approvals", value: "↑22%" },
-  { icon: "🌿", label: "Agri Land ROI 5yr", value: "2.8×" },
-  { icon: "🚗", label: "Peechi–Vadakkanchery Corridor", value: "Emerging" },
-  { icon: "💼", label: "Commercial Rental Yield", value: "7.2% PA" },
+  { icon: TrendingUp, label: "NH-66 Corridor", value: "+18% YoY" },
+  { icon: Home, label: "Avg Plot Price Thrissur", value: "₹48 L" },
+  { icon: Flame, label: "Demand Index Q1 2026", value: "High" },
+  { icon: BarChart2, label: "NRI Buyer Share", value: "34%" },
+  { icon: Activity, label: "New DTCP Approvals", value: "↑22%" },
+  { icon: Leaf, label: "Agri Land ROI 5yr", value: "2.8×" },
+  { icon: Car, label: "Peechi–Vadakkanchery Corridor", value: "Emerging" },
+  { icon: Briefcase, label: "Commercial Rental Yield", value: "7.2% PA" },
 ];
 
 /* ══════════════════════════════════════════
@@ -160,31 +161,44 @@ export function MarketPulseTicker() {
   const items = [...tickerItems, ...tickerItems]; // duplicate for seamless loop
 
   return (
-    <div className="relative bg-black border-y border-gold-500/20 overflow-hidden py-3 group">
-      {/* Left fade */}
-      <div className="absolute left-0 top-0 h-full w-20 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-      {/* Right fade */}
-      <div className="absolute right-0 top-0 h-full w-20 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+    <div className="w-full overflow-hidden relative z-10" style={{ background: "linear-gradient(90deg, #b7872a 0%, #e5c46a 40%, #b7872a 100%)", borderTop: "1px solid rgba(255,255,255,0.2)", borderBottom: "1px solid rgba(255,255,255,0.2)" }}>
+      {/* Left + Right fade masks */}
+      <div className="absolute left-0 top-0 bottom-0 w-20 z-10" style={{ background: "linear-gradient(to right, #b7872a, transparent)" }} />
+      <div className="absolute right-0 top-0 bottom-0 w-20 z-10" style={{ background: "linear-gradient(to left, #b7872a, transparent)" }} />
 
       {/* Label */}
-      <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-gold-500 text-black text-[9px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-sm flex items-center gap-1.5">
-        <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+      <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black text-gold-500 text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-sm flex items-center gap-2 shadow-lg">
+        <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
         LIVE
       </div>
 
       <motion.div
-        className="flex gap-10 pl-28"
-        animate={{ x: [0, "-50%"] }}
-        transition={{ duration: 28, ease: "linear", repeat: Infinity }}
+        className="flex gap-8 pl-36 whitespace-nowrap py-3.5"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ duration: 40, ease: "linear", repeat: Infinity }}
         style={{ width: "max-content" }}
       >
         {items.map((item, i) => (
-          <div key={i} className="flex items-center gap-2.5 text-sm whitespace-nowrap">
-            <span>{item.icon}</span>
-            <span className="text-white/50 font-light">{item.label}</span>
-            <span className="text-gold-400 font-bold font-sans">{item.value}</span>
-            <span className="text-white/10 ml-4">|</span>
-          </div>
+          <span key={i} className="inline-flex items-center gap-2 shrink-0">
+            {/* Separator diamond */}
+            <span className="text-black/30 mx-3 text-xs select-none" aria-hidden>◆</span>
+            {/* Icon */}
+            <item.icon className="w-4 h-4 text-black/80 shrink-0" strokeWidth={2} />
+            {/* Label */}
+            <span
+              className="text-black text-[11px] tracking-[0.1em] uppercase pr-1"
+              style={{ fontWeight: 600, fontFamily: "var(--font-sans)" }}
+            >
+              {item.label}:
+            </span>
+            {/* Value */}
+            <span
+              className="text-black text-sm tracking-[0.05em] uppercase"
+              style={{ fontWeight: 800, fontFamily: "var(--font-sans)" }}
+            >
+              {item.value}
+            </span>
+          </span>
         ))}
       </motion.div>
     </div>
@@ -828,7 +842,7 @@ export function BlogGrid({ activeCategory, searchQuery }) {
 ══════════════════════════════════════════ */
 export function TrendingTopics() {
   return (
-    <section className="py-20 px-6 bg-secondary border-t border-border-subtle relative overflow-hidden">
+    <section className="py-20 px-6 relative overflow-hidden" style={{ background: '#00022e' }}>
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: "linear-gradient(#e5a12d 1px, transparent 1px), linear-gradient(90deg, #e5a12d 1px, transparent 1px)",
         backgroundSize: "40px 40px"
@@ -851,7 +865,7 @@ export function TrendingTopics() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
               whileHover={{ scale: 1.05 }}
-              className="px-5 py-2.5 rounded-full border border-border-strong bg-primary text-text-muted text-sm font-medium hover:border-gold-500/50 hover:text-gold-400 hover:bg-gold-500/5 transition-all cursor-pointer"
+              className="px-5 py-2.5 rounded-full border text-white/60 text-sm font-medium hover:border-gold-500/50 hover:text-gold-400 hover:bg-gold-500/10 transition-all cursor-pointer" style={{ background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)' }}
             >
               #{topic}
             </motion.span>

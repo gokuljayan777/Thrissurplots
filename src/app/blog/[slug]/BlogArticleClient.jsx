@@ -150,8 +150,8 @@ function TableOfContents({ activeSection }) {
                             <a
                                 href={`#${section.id}`}
                                 className={`flex items-center gap-2.5 text-sm transition-all group ${activeSection === section.id
-                                        ? "text-gold-400 font-semibold"
-                                        : "text-text-muted hover:text-text-main"
+                                    ? "text-gold-400 font-semibold"
+                                    : "text-text-muted hover:text-text-main"
                                     }`}
                             >
                                 <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 transition-colors ${activeSection === section.id ? "bg-gold-400" : "bg-border-strong group-hover:bg-gold-500/50"
@@ -333,11 +333,19 @@ export default function BlogArticleClient({ title, slug, imageUrl }) {
                         className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12 pb-8 border-b border-border-subtle"
                     >
                         <div className="flex items-center gap-6 text-text-muted text-sm">
-                            <span className="flex items-center gap-2">
-                                <div className="w-9 h-9 rounded-full bg-gold-600/10 border border-gold-600/30 flex items-center justify-center text-gold-500 font-serif font-bold text-sm">TP</div>
+                            <span className="flex items-center gap-3">
+                                <div className="relative w-10 h-10 rounded-full border-[1.5px] border-gold-500/40 overflow-hidden shadow-[0_0_10px_rgba(229,161,45,0.2)]">
+                                    <Image
+                                        src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop"
+                                        alt="Rajesh Nair"
+                                        fill
+                                        className="object-cover"
+                                        sizes="40px"
+                                    />
+                                </div>
                                 <div>
-                                    <p className="text-text-main font-semibold text-sm leading-none">Thrissur Plots Editorial</p>
-                                    <p className="text-text-muted text-xs mt-0.5">Real Estate Expert</p>
+                                    <p className="text-text-main font-semibold text-sm leading-none mb-1">Rajesh Nair</p>
+                                    <p className="text-gold-500 text-[10px] font-bold uppercase tracking-widest mt-0.5">Real Estate Expert</p>
                                 </div>
                             </span>
                             <div className="w-px h-8 bg-border-subtle" />

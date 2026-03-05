@@ -149,8 +149,8 @@ export function ContactUSP() {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-gold-500/0 to-gold-500/[0.08] opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
                 <div className="relative z-10 flex flex-col items-center">
-                  <div className="w-16 h-16 rounded-2xl bg-secondary border border-border-strong flex items-center justify-center mb-6 group-hover:bg-gold-500/10 group-hover:border-gold-500/40 transition-all duration-500 shadow-lg group-hover:shadow-[0_0_20px_rgba(229,161,45,0.2)]">
-                    <Icon className="w-8 h-8 text-gold-500" strokeWidth={1.5} />
+                  <div className="w-16 h-16 rounded-2xl bg-secondary border border-border-strong flex items-center justify-center mb-6 group-hover:bg-gold-500/10 group-hover:border-gold-500/40 transition-all duration-500 shadow-lg group-hover:shadow-[0_0_20px_rgba(229,161,45,0.2)] cursor-pointer">
+                    <Icon className="w-8 h-8 text-gold-500 group-hover:scale-125 transition-transform duration-500" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-serif font-bold text-text-main text-lg mb-3 group-hover:text-gold-500 transition-colors uppercase tracking-tight">
                     {u.title}
@@ -245,11 +245,14 @@ export function SocialLinksBar() {
               whileHover={{ scale: 1.05, y: -2 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.07 }}
-              className="flex items-center gap-2.5 px-5 py-3 rounded-xl border border-border-strong bg-secondary hover:border-gold-500/30 transition-all duration-300 text-text-muted hover:text-text-main text-sm font-semibold shadow-sm"
-              style={{ "--hover-color": s.color }}
+              className="group flex items-center gap-2.5 px-5 py-3 rounded-xl border border-border-strong bg-secondary transition-all duration-300 text-text-muted text-sm font-semibold shadow-sm hover:bg-primary"
+              style={{
+                "--hover-color": s.color,
+                "--hover-color-glow": `${s.color}66`,
+              }}
             >
-              <span style={{ color: s.color }}>{s.icon}</span>
-              {s.name}
+              <span className="group-hover:scale-110 transition-transform duration-300" style={{ color: s.color }}>{s.icon}</span>
+              <span className="group-hover:text-[var(--hover-color)] transition-colors duration-300">{s.name}</span>
             </motion.a>
           ))}
         </div>
