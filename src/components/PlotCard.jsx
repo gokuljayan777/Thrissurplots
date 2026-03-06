@@ -121,7 +121,7 @@ export default function PlotCard({ plot }) {
 
           <div className="mt-auto">
             <Link href={`/plots/${plot.id}`} className="block w-full">
-              <button className="w-full flex items-center justify-center space-x-2 py-3 border border-gold-600/60 text-gold-600 dark:text-gold-400 hover:bg-gold-500/10 hover:border-gold-500 font-bold uppercase tracking-widest text-sm rounded-sm transition-all duration-300 shadow-sm">
+              <button className="w-full flex items-center justify-center space-x-2 py-3 bg-[#00022e] text-white hover:bg-[#00022e]/90 font-bold uppercase tracking-widest text-sm rounded-sm transition-all duration-300 shadow-sm">
                 <span>View Details</span>
                 <motion.div
                   variants={{

@@ -8,7 +8,7 @@ export const mockProperties = [
     type: "Residential",
     status: "Available",
     imageUrl:
-      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot1.jpg",
     features: [
       "Tar Road Frontage",
       "Water Connection",
@@ -25,7 +25,7 @@ export const mockProperties = [
     type: "Commercial",
     status: "Available",
     imageUrl:
-      "https://images.unsplash.com/photo-1503594384566-461fe158e797?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot2.jpg",
     features: ["Highway Frontage", "Prime Location", "High ROI"],
   },
   {
@@ -37,7 +37,7 @@ export const mockProperties = [
     type: "Agricultural",
     status: "Available",
     imageUrl:
-      "https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot3.jpg",
     features: ["River Front", "Fertile Soil", "Suitable for Resort"],
   },
   {
@@ -49,7 +49,7 @@ export const mockProperties = [
     type: "Investment",
     status: "Available",
     imageUrl:
-      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot4.jpg",
     features: ["High ROI", "Prime Location", "Ready for Development"],
   },
   {
@@ -61,7 +61,7 @@ export const mockProperties = [
     type: "Residential",
     status: "Available",
     imageUrl:
-      "https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot1.jpg",
     features: [
       "Panchayat Road",
       "KSEB Connection",
@@ -78,7 +78,7 @@ export const mockProperties = [
     type: "Residential",
     status: "Available",
     imageUrl:
-      "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot2.jpg",
     features: [
       "Corner Plot",
       "Tar Road Frontage",
@@ -95,7 +95,7 @@ export const mockProperties = [
     type: "Commercial",
     status: "Available",
     imageUrl:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot3.jpg",
     features: [
       "Highway Frontage",
       "Industrial Zone",
@@ -112,7 +112,7 @@ export const mockProperties = [
     type: "Agricultural",
     status: "Available",
     imageUrl:
-      "https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot4.jpg",
     features: ["River Front", "Well Water", "Paddy Land", "Serene Location"],
   },
   {
@@ -124,7 +124,7 @@ export const mockProperties = [
     type: "Residential",
     status: "Available",
     imageUrl:
-      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot1.jpg",
     features: [
       "City Centre",
       "Tar Road Access",
@@ -141,7 +141,7 @@ export const mockProperties = [
     type: "Residential",
     status: "Available",
     imageUrl:
-      "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot2.jpg",
     features: [
       "Highway Frontage",
       "Premium Area",
@@ -158,7 +158,7 @@ export const mockProperties = [
     type: "Residential",
     status: "Available",
     imageUrl:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot3.jpg",
     features: [
       "Near Medical College",
       "Panchayat Road",
@@ -175,7 +175,7 @@ export const mockProperties = [
     type: "Agricultural",
     status: "Sold",
     imageUrl:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000&auto=format&fit=crop",
+      "/images/plots/plot4.jpg",
     features: [
       "Large Plot",
       "Mango Orchard",

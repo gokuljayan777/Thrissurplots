@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -388,28 +385,6 @@ export function ServicesDetail() {
    OUR PROCESS — 6 Steps
 ══════════════════════════════════════════ */
 export function OurProcess() {
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".gsap-process-step",
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          stagger: 0.1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".gsap-process-grid",
-            start: "top 85%",
-            once: true,
-            invalidateOnRefresh: true,
-          },
-        }
-      );
-    });
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section className="py-14 md:py-28 px-4 sm:px-6 bg-secondary relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{

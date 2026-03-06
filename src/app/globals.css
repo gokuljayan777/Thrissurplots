@@ -87,3 +87,43 @@ body {
   background-color: #000000 !important;
   color: #ffffff;
 }
+
+/* ── Global Font Fix for Italic Clipping ── */
+/* Italic serif fonts often have swashes and descenders (like 'y') that extend beyond their bounding box, causing them to be clipped when using features like overflow: hidden or background-clip: text. */
+.italic {
+  padding-right: 0.25em;
+  padding-bottom: 0.2em;
+}
+
+.italic.font-serif {
+  padding-right: 0.35em;
+  padding-bottom: 0.25em;
+}
+
+/* Also ensure any bg-clip-text has enough bottom breathing room for descenders */
+.bg-clip-text {
+  padding-bottom: 0.15em;
+  padding-right: 0.1em;
+}
+
+/* ── 3D Card Flip Utilities ── */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.group:hover .group-hover\:rotate-y-180 {
+  transform: rotateY(180deg);
+}

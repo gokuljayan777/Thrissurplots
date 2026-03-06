@@ -2,9 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -28,6 +25,7 @@ import {
   Phone,
   MessageCircle,
 } from "lucide-react";
+import AnimatedNumber from "@/components/AnimatedNumber";
 
 /* ─── Data ─── */
 const keyStats = [
@@ -214,7 +212,9 @@ export function WhyHero() {
             const StatIcon = s.Icon;
             return (
               <div key={i} className="bg-black/50 backdrop-blur-md border border-white/10 px-5 py-3 rounded-xl text-center min-w-[120px]">
-                <p className="text-xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500">{s.value}</p>
+                <p className="text-xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500">
+                  <AnimatedNumber value={s.value} />
+                </p>
                 <p className="text-white/50 text-xs uppercase tracking-wider mt-0.5">{s.label}</p>
               </div>
             );
@@ -242,29 +242,6 @@ export function WhyHero() {
    KEY REASONS — 6-card grid
 ══════════════════════════════════════════ */
 export function InvestmentReasons() {
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Reasons grid — stagger from below
-      gsap.fromTo(".gsap-reason-card",
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.75,
-          stagger: 0.1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".gsap-reasons-grid",
-            start: "top 85%",
-            once: true,
-            invalidateOnRefresh: true,
-          },
-        }
-      );
-    });
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -298,7 +275,9 @@ export function InvestmentReasons() {
                 className="gsap-reason-card relative bg-secondary border border-border-subtle hover:border-gold-500/40 rounded-2xl p-8 group transition-all duration-500 overflow-hidden"
               >
                 {/* Watermark stat */}
-                <div className="absolute top-4 right-5 text-[56px] font-serif text-gold-500/[0.15] leading-none select-none font-bold">{reason.stat}</div>
+                <div className="absolute top-4 right-5 text-[56px] font-serif text-gold-500/[0.15] leading-none select-none font-bold">
+                  <AnimatedNumber value={reason.stat} />
+                </div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 rounded-2xl bg-primary border border-border-strong flex items-center justify-center mb-6 group-hover:bg-gold-500/10 group-hover:border-gold-500/30 transition-all">
                     <Icon className="w-7 h-7 text-gold-500" />
@@ -306,7 +285,9 @@ export function InvestmentReasons() {
                   <h3 className="text-lg font-serif font-semibold text-text-main mb-3 group-hover:text-gold-400 transition-colors">{reason.title}</h3>
                   <p className="text-text-muted text-sm font-light leading-relaxed mb-5">{reason.desc}</p>
                   <div className="flex items-center gap-3 pt-4 border-t border-border-subtle">
-                    <span className="text-2xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">{reason.stat}</span>
+                    <span className="text-2xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">
+                      <AnimatedNumber value={reason.stat} />
+                    </span>
                     <span className="text-text-muted text-xs uppercase tracking-widest font-semibold">{reason.statLabel}</span>
                   </div>
                 </div>
@@ -394,7 +375,9 @@ export function CultureSection() {
             </div>
             {/* Floating badge */}
             <div className="hidden sm:block absolute -bottom-6 -right-6 bg-secondary border border-gold-500/30 rounded-2xl p-5 shadow-2xl z-10">
-              <p className="text-3xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-1">1,000+</p>
+              <p className="text-3xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-1">
+                <AnimatedNumber value="1,000+" />
+              </p>
               <p className="text-text-muted text-xs uppercase tracking-wide font-semibold">Years of Heritage</p>
             </div>
           </motion.div>
@@ -447,7 +430,9 @@ export function InfrastructureSection() {
             </div>
             {/* Floating stat */}
             <div className="hidden sm:block absolute -top-6 -right-6 rounded-2xl p-5 shadow-2xl z-10" style={{ background: '#00022e', border: '1px solid rgba(229,161,45,0.3)' }}>
-              <p className="text-3xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-1">₹8,000Cr</p>
+              <p className="text-3xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-1">
+                <AnimatedNumber value="₹8,000Cr" />
+              </p>
               <p className="text-white/40 text-xs uppercase tracking-wide font-semibold">Infrastructure Pipeline</p>
             </div>
           </motion.div>
@@ -602,7 +587,9 @@ export function LifestyleSection() {
               <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
               <div className="absolute inset-0 flex items-center p-8">
                 <div>
-                  <p className="text-4xl md:text-5xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500 mb-2">{item.count}</p>
+                  <p className="text-4xl md:text-5xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500 mb-2">
+                    <AnimatedNumber value={item.count} />
+                  </p>
                   <p className="text-white/80 font-light uppercase tracking-widest text-xs">{item.label}</p>
                 </div>
               </div>

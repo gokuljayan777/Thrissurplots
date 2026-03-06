@@ -38,10 +38,11 @@ export default function FooterFavorites() {
   if (!isLoaded || favorites.length === 0) {
     return (
       <div className="space-y-6">
-        <h3 className="text-lg font-serif text-white uppercase tracking-widest">
+        <h3 className="text-lg font-serif text-text-main uppercase tracking-widest mb-6 relative inline-block">
           Saved Plots
+          <span className="absolute -bottom-2 left-0 w-1/2 h-[1px] bg-gold-500/50" />
         </h3>
-        <p className="text-sm text-white/50 italic font-light">No plots saved yet.</p>
+        <p className="text-sm text-text-muted italic font-light">No plots saved yet.</p>
       </div>
     );
   }
@@ -53,10 +54,11 @@ export default function FooterFavorites() {
 
   return (
     <div className="space-y-6">
-      <h3 className="text-lg font-serif text-white uppercase tracking-widest">
+      <h3 className="text-lg font-serif text-text-main uppercase tracking-widest mb-6 relative inline-block">
         Saved Plots
+        <span className="absolute -bottom-2 left-0 w-1/2 h-[1px] bg-gold-500/50" />
       </h3>
-      <ul className="space-y-4 text-sm text-white/60 font-light">
+      <ul className="space-y-4 text-sm text-text-muted font-light">
         {savedPlots.map(
           (plot) =>
             plot && (

@@ -2,9 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform, AnimatePresence, useMotionValueEvent } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
+
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -14,6 +12,7 @@ import {
   X, ChevronLeft, Quote, Flame, Award, TrendingDown, Activity,
   Leaf, Car, Briefcase
 } from "lucide-react";
+import AnimatedNumber from "@/components/AnimatedNumber";
 
 /* ══════════════════════════════════════════
    DATA
@@ -205,50 +204,6 @@ export function MarketPulseTicker() {
   );
 }
 
-/* ══════════════════════════════════════════
-   ANIMATED COUNTER
-══════════════════════════════════════════ */
-function AnimatedCounter({ value, suffix, duration = 2 }) {
-  const [display, setDisplay] = useState(0);
-  const ref = useRef(null);
-  const [hasRun, setHasRun] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasRun) {
-          setHasRun(true);
-          const start = 0;
-          const end = value;
-          const range = end - start;
-          const stepTime = (duration * 1000) / 60;
-          let current = start;
-          const step = range / (duration * 60);
-          const timer = setInterval(() => {
-            current += step;
-            if (current >= end) {
-              setDisplay(end);
-              clearInterval(timer);
-            } else {
-              setDisplay(parseFloat(current.toFixed(1)));
-            }
-          }, stepTime);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [value, duration, hasRun]);
-
-  const displayValue = Number.isInteger(value) ? Math.round(display) : display.toFixed(1);
-
-  return (
-    <span ref={ref} className="tabular-nums">
-      {displayValue}{suffix}
-    </span>
-  );
-}
 
 /* ══════════════════════════════════════════
    HERO — Full Cinematic
@@ -406,7 +361,7 @@ export function BlogStats() {
               </div>
               <div>
                 <p className="text-2xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">
-                  <AnimatedCounter value={s.value} suffix={s.suffix} />
+                  <AnimatedNumber value={`${s.value}${s.suffix}`} />
                 </p>
                 <p className="text-text-muted text-xs uppercase tracking-wider font-semibold">{s.label}</p>
               </div>
@@ -852,7 +807,7 @@ export function TrendingTopics() {
           <span className="text-gold-500 text-xs font-bold uppercase tracking-widest block mb-3 flex items-center justify-center gap-2">
             <Flame className="w-3.5 h-3.5" /> Trending Topics
           </span>
-          <h2 className="text-3xl md:text-4xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600">
+          <h2 className="text-3xl md:text-4xl font-serif italic text-white font-light">
             What Investors Are Reading
           </h2>
         </motion.div>

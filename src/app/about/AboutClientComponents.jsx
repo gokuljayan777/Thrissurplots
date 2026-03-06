@@ -24,6 +24,7 @@ import {
   Zap,
   Globe,
 } from "lucide-react";
+import AnimatedNumber from "@/components/AnimatedNumber";
 
 /* ─── Values data ─── */
 const values = [
@@ -265,7 +266,9 @@ export function AboutHero() {
         >
           {stats.map((s, i) => (
             <div key={i} className="bg-black/50 backdrop-blur-md border border-white/10 px-5 py-3 rounded-xl text-center">
-              <p className="text-xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500">{s.number}</p>
+              <p className="text-xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500">
+                <AnimatedNumber value={s.number} />
+              </p>
               <p className="text-white/50 text-xs uppercase tracking-wider mt-0.5">{s.label}</p>
             </div>
           ))}
@@ -327,7 +330,9 @@ export function CompanyStory() {
 
             {/* Floating years badge */}
             <div className="hidden sm:flex absolute -top-6 -right-6 w-28 h-28 bg-gold-500 rounded-3xl flex-col items-center justify-center shadow-[0_0_30px_rgba(229,161,45,0.4)] rotate-3">
-              <span className="text-3xl font-bold font-sans text-black leading-none">12+</span>
+              <span className="text-3xl font-bold font-sans text-black leading-none">
+                <AnimatedNumber value="12+" />
+              </span>
               <span className="text-black text-xs font-semibold mt-1 uppercase tracking-wide">Years</span>
             </div>
           </motion.div>
@@ -394,7 +399,9 @@ export function StatsRow() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="text-center"
             >
-              <p className="text-4xl md:text-5xl font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-2">{s.number}</p>
+              <p className="text-4xl md:text-5xl font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-2">
+                <AnimatedNumber value={s.number} />
+              </p>
               <p className="text-text-muted text-sm uppercase tracking-widest font-semibold">{s.label}</p>
             </motion.div>
           ))}
@@ -532,7 +539,9 @@ export function ExpertiseSection() {
                 <h3 className="text-xl font-serif text-white font-semibold mb-3 group-hover:text-gold-400 transition-colors">{item.title}</h3>
                 <p className="text-white/50 text-sm font-light leading-relaxed mb-6">{item.desc}</p>
                 <div className="pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                  <span className="text-3xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">{item.stat}</span>
+                  <span className="text-3xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">
+                    <AnimatedNumber value={item.stat} />
+                  </span>
                   <p className="text-white/40 text-xs uppercase tracking-wider mt-1">{item.statLabel}</p>
                 </div>
               </div>
@@ -581,15 +590,32 @@ export function OurValues() {
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="group relative bg-secondary border border-border-subtle hover:border-gold-500/30 rounded-2xl p-8 overflow-hidden transition-all duration-500 hover:shadow-[0_8px_30px_rgba(229,161,45,0.08)]"
+              className="group h-[280px] perspective-1000"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${v.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-              <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-primary border border-border-strong flex items-center justify-center mb-6 group-hover:border-gold-500/30 transition-colors">
-                  <v.icon className="w-6 h-6 text-gold-500" />
+              <div className="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180">
+
+                {/* Front of Card */}
+                <div className="absolute inset-0 backface-hidden bg-secondary border border-border-subtle rounded-2xl p-8 flex flex-col items-center justify-center text-center shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${v.color} opacity-20 rounded-2xl`} />
+                  <div className="relative z-10 flex flex-col items-center">
+                    <div className="w-16 h-16 rounded-2xl bg-primary border border-gold-500/20 flex items-center justify-center mb-6 shadow-lg shadow-gold-500/5">
+                      <v.icon className="w-8 h-8 text-gold-500" />
+                    </div>
+                    <h3 className="font-serif text-text-main font-semibold text-2xl">{v.title}</h3>
+                    <p className="mt-4 text-gold-500 uppercase tracking-widest text-xs font-semibold flexItems-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity">Hover to flip</p>
+                  </div>
                 </div>
-                <h3 className="font-serif text-text-main font-semibold text-lg mb-3 group-hover:text-gold-400 transition-colors">{v.title}</h3>
-                <p className="text-text-muted text-sm font-light leading-relaxed">{v.desc}</p>
+
+                {/* Back of Card */}
+                <div className="absolute inset-0 backface-hidden rotate-y-180 bg-primary border border-gold-500/30 rounded-2xl p-8 flex flex-col items-center justify-center text-center shadow-[0_8px_30px_rgba(229,161,45,0.15)]">
+                  <div className={`absolute inset-0 bg-gradient-to-t ${v.color} opacity-10 rounded-2xl`} />
+                  <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+                    <h3 className="font-serif text-gold-400 font-semibold text-xl mb-4">{v.title}</h3>
+                    <div className="w-8 h-px bg-gold-500/30 mb-4" />
+                    <p className="text-text-muted text-sm md:text-base font-light leading-relaxed">{v.desc}</p>
+                  </div>
+                </div>
+
               </div>
             </motion.div>
           ))}

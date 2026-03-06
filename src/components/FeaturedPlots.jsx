@@ -6,7 +6,7 @@ import { mockProperties } from "@/lib/data/mockData";
 import PlotCard from "@/components/PlotCard";
 
 export default function FeaturedPlots() {
-  const featuredPlots = mockProperties.slice(0, 3); // taking first 3 for featured
+  const featuredPlots = mockProperties;
 
   return (
     <section className="py-24 bg-primary border-t border-border-strong relative overflow-hidden transition-colors duration-300">
@@ -44,26 +44,20 @@ export default function FeaturedPlots() {
           </div>
         </div>
 
-        {/* Grid Container */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.2, // Stagger effect
-              },
-            },
-          }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {featuredPlots.map((plot) => (
-            <PlotCard key={plot.id} plot={plot} />
-          ))}
-        </motion.div>
+        {/* Single Row Marquee */}
+        <div className="relative w-full overflow-hidden mb-12 py-4">
+          <motion.div
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+            className="flex w-max gap-6 px-3 hover:[animation-play-state:paused]"
+          >
+            {[...featuredPlots, ...featuredPlots].map((plot, i) => (
+              <div key={`${plot.id}-${i}`} className="w-[320px] md:w-[400px] shrink-0">
+                <PlotCard plot={plot} />
+              </div>
+            ))}
+          </motion.div>
+        </div>
 
         {/* View All Button */}
         <motion.div

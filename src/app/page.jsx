@@ -35,6 +35,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { mockProperties } from "@/lib/data/mockData";
 import FeaturedPlots from "@/components/FeaturedPlots";
+import AnimatedStats from "@/components/AnimatedStats";
 
 /* ─── Blog data ─── */
 const blogPosts = [
@@ -147,12 +148,6 @@ const faqs = [
 ];
 
 /* ─── Stats ─── */
-const stats = [
-  { value: "500+", label: "Premium Plots", icon: Building2 },
-  { value: "12+", label: "Years of Trust", icon: Award },
-  { value: "1800+", label: "Happy Clients", icon: Users },
-  { value: "98%", label: "Legal Clearance", icon: Shield },
-];
 
 /* ─── Property categories ─── */
 const categories = [
@@ -539,30 +534,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           STATS ROW
       ══════════════════════════════════════════ */}
-      <section className="py-16 px-6 bg-primary border-b border-border-subtle transition-colors duration-300">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="text-center group"
-              >
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/20 mb-4 group-hover:bg-gold-500/20 transition-colors">
-                  <stat.icon className="w-6 h-6 text-gold-500" />
-                </div>
-                <h3 className="text-3xl md:text-4xl font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600 mb-1 leading-none">
-                  {stat.value}
-                </h3>
-                <p className="text-text-main/80 dark:text-text-muted text-sm font-sans font-medium">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <AnimatedStats />
 
       {/* ══════════════════════════════════════════
           PROPERTY CATEGORIES
@@ -713,29 +685,39 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-            {/* Connector line (desktop) */}
-            <div className="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent z-0" />
-
             {steps.map((step, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
-                className="relative flex flex-col items-center text-center z-10 group"
-              >
-                <div className="relative mb-6">
-                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center group-hover:border-gold-500/50 transition-colors shadow-xl" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(229,161,45,0.25)' }}>
-                    <step.icon className="w-8 h-8 text-gold-500" />
+              <div key={i} className="relative flex flex-col items-center text-center z-10 group">
+                {/* Connecting Line (Desktop) - Animates immediately after this step appears, drawing to the next step */}
+                {i < steps.length - 1 && (
+                  <motion.div
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.6, delay: i * 1.2 + 0.6, ease: "linear" }}
+                    style={{ originX: 0 }}
+                    className="hidden lg:block absolute top-[2.5rem] left-[calc(50%+2.5rem)] w-[calc(100%-1.1rem)] h-[2px] bg-gradient-to-r from-gold-500/80 to-gold-500/80 z-0"
+                  />
+                )}
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: i * 1.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex flex-col items-center w-full z-10"
+                >
+                  <div className="relative mb-6">
+                    <div className="w-20 h-20 rounded-2xl flex items-center justify-center group-hover:border-gold-500/50 transition-colors shadow-xl" style={{ background: '#00022e', border: '1px solid rgba(229,161,45,0.25)' }}>
+                      <step.icon className="w-8 h-8 text-gold-500" />
+                    </div>
+                    <span className="absolute -top-3 -right-3 text-xs font-bold font-sans text-gold-500 w-7 h-7 rounded-full flex items-center justify-center" style={{ background: '#00022e', border: '1px solid rgba(229,161,45,0.4)' }}>
+                      {step.num}
+                    </span>
                   </div>
-                  <span className="absolute -top-3 -right-3 text-xs font-bold font-sans text-gold-500 w-7 h-7 rounded-full flex items-center justify-center" style={{ background: '#00022e', border: '1px solid rgba(229,161,45,0.4)' }}>
-                    {step.num}
-                  </span>
-                </div>
-                <h3 className="text-lg font-serif font-semibold text-text-main mb-3">{step.title}</h3>
-                <p className="text-text-main/70 dark:text-text-muted text-sm font-light leading-relaxed">{step.desc}</p>
-              </motion.div>
+                  <h3 className="text-lg font-serif font-semibold text-text-main mb-3">{step.title}</h3>
+                  <p className="text-text-main/70 dark:text-text-muted text-sm font-light leading-relaxed">{step.desc}</p>
+                </motion.div>
+              </div>
             ))}
           </div>
 
@@ -783,33 +765,69 @@ export default function Home() {
             </motion.h2>
           </div>
 
-          {/* Marquee row 1 */}
-          <div className="relative">
-            <motion.div
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
-              className="flex gap-6 w-max"
-            >
-              {[...reviews, ...reviews].map((r, i) => (
-                <div key={i} className="w-80 flex-shrink-0 bg-secondary border border-border-subtle rounded-2xl p-6 flex flex-col gap-4">
-                  <div className="flex gap-1">
-                    {Array.from({ length: r.rating }).map((_, s) => (
-                      <Star key={s} className="w-4 h-4 fill-gold-500 text-gold-500" />
-                    ))}
-                  </div>
-                  <p className="text-text-main font-light text-sm leading-relaxed italic flex-grow">&ldquo;{r.review}&rdquo;</p>
-                  <div className="flex items-center gap-3 pt-4 border-t border-border-subtle">
-                    <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gold-500/30 flex-shrink-0">
-                      <Image src={r.avatar} alt={r.name} fill className="object-cover" />
+          {/* Dual Marquee Container */}
+          <div className="relative w-full overflow-hidden mb-12 py-4">
+            {/* Edge Fade Masks */}
+            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-gradient-to-r from-[#00022e] to-transparent pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-gradient-to-l from-[#00022e] to-transparent pointer-events-none" />
+
+            {/* Top Row (Moves Right) */}
+            <div className="mb-6">
+              <motion.div
+                animate={{ x: ["-50%", "0%"] }}
+                transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+                className="flex w-max gap-6 px-3 hover:[animation-play-state:paused]"
+              >
+                {[...reviews.slice(0, 3), ...reviews.slice(0, 3), ...reviews.slice(0, 3), ...reviews.slice(0, 3)].map((r, i) => (
+                  <div key={`top-${i}`} className="w-80 flex-shrink-0 bg-secondary border border-border-subtle rounded-2xl p-6 flex flex-col gap-4">
+                    <div className="flex gap-1">
+                      {Array.from({ length: r.rating }).map((_, s) => (
+                        <Star key={s} className="w-4 h-4 fill-gold-500 text-gold-500" />
+                      ))}
                     </div>
-                    <div>
-                      <p className="text-text-main font-semibold text-sm">{r.name}</p>
-                      <p className="text-text-muted text-xs">{r.role}</p>
+                    <p className="text-text-main font-light text-sm leading-relaxed italic flex-grow">&ldquo;{r.review}&rdquo;</p>
+                    <div className="flex items-center gap-3 pt-4 border-t border-border-subtle">
+                      <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gold-500/30 flex-shrink-0">
+                        <Image src={r.avatar} alt={r.name} fill className="object-cover" />
+                      </div>
+                      <div>
+                        <p className="text-text-main font-semibold text-sm">{r.name}</p>
+                        <p className="text-text-muted text-xs">{r.role}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </motion.div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Bottom Row (Moves Left) */}
+            <div>
+              <motion.div
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                className="flex w-max gap-6 px-3 hover:[animation-play-state:paused]"
+              >
+                {[...reviews.slice(3, 6), ...reviews.slice(3, 6), ...reviews.slice(3, 6), ...reviews.slice(3, 6)].map((r, i) => (
+                  <div key={`bottom-${i}`} className="w-80 flex-shrink-0 bg-secondary border border-border-subtle rounded-2xl p-6 flex flex-col gap-4">
+                    <div className="flex gap-1">
+                      {Array.from({ length: r.rating }).map((_, s) => (
+                        <Star key={s} className="w-4 h-4 fill-gold-500 text-gold-500" />
+                      ))}
+                    </div>
+                    <p className="text-text-main font-light text-sm leading-relaxed italic flex-grow">&ldquo;{r.review}&rdquo;</p>
+                    <div className="flex items-center gap-3 pt-4 border-t border-border-subtle">
+                      <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gold-500/30 flex-shrink-0">
+                        <Image src={r.avatar} alt={r.name} fill className="object-cover" />
+                      </div>
+                      <div>
+                        <p className="text-text-main font-semibold text-sm">{r.name}</p>
+                        <p className="text-text-muted text-xs">{r.role}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
