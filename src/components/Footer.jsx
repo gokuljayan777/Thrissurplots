@@ -33,7 +33,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-text-muted text-sm font-light leading-relaxed mb-8">
-              Curating exclusive land portfolios in Kerala's Cultural Capital. Transparency, legal rigor, and unmatched advisory for modern investors.
+              Curating exclusive land portfolios in Kerala&apos;s Cultural Capital. Transparency, legal rigor, and unmatched advisory for modern investors.
             </p>
             {/* Social Icons */}
             <div className="flex items-center gap-4">

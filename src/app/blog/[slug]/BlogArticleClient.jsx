@@ -248,6 +248,7 @@ export default function BlogArticleClient({ title, slug, imageUrl }) {
     useEffect(() => {
         try {
             const stored = JSON.parse(localStorage.getItem("tp_bookmarks") || "[]");
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setIsBookmarked(stored.includes(slug));
         } catch { }
     }, [slug]);

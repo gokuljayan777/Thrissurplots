@@ -36,6 +36,7 @@ import Link from "next/link";
 import { mockProperties } from "@/lib/data/mockData";
 import FeaturedPlots from "@/components/FeaturedPlots";
 import AnimatedStats from "@/components/AnimatedStats";
+import CategoryCoverflow from "@/components/CategoryCoverflow";
 
 /* ─── Blog data ─── */
 const blogPosts = [
@@ -567,30 +568,8 @@ export default function Home() {
             </motion.h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((cat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30, scale: 0.98 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <Link href={cat.href} className="group flex flex-col h-full bg-primary border border-border-subtle hover:border-gold-500/50 rounded-2xl p-8 transition-all duration-500 hover:shadow-[0_8px_30px_rgba(229,161,45,0.1)] relative overflow-hidden">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${cat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                  <div className="relative z-10">
-                    <div className="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-6 group-hover:bg-gold-500/20 transition-colors">
-                      <cat.icon className="w-6 h-6 text-gold-500" />
-                    </div>
-                    <h3 className="text-xl font-serif text-text-main font-semibold mb-3 group-hover:text-gold-400 transition-colors">{cat.title}</h3>
-                    <p className="text-text-main/70 dark:text-text-muted text-sm font-light leading-relaxed mb-6">{cat.desc}</p>
-                    <div className="flex items-center gap-2 text-gold-500 text-sm font-semibold mt-auto">
-                      Explore <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
+          <div className="mt-12">
+            <CategoryCoverflow categories={categories} />
           </div>
         </div>
       </section>

@@ -1,7 +1,7 @@
 ﻿"use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -216,166 +216,93 @@ export function ServicesHero() {
 }
 
 /* ══════════════════════════════════════════
-   SERVICES DETAIL — Bento layout
+   SERVICES DETAIL — Horizontal Scroll
 ══════════════════════════════════════════ */
 export function ServicesDetail() {
-  const featured = services[0];
-  const FeaturedIcon = featured.Icon;
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+  });
+
+  // Calculates the x offset by shifting -(total items - 1) * 100vw.
+  const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${(services.length - 1) * 100}vw`]);
 
   return (
-    <section className="py-24 bg-primary relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.025]" style={{
-        backgroundImage: "repeating-linear-gradient(45deg, #e5a12d 0, #e5a12d 1px, transparent 0, transparent 50%)",
-        backgroundSize: "20px 20px"
-      }} />
+    <section ref={sectionRef} className="h-[600vh] relative bg-black font-sans">
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center">
+        {/* Dynamic Background Grid Pattern */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.05]" style={{
+          backgroundImage: "radial-gradient(circle, #e5a12d 1px, transparent 1px)",
+          backgroundSize: "40px 40px"
+        }} />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-20">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-gold-500 uppercase tracking-widest text-sm font-semibold mb-3"
-          >
-            What We Offer
-          </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600"
-          >
-            Six Ways We Serve You
-          </motion.h2>
-        </div>
-
-        <div className="space-y-8">
-          {/* Featured hero card */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative w-full h-[500px] md:h-[560px] rounded-3xl overflow-hidden group border border-white/10 hover:border-gold-500/50 transition-colors duration-500 shadow-2xl"
-          >
-            <Image
-              src={featured.image}
-              alt={featured.title}
-              fill
-              className="object-cover transition-transform duration-1000 group-hover:scale-105"
-              priority
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent" />
-            <div className="absolute inset-0 p-6 sm:p-10 md:p-16 flex flex-col justify-center max-w-xl">
-              <div className="inline-flex items-center gap-2 bg-gold-500/20 border border-gold-500/40 px-3 py-1 rounded-full mb-6 w-fit">
-                <Zap className="w-3 h-3 text-gold-400" />
-                <span className="text-gold-400 text-xs font-bold uppercase tracking-widest">Most Popular</span>
-              </div>
-              <div className="flex items-center gap-4 mb-5">
-                <div className="w-14 h-14 rounded-2xl bg-gold-500/15 border border-gold-500/30 flex items-center justify-center flex-shrink-0">
-                  <FeaturedIcon className="w-7 h-7 text-gold-400" />
+        <motion.ul style={{ x }} className="flex h-full will-change-transform">
+          {services.map((service, index) => {
+            const Icon = service.Icon;
+            return (
+              <li key={service.id} className="h-screen w-screen flex-shrink-0 flex items-center justify-center relative px-6 md:px-24">
+                {/* Background Image & Overlay */}
+                <div className="absolute inset-0 z-0">
+                  <Image src={service.image} alt={service.title} fill className="object-cover opacity-30 select-none pointer-events-none" sizes="100vw" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/85 to-black/30" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-80" />
                 </div>
-                <div>
-                  <p className="text-gold-400 text-sm font-semibold uppercase tracking-widest">{featured.tagline}</p>
-                  <h3 className="text-3xl md:text-4xl font-serif font-bold text-white">{featured.title}</h3>
-                </div>
-              </div>
-              <p className="text-white/75 font-light leading-relaxed text-lg mb-8">{featured.description}</p>
-              <div className="flex flex-wrap gap-2 mb-8">
-                {featured.features.map((f, i) => (
-                  <span key={i} className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm text-white/80 text-xs font-semibold px-3 py-1.5 rounded-full border border-white/10">
-                    <CheckCircle2 className="w-3 h-3 text-gold-400" /> {f}
-                  </span>
-                ))}
-              </div>
-              <Link href="/contact" className="inline-flex items-center gap-2 bg-gradient-to-r from-gold-500 to-gold-400 text-black font-bold uppercase tracking-wide py-3.5 px-8 rounded-xl text-sm transition-all w-fit shadow-[0_0_20px_rgba(229,161,45,0.4)]">
-                Get Started <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-400/50 to-transparent" />
-          </motion.div>
 
-          {/* 2-column grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.slice(1, 3).map((service, i) => {
-              const Icon = service.Icon;
-              return (
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.7, delay: i * 0.15 }}
-                  className="relative h-[420px] rounded-3xl overflow-hidden group border border-white/10 hover:border-gold-500/50 transition-colors duration-500 shadow-xl"
-                >
-                  <Image src={service.image} alt={service.title} fill className="object-cover transition-transform duration-1000 group-hover:scale-110" sizes="50vw" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                    <div className="transform transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-11 h-11 rounded-xl bg-gold-500/15 border border-gold-500/30 flex items-center justify-center">
-                          <Icon className="w-5 h-5 text-gold-400" />
-                        </div>
-                        <div>
-                          <p className="text-gold-400 text-xs font-semibold uppercase tracking-widest">{service.tagline}</p>
-                          <h3 className="text-xl md:text-2xl font-serif font-bold text-white">{service.title}</h3>
-                        </div>
+                {/* Content Container */}
+                <div className="relative z-10 w-full max-w-7xl">
+                  {/* Decorative Background Number */}
+                  <div className="absolute -top-12 -left-6 md:-top-24 md:-left-16 pointer-events-none select-none">
+                    <span className="text-[140px] md:text-[240px] font-serif font-black text-white/5 leading-none">
+                      0{index + 1}
+                    </span>
+                  </div>
+
+                  <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-12 items-end mb-8 md:mb-16">
+                    <div>
+                      <div className="w-16 h-16 rounded-2xl bg-gold-500/15 border border-gold-500/30 flex items-center justify-center mb-6">
+                        <Icon className="w-8 h-8 text-gold-400" />
                       </div>
-                      <p className="text-gray-300 font-light leading-relaxed text-sm mb-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 line-clamp-3">{service.description}</p>
-                      <div className="flex flex-wrap gap-1.5 mb-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                        {service.features.map((f, j) => (
-                          <span key={j} className="text-xs bg-white/10 text-white/70 px-2 py-1 rounded-full">{f}</span>
+                      <p className="text-gold-400 text-sm md:text-base font-semibold uppercase tracking-widest mb-3">
+                        {service.tagline}
+                      </p>
+                      <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/60 leading-[1.05] max-w-4xl tracking-tight">
+                        {service.title}
+                      </h2>
+                    </div>
+                    <div className="hidden md:flex flex-col items-center justify-center w-28 h-28 rounded-full border border-white/5 bg-white/5 backdrop-blur-md text-white/40 relative overflow-hidden group shadow-2xl">
+                      <span className="text-[10px] uppercase font-bold tracking-widest mb-1 group-hover:text-gold-400 transition-colors">Scroll</span>
+                      <ArrowRight className="w-5 h-5 text-gold-500 animate-pulse" />
+                    </div>
+                  </div>
+
+                  <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+                    <p className="text-white/70 font-light text-lg md:text-xl md:leading-relaxed max-w-xl">
+                      {service.description}
+                    </p>
+                    <div>
+                      <div className="flex flex-wrap gap-2 md:gap-3 mb-10">
+                        {service.features.map((f, i) => (
+                          <span key={i} className="flex items-center gap-2 bg-black/40 backdrop-blur-md text-white border border-white/10 px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold">
+                            <CheckCircle2 className="w-4 h-4 text-gold-500" /> {f}
+                          </span>
                         ))}
                       </div>
-                      <div className="flex items-center gap-2 text-gold-400 font-semibold text-sm uppercase opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500 delay-150">
-                        <span>Learn More</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 group-hover:via-gold-400/50 to-transparent transition-colors duration-500" />
-                </motion.div>
-              );
-            })}
-          </div>
 
-          {/* 3-column grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {services.slice(3).map((service, i) => {
-              const Icon = service.Icon;
-              return (
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.7, delay: i * 0.12 }}
-                  className="relative h-[400px] rounded-3xl overflow-hidden group border border-white/10 hover:border-gold-500/50 transition-colors duration-500 shadow-xl"
-                >
-                  <Image src={service.image} alt={service.title} fill className="object-cover transition-transform duration-1000 group-hover:scale-110" sizes="33vw" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/65 to-black/25" />
-                  <div className="absolute inset-0 p-7 flex flex-col justify-end">
-                    <div className="transform transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
-                      <div className="w-11 h-11 rounded-xl bg-gold-500/15 border border-gold-500/30 flex items-center justify-center mb-3">
-                        <Icon className="w-5 h-5 text-gold-400" />
-                      </div>
-                      <p className="text-gold-400 text-xs font-semibold uppercase tracking-widest mb-1">{service.tagline}</p>
-                      <h3 className="text-xl font-serif font-bold text-white mb-3">{service.title}</h3>
-                      <p className="text-gray-300 font-light text-sm leading-relaxed mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 line-clamp-3">{service.description}</p>
-                      <div className="flex items-center gap-2 text-gold-400 font-semibold text-xs uppercase opacity-0 group-hover:opacity-100 transition-all duration-500 delay-150">
-                        <span>Learn More</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                      </div>
+                      <Link href="/contact" className="inline-flex items-center gap-3 bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-black font-bold uppercase tracking-wider py-4 px-10 rounded-xl text-sm transition-all hover:scale-[1.02] shadow-[0_0_30px_rgba(229,161,45,0.25)] hover:shadow-[0_0_40px_rgba(229,161,45,0.4)]">
+                        Enquire Now <ArrowRight className="w-5 h-5" />
+                      </Link>
                     </div>
                   </div>
-                  <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 group-hover:via-gold-400/50 to-transparent transition-colors duration-500" />
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
+                </div>
+
+                {/* Progress Indicators */}
+                <div className="absolute bottom-6 md:bottom-12 left-6 right-6 md:left-24 md:right-24 h-1 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-gold-600 to-gold-400 transition-all duration-500 ease-out" style={{ width: `${((index + 1) / services.length) * 100}%` }} />
+                </div>
+              </li>
+            );
+          })}
+        </motion.ul>
       </div>
     </section>
   );

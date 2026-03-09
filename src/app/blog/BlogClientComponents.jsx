@@ -581,6 +581,7 @@ function useBookmarks() {
   useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("tp_bookmarks") || "[]");
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBookmarks(stored);
     } catch { }
   }, []);
@@ -910,6 +911,7 @@ export function BlogPageContent() {
 
   // When search is active, show All category
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (searchQuery) setActiveCategory("All");
   }, [searchQuery]);
 

@@ -13,19 +13,28 @@ import {
   HeartPulse,
   ShoppingBag,
   Flame,
-  ArrowRight,
-  ArrowDown,
   Star,
-  CheckCircle2,
   Building2,
   Leaf,
   Train,
   Wifi,
   ChevronDown,
+  ArrowDown,
   Phone,
   MessageCircle,
+  CheckCircle2,
+  ArrowRight,
+  Utensils,
 } from "lucide-react";
 import AnimatedNumber from "@/components/AnimatedNumber";
+import {
+  SliderBtnGroup,
+  ProgressSlider,
+  SliderBtn,
+  SliderContent,
+  SliderWrapper,
+} from "@/components/ui/progressive-carousel";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 /* ─── Data ─── */
 const keyStats = [
@@ -152,7 +161,7 @@ export function WhyHero() {
       {/* Parallax BG */}
       <motion.div style={{ y }} className="absolute inset-0 scale-110 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1681283685652-326e0e0f34de?q=80&w=2600&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1596423735880-5f2a689b903e?q=80&w=2600&auto=format&fit=crop"
           alt="Thrissur Skyline"
           fill
           className="object-cover"
@@ -546,56 +555,124 @@ export function InvestmentHubs() {
   );
 }
 
+const lifestyleItems = [
+  {
+    label: "Educational Institutions",
+    count: "50+",
+    img: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1200",
+    desc: "Home to Kerala's top academic institutions and medical colleges.",
+    sliderName: "education"
+  },
+  {
+    label: "Healthcare Excellence",
+    count: "15+",
+    img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=1200",
+    desc: "World-class hospitals like Amala Institute for complete wellness.",
+    sliderName: "health"
+  },
+  {
+    label: "Dining & Premium Retail",
+    count: "200+",
+    img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200",
+    desc: "Lulu Mall and a vibrant spread of gourmet dining experiences.",
+    sliderName: "retail"
+  },
+  {
+    label: "Culture & Spiritual Heritage",
+    count: "100+",
+    img: "https://images.unsplash.com/photo-1596423735880-5f2a689b903e?q=80&w=1200",
+    desc: "A land of temples and festivals blending heritage with modern life.",
+    sliderName: "culture"
+  },
+];
+
 /* ══════════════════════════════════════════
-   LIFESTYLE SECTION
+   LIFESTYLE SECTION - Progressive Carousel
 ══════════════════════════════════════════ */
 export function LifestyleSection() {
-  const lifestyleItems = [
-    { label: "Educational Institutions", count: "50+", img: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800" },
-    { label: "Multi-Specialty Hospitals", count: "15+", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800" },
-    { label: "Shopping Malls & Retail", count: "200+", img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800" },
-    { label: "Cultural & Spiritual Sites", count: "100+", img: "https://images.unsplash.com/photo-1596423735880-5f2a689b903e?q=80&w=800" },
-  ];
+  const [mounted, setMounted] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   return (
-    <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary relative overflow-hidden">
+    <section className="py-14 md:py-20 px-4 sm:px-6 bg-white relative overflow-hidden text-primary">
       <div className="absolute right-0 top-0 w-96 h-96 rounded-full bg-gold-500/[0.04] blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-20">
+        <div className="text-center mb-12">
           <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-gold-500 uppercase tracking-widest text-sm font-semibold mb-3">
+            className="text-gold-600 uppercase tracking-widest text-xs font-semibold mb-2">
             Quality of Life
           </motion.p>
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600">
+            className="text-3xl md:text-5xl font-serif italic font-light text-primary mb-4">
             A Premium Standard of Living
           </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+            className="text-gray-500 max-w-2xl mx-auto font-light text-base">
+            Experience the perfect blend of modern infrastructure, cultural richness, and world-class amenities.
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {lifestyleItems.map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.1 }}
-              className="relative h-64 rounded-2xl overflow-hidden group border border-white/10 hover:border-gold-500/50 transition-colors shadow-xl"
-            >
-              <Image src={item.img} alt={item.label} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="50vw" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
-              <div className="absolute inset-0 flex items-center p-8">
-                <div>
-                  <p className="text-4xl md:text-5xl font-bold font-sans text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500 mb-2">
-                    <AnimatedNumber value={item.count} />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="w-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-secondary"
+        >
+          <ProgressSlider
+            vertical={isDesktop ? true : false}
+            fastDuration={300}
+            duration={5000}
+            activeSlider="education"
+            className="flex flex-col lg:flex-row min-h-[750px] lg:h-[500px] bg-gray-50 relative"
+          >
+            <SliderBtnGroup className="lg:relative lg:w-[400px] w-full z-20 flex flex-col h-auto lg:h-full bg-white border-b lg:border-b-0 lg:border-r border-gray-100 overflow-hidden divide-y divide-gray-100">
+              {lifestyleItems.map((item) => (
+                <SliderBtn
+                  key={item.sliderName}
+                  value={item.sliderName}
+                  className="text-left p-4 lg:p-6 lg:pl-8 flex-1 justify-start min-h-[120px] lg:min-h-0 relative z-10 hover:bg-gray-50 transition-colors border-none"
+                  progressBarClass="left-0 top-0 lg:bottom-0 bg-gray-100 w-full h-1 lg:w-1.5 lg:h-full"
+                >
+                  <h3 className="text-xl lg:text-3xl font-bold font-sans text-gold-600 mb-0.5 lg:mb-1 leading-tight">
+                    {item.count}
+                  </h3>
+                  <h4 className="text-primary font-serif tracking-wide text-xs lg:text-lg mb-1 lg:mb-1 line-clamp-1">
+                    {item.label}
+                  </h4>
+                  <p className="text-gray-500 text-[11px] lg:text-sm font-light leading-relaxed pr-2 lg:pr-4 line-clamp-2 lg:line-clamp-none">
+                    {item.desc}
                   </p>
-                  <p className="text-white/80 font-light uppercase tracking-widest text-xs">{item.label}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                </SliderBtn>
+              ))}
+            </SliderBtnGroup>
+
+            <SliderContent className="w-full h-full relative z-10">
+              {lifestyleItems.map((item) => (
+                <SliderWrapper
+                  className="h-full w-full"
+                  key={item.sliderName}
+                  value={item.sliderName}
+                >
+                  <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent lg:bg-gradient-to-r lg:from-black/60 lg:via-transparent lg:to-transparent" />
+                  <Image
+                    className="h-full w-full object-cover"
+                    src={item.img}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 70vw"
+                    alt={item.desc}
+                  />
+                </SliderWrapper>
+              ))}
+            </SliderContent>
+          </ProgressSlider>
+        </motion.div>
       </div>
     </section>
   );
@@ -659,7 +736,7 @@ export function WhyCTA() {
     <section className="relative py-16 md:py-36 px-4 sm:px-6 bg-black overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1681283685652-326e0e0f34de?q=80&w=2600&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1596423735880-5f2a689b903e?q=80&w=2600&auto=format&fit=crop"
           alt="Thrissur CTA"
           fill
           className="object-cover opacity-20"

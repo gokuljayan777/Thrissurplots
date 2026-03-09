@@ -1,0 +1,169 @@
+﻿
+> temp-app@0.1.0 lint
+> eslint
+
+
+C:\Thrissurplots\src\app\about\AboutClientComponents.jsx
+   3:10  warning  'useState' is defined but never used         @typescript-eslint/no-unused-vars
+   4:43  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+  15:3   warning  'Users' is defined but never used            @typescript-eslint/no-unused-vars
+
+C:\Thrissurplots\src\app\blog\BlogClientComponents.jsx
+    4:60  warning  'useMotionValueEvent' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+   10:34  warning  'Zap' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+   11:46  warning  'Share2' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+   12:40  warning  'TrendingDown' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-unused-vars
+  584:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  582 |     try {
+  583 |       const stored = JSON.parse(localStorage.getItem("tp_bookmarks") || "[]");
+> 584 |       setBookmarks(stored);
+      |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  585 |     } catch { }
+  586 |   }, []);
+  587 |                        react-hooks/set-state-in-effect
+  913:22  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  911 |   // When search is active, show All category
+  912 |   useEffect(() => {
+> 913 |     if (searchQuery) setActiveCategory("All");
+      |                      ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  914 |   }, [searchQuery]);
+  915 |
+  916 |   return (  react-hooks/set-state-in-effect
+
+C:\Thrissurplots\src\app\blog\[slug]\BlogArticleClient.jsx
+    3:10  warning  'useRef' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+    3:39  warning  'useCallback' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-unused-vars
+    8:38  warning  'Share2' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+    9:36  warning  'ChevronRight' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+  251:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  249 |         try {
+  250 |             const stored = JSON.parse(localStorage.getItem("tp_bookmarks") || "[]");
+> 251 |             setIsBookmarked(stored.includes(slug));
+      |             ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  252 |         } catch { }
+  253 |     }, [slug]);
+  254 |  react-hooks/set-state-in-effect
+
+C:\Thrissurplots\src\app\contact\ContactClientComponents.jsx
+    3:48  warning  'useCallback' is defined but never used                  @typescript-eslint/no-unused-vars
+    6:38  warning  'User' is defined but never used                         @typescript-eslint/no-unused-vars
+    7:3   warning  'MapPin' is defined but never used                       @typescript-eslint/no-unused-vars
+    7:11  warning  'MessageSquare' is defined but never used                @typescript-eslint/no-unused-vars
+    8:27  warning  'X' is defined but never used                            @typescript-eslint/no-unused-vars
+  409:10  warning  'fieldsCompleted' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  409:27  warning  'setFieldsCompleted' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Thrissurplots\src\app\page.jsx
+  25:3  warning  'ChevronUp' is defined but never used  @typescript-eslint/no-unused-vars
+  29:3  warning  'TreePine' is defined but never used   @typescript-eslint/no-unused-vars
+  30:3  warning  'Flame' is defined but never used      @typescript-eslint/no-unused-vars
+  31:3  warning  'Train' is defined but never used      @typescript-eslint/no-unused-vars
+  32:3  warning  'Landmark' is defined but never used   @typescript-eslint/no-unused-vars
+
+C:\Thrissurplots\src\app\plots\page.jsx
+   5:35  warning  'useScroll' is defined but never used     @typescript-eslint/no-unused-vars
+   5:46  warning  'useTransform' is defined but never used  @typescript-eslint/no-unused-vars
+  18:3   warning  'ArrowRight' is defined but never used    @typescript-eslint/no-unused-vars
+
+C:\Thrissurplots\src\app\services\ServicesClientComponents.jsx
+    3:20  warning  'useEffect' is defined but never used          @typescript-eslint/no-unused-vars
+   24:3   warning  'Zap' is defined but never used                @typescript-eslint/no-unused-vars
+   25:3   warning  'Building2' is defined but never used          @typescript-eslint/no-unused-vars
+  190:19  warning  'StatIcon' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Thrissurplots\src\app\template.jsx
+  4:8  warning  'Image' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Thrissurplots\src\app\why-thrissur\WhyThrissurClientComponents.jsx
+    3:10  warning  'useState' is defined but never used           @typescript-eslint/no-unused-vars
+    3:28  warning  'useEffect' is defined but never used          @typescript-eslint/no-unused-vars
+    4:43  warning  'AnimatePresence' is defined but never used    @typescript-eslint/no-unused-vars
+   16:3   warning  'ArrowRight' is defined but never used         @typescript-eslint/no-unused-vars
+   24:3   warning  'ChevronDown' is defined but never used        @typescript-eslint/no-unused-vars
+   26:3   warning  'MessageCircle' is defined but never used      @typescript-eslint/no-unused-vars
+  220:19  warning  'StatIcon' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Thrissurplots\src\components\AnimatedNumber.jsx
+   3:10  warning  'motion' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+  33:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  31 |         if (!match) {
+  32 |             // If no number found, just display the original string
+> 33 |             setDisplayValue(strValue);
+     |             ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  34 |             return;
+  35 |         }
+  36 |  react-hooks/set-state-in-effect
+
+C:\Thrissurplots\src\components\AnimatedStats.jsx
+  3:18  warning  'useInView' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Thrissurplots\src\components\FloatingWhatsApp.jsx
+  10:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+   8 |
+   9 |     useEffect(() => {
+> 10 |         setMounted(true);
+     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  11 |     }, []);
+  12 |
+  13 |     if (!mounted) return null;  react-hooks/set-state-in-effect
+
+C:\Thrissurplots\src\components\Footer.jsx
+  36:59  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Thrissurplots\src\components\ThemeToggle.jsx
+  14:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  12 |   // Prevent hydration mismatch by rendering only after mounting
+  13 |   useEffect(() => {
+> 14 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  15 |   }, []);
+  16 |
+  17 |   if (!mounted) {  react-hooks/set-state-in-effect
+
+C:\Thrissurplots\src\components\ui\progressive-carousel.jsx
+  3:65  warning  'useRef' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 48 problems (7 errors, 41 warnings)
+

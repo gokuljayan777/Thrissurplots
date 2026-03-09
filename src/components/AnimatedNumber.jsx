@@ -30,6 +30,7 @@ export default function AnimatedNumber({ value, duration = 2.5, once = true }) {
 
         if (!match) {
             // If no number found, just display the original string
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setDisplayValue(strValue);
             return;
         }

@@ -44,19 +44,26 @@ export default function FeaturedPlots() {
           </div>
         </div>
 
-        {/* Single Row Marquee */}
-        <div className="relative w-full overflow-hidden mb-12 py-4">
-          <motion.div
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-            className="flex w-max gap-6 px-3 hover:[animation-play-state:paused]"
-          >
-            {[...featuredPlots, ...featuredPlots].map((plot, i) => (
-              <div key={`${plot.id}-${i}`} className="w-[320px] md:w-[400px] shrink-0">
-                <PlotCard plot={plot} />
-              </div>
-            ))}
-          </motion.div>
+        {/* Continuous Horizontal Auto-Scroll Layout */}
+        <div className="relative w-full pb-4 overflow-hidden mt-8">
+          {/* Marquee Container */}
+          <div className="flex py-10 w-full overflow-hidden group">
+            <motion.div
+              className="flex gap-6 md:gap-10 w-max"
+              animate={{ x: ["-50%", "0%"] }}
+              transition={{ repeat: Infinity, ease: "linear", duration: 60 }}
+            >
+              {/* Duplicate array heavily to ensure seamless infinite looping */}
+              {[...featuredPlots, ...featuredPlots, ...featuredPlots, ...featuredPlots].map((plot, i) => (
+                <div
+                  key={`${plot.id}-${i}`}
+                  className="w-[280px] sm:w-[320px] md:w-[380px] h-[460px] md:h-[540px] shrink-0 drop-shadow-sm transition-transform duration-300 hover:-translate-y-2 hover:drop-shadow-xl pointer-events-auto"
+                >
+                  <PlotCard plot={plot} />
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </div>
 
         {/* View All Button */}
@@ -65,7 +72,7 @@ export default function FeaturedPlots() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-16 text-center"
+          className="mt-12 text-center relative z-10"
         >
           <Link href="/plots" className="inline-block relative group">
             <span className="relative z-10 text-gold-400 font-semibold uppercase tracking-widest text-sm transition-colors group-hover:text-gold-300">
