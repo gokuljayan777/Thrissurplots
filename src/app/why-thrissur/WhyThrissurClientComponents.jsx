@@ -626,27 +626,27 @@ export function LifestyleSection() {
           className="w-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-secondary"
         >
           <ProgressSlider
-            vertical={isDesktop ? true : false}
+            vertical={true}
             fastDuration={300}
-            duration={5000}
+            duration={3000}
             activeSlider="education"
-            className="flex flex-col lg:flex-row min-h-[750px] lg:h-[500px] bg-gray-50 relative"
+            className="flex flex-col lg:flex-row min-h-[750px] lg:h-[500px] bg-white relative"
           >
             <SliderBtnGroup className="lg:relative lg:w-[400px] w-full z-20 flex flex-col h-auto lg:h-full bg-white border-b lg:border-b-0 lg:border-r border-gray-100 overflow-hidden divide-y divide-gray-100">
               {lifestyleItems.map((item) => (
                 <SliderBtn
                   key={item.sliderName}
                   value={item.sliderName}
-                  className="text-left p-4 lg:p-6 lg:pl-8 flex-1 justify-start min-h-[120px] lg:min-h-0 relative z-10 hover:bg-gray-50 transition-colors border-none"
-                  progressBarClass="left-0 top-0 lg:bottom-0 bg-gray-100 w-full h-1 lg:w-1.5 lg:h-full"
+                  className="text-left p-4 lg:p-6 lg:pl-10 flex-1 justify-start min-h-[120px] lg:min-h-0 relative z-10 hover:bg-gray-50 transition-all duration-300 border-none group"
+                  progressBarClass="left-0 top-0 bottom-0 bg-gold-500/10 w-[4px] h-full"
                 >
                   <h3 className="text-xl lg:text-3xl font-bold font-sans text-gold-600 mb-0.5 lg:mb-1 leading-tight">
                     {item.count}
                   </h3>
-                  <h4 className="text-primary font-serif tracking-wide text-xs lg:text-lg mb-1 lg:mb-1 line-clamp-1">
+                  <h4 className="text-gray-900 font-serif font-semibold tracking-wide text-xs lg:text-lg mb-1 lg:mb-1 line-clamp-1 group-active:text-gold-600">
                     {item.label}
                   </h4>
-                  <p className="text-gray-500 text-[11px] lg:text-sm font-light leading-relaxed pr-2 lg:pr-4 line-clamp-2 lg:line-clamp-none">
+                  <p className="text-gray-600 text-[11px] lg:text-sm font-medium leading-relaxed pr-2 lg:pr-4 line-clamp-2 lg:line-clamp-none">
                     {item.desc}
                   </p>
                 </SliderBtn>
