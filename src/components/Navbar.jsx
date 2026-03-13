@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 const NAV_LINKS = [
   { name: "Home", href: "/" },
@@ -95,7 +94,6 @@ export default function Navbar() {
 
           {/* Actions Container Desktop */}
           <div className="hidden lg:flex items-center space-x-6">
-            <ThemeToggle />
             <Link href="/contact" passHref>
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -108,18 +106,23 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Header Rights */}
-          <div className="lg:hidden flex items-center space-x-4">
-            <ThemeToggle />
+          <div className="lg:hidden flex items-center gap-3">
+            <Link href="/contact">
+              <button className="bg-gold-500 text-black text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-xl shadow-lg">
+                Enquire
+              </button>
+            </Link>
+            
             {/* Mobile Menu Toggle */}
             <button
               title="Mobile Menu"
-              className="relative z-50 text-gold-400 p-2"
+              className="relative z-[70] text-gold-400 p-1"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
-                <X className="w-8 h-8" />
+                <X className="w-7 h-7" />
               ) : (
-                <Menu className="w-8 h-8 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" />
+                <Menu className="w-7 h-7 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" />
               )}
             </button>
           </div>
@@ -134,12 +137,15 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl flex flex-col justify-center items-center h-screen overflow-hidden"
+            className="fixed inset-0 z-[60] bg-[#00022e] flex flex-col justify-center items-center h-screen overflow-hidden"
           >
-            {/* Subtle decorative elements */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+            {/* Background Texture for Mobile Menu */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+              backgroundImage: "radial-gradient(circle, #e5a12d 1px, transparent 1px)",
+              backgroundSize: "30px 30px"
+            }} />
 
-            <ul className="flex flex-col space-y-8 text-center mt-12 w-full px-6">
+            <ul className="flex flex-col space-y-6 text-center w-full px-6 relative z-10">
               {NAV_LINKS.map((link, i) => (
                 <motion.li
                   key={link.name}

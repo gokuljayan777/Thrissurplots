@@ -254,7 +254,7 @@ function Plots() {
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white tracking-tight leading-[1.05] mb-4">
               Exclusive{" "}
-              <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-500">
                 Premium
               </span>{" "}
               Plots

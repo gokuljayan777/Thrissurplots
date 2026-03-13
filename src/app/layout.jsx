@@ -1,7 +1,6 @@
 import {
-  Playfair_Display,
-  Cormorant_Garamond,
   DM_Sans,
+  Montserrat,
 } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -16,17 +15,11 @@ const sans = DM_Sans({
   display: "swap",
 });
 
-const cormorant = Cormorant_Garamond({
-  weight: ["300", "400", "500", "600", "700"],
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-cormorant",
+  variable: "--font-montserrat",
   display: "swap",
-});
-
-const serif = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  display: "swap",
+  weight: ["400", "700"],
 });
 
 export const metadata = {
@@ -38,7 +31,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${sans.variable} ${serif.variable} ${cormorant.variable} font-sans antialiased min-h-screen bg-background text-foreground flex flex-col`}
+        className={`${sans.variable} ${montserrat.variable} font-sans antialiased min-h-screen bg-background text-foreground flex flex-col`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <LenisProvider>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
@@ -195,7 +195,7 @@ export function WhyHero() {
             className="text-4xl sm:text-5xl md:text-7xl lg:text-[88px] font-serif text-white tracking-tight leading-[1.0]"
           >
             Invest in the<br />
-            <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-200 via-gold-400 to-gold-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-200 via-gold-400 to-gold-600">
               Cultural Capital
             </span>
           </motion.h1>
@@ -266,7 +266,7 @@ export function InvestmentReasons() {
             The Investment Case
           </motion.p>
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600">
+            className="text-4xl md:text-5xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600">
             6 Reasons Thrissur Stands Apart
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
@@ -330,7 +330,7 @@ export function CultureSection() {
             transition={{ duration: 0.9 }}
           >
             <p className="text-gold-500 uppercase tracking-widest text-sm font-semibold mb-3">Cultural Prestige</p>
-            <h2 className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 mb-6 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 mb-6 leading-tight">
               Where Heritage<br />Commands Premium
             </h2>
             <p className="text-text-muted font-light text-lg leading-relaxed mb-8">
@@ -454,7 +454,7 @@ export function InfrastructureSection() {
             transition={{ duration: 0.9 }}
           >
             <p className="text-gold-500 uppercase tracking-widest text-sm font-semibold mb-3">Infrastructure & Connectivity</p>
-            <h2 className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 mb-6 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 mb-6 leading-tight">
               Built for the<br />Next 50 Years
             </h2>
             <p className="text-white/50 font-light text-lg leading-relaxed mb-10">
@@ -512,7 +512,7 @@ export function InvestmentHubs() {
             Prime Locations
           </motion.p>
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600">
+            className="text-4xl md:text-5xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600">
             Top Investment Hubs
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
@@ -609,7 +609,7 @@ export function LifestyleSection() {
             Quality of Life
           </motion.p>
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            className="text-3xl md:text-5xl font-serif italic font-light text-primary mb-4">
+            className="text-3xl md:text-5xl font-serif font-bold text-primary mb-4">
             A Premium Standard of Living
           </motion.h2>
           <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
@@ -691,7 +691,7 @@ export function InvestorTestimonials() {
             Investor Voices
           </motion.p>
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600">
+            className="text-4xl md:text-5xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600">
             Those Who Invested. And Won.
           </motion.h2>
         </div>
@@ -764,7 +764,7 @@ export function WhyCTA() {
             <span className="text-gold-400 text-sm font-semibold tracking-widest uppercase">Plots Available Now · Limited Stock</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-200 via-gold-400 to-gold-600 mb-6 leading-[1.05]">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-200 via-gold-400 to-gold-600 mb-6 leading-[1.05]">
             Your Plot in<br />Thrissur Awaits
           </h2>
           <p className="text-white/60 font-light text-xl mb-12 max-w-2xl mx-auto">

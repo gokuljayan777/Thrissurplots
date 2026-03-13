@@ -2,142 +2,106 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { MapPin, Maximize2, MoveRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { MapPin, Heart, Star, Zap, Gem, Clock, ArrowRight, Maximize, Compass, TreePine, Layout } from "lucide-react";
 
+export default function PlotCard({ plot, index = 0 }) {
+  // Determine badge type based on index (just to showcase variety like the image)
+  const badgeType = index % 3 === 0 ? "FEATURED" : index % 3 === 1 ? "HOT DEAL" : "EXCLUSIVE";
+  const badgeColor = 
+    badgeType === "FEATURED" ? "bg-[#0a8a5b] text-white" : 
+    badgeType === "HOT DEAL" ? "bg-[#e56a25] text-white" : 
+    "bg-[#155ee8] text-white";
+  const BadgeIcon = 
+    badgeType === "FEATURED" ? Star : 
+    badgeType === "HOT DEAL" ? Zap : 
+    Gem;
 
-export default function PlotCard({ plot }) {
-  const cardRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "end start"],
-  });
-
-  const imageY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+  // Map arbitrary features to icons for visual consistency similar to the image
+  const getFeatureIcon = (featureStr, idx) => {
+    const text = featureStr.toLowerCase();
+    if (text.includes('road')) return <Layout className="w-3.5 h-3.5 mr-2 text-green-600" />;
+    if (text.includes('facing') || text.includes('front')) return <Compass className="w-3.5 h-3.5 mr-2 text-green-600" />;
+    return <TreePine className="w-3.5 h-3.5 mr-2 text-green-600" />;
+  };
 
   return (
     <motion.div
-      ref={cardRef}
-      initial="hidden"
-      whileInView="visible"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      variants={{
-        hidden: { opacity: 0, y: 40 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-        },
-      }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
       className="group"
     >
-      <motion.div
-        whileHover={{ y: -8 }}
-        whileTap={{ scale: 0.98 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="relative flex flex-col bg-secondary border border-border-subtle rounded-xl overflow-hidden hover:border-gold-500/40 transition-shadow duration-500 shadow-sm hover:shadow-xl h-full"
-      >
-        {/* Image Container */}
-        <div className="relative w-full h-64 overflow-hidden bg-primary">
-          <motion.div
-            style={{ y: imageY }}
-            className="absolute inset-x-0 top-[-15%] bottom-[-15%] w-full h-[130%]"
-          >
-            <motion.div
-              className="w-full h-full relative"
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              <Image
-                src={plot.imageUrl}
-                alt={plot.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            </motion.div>
-          </motion.div>
+      <div className="flex flex-col bg-white rounded-none border border-gray-200 hover:shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 h-full">
+        
+        {/* Image Container - Square Corners, matching image */}
+        <div className="relative w-full h-[240px] overflow-hidden bg-gray-100 rounded-none border-b border-gray-200">
+          <Image
+            src={plot.imageUrl || "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800"}
+            alt={plot.title}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
 
-          {/* Purpose Badge & Status */}
-          <div className="absolute top-4 left-4 flex gap-2">
-            <div className="bg-black/70 backdrop-blur-md border border-gold-500/30 text-gold-400 text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-sm">
-              {plot.type}
-            </div>
+          {/* Top Left Badge */}
+          <div className={`absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold tracking-wider rounded-none shadow-sm ${badgeColor}`}>
+            <BadgeIcon className="w-3 h-3 fill-current" />
+            {badgeType}
           </div>
 
-          {plot.status === "Sold" && (
-            <div className="absolute top-4 right-4 bg-red-900/80 backdrop-blur-md text-red-200 border border-red-500/50 text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-sm shadow-md">
-              Sold Layout
-            </div>
-          )}
+          {/* Top Right Heart Button - Square */}
+          <button className="absolute top-4 right-4 w-9 h-9 bg-white text-gray-500 hover:text-red-500 rounded-none shadow-sm flex items-center justify-center transition-colors">
+            <Heart className="w-4 h-4" />
+          </button>
         </div>
 
-        {/* Content Details */}
-        <div className="p-6 flex flex-col flex-grow relative z-10 bg-gradient-to-t from-primary to-secondary">
-          <h3 className="text-xl font-serif text-text-main font-semibold leading-tight mb-2 transition-colors">
-            {plot.title}
-          </h3>
-
-          <div className="flex items-start text-text-muted text-sm mb-4 font-sans font-light">
-            <MapPin className="w-4 h-4 mr-1.5 mt-0.5 text-gold-600 flex-shrink-0" />
-            <span className="truncate">{plot.location}</span>
-          </div>
-
-          {/* Specs Row */}
-          <div className="flex items-center justify-between py-4 border-y border-border-subtle mb-6">
-            <div className="flex items-center text-sm text-text-muted">
-              <Maximize2 className="w-4 h-4 mr-2 text-gold-500" />
-              <span className="font-sans font-bold tracking-wide">{plot.area}</span>
-            </div>
-            <div className="text-right">
-              <span className="block text-xs uppercase tracking-wider text-text-muted font-semibold mb-0.5">
-                Value
-              </span>
-              <span className="text-lg font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-600 to-gold-400 dark:from-gold-300 dark:to-gold-500 whitespace-nowrap">
-                {plot.price}
-              </span>
+        {/* Card Body */}
+        <div className="p-4 sm:p-6 flex flex-col flex-grow relative bg-white rounded-none">
+          
+          {/* Title & Location */}
+          <div className="mb-4">
+            <h3 className="text-[20px] font-bold text-[#001738] leading-tight mb-2 font-sans truncate">
+              {plot.title}
+            </h3>
+            <div className="flex items-start text-gray-400 text-sm">
+              <MapPin className="w-4 h-4 mr-1.5 mt-0.5 text-[#0a8a5b] flex-shrink-0" />
+              <span className="truncate">{plot.location}</span>
             </div>
           </div>
 
-          {/* Features Preview - optional display of 2 features */}
-          {plot.features && plot.features.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-6">
-              {plot.features.slice(0, 2).map((feature, idx) => (
-                <span
-                  key={idx}
-                  className="text-xs bg-secondary border border-border-strong text-text-muted px-2 py-1 rounded-sm shadow-sm"
-                >
-                  {feature}
-                </span>
-              ))}
-              {plot.features.length > 2 && (
-                <span className="text-xs text-gold-600 font-medium px-1 py-1">
-                  +{plot.features.length - 2} more
-                </span>
-              )}
+          {/* Price & Area Row */}
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[24px] sm:text-[30px] font-bold text-[#004e4a] tracking-tight font-sans leading-none">
+              {plot.price}
+            </span>
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-[#f3fbf8] border-2 border-[#d1e9e0] px-3 sm:px-4 py-1.5 sm:py-2 rounded-none shadow-sm group-hover:border-[#0a8a5b]/40 transition-all duration-300">
+              <Maximize className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#0a8a5b]" />
+              <span className="text-[#0a8a5b] text-[11px] sm:text-[13px] font-bold uppercase tracking-wide font-sans">
+                {plot.area}
+              </span>
             </div>
-          )}
+          </div>
+          <span className="text-gray-400 text-[11px] font-medium uppercase tracking-widest mb-5 block">Total Property Value</span>
 
-          <div className="mt-auto">
-            <Link href={`/plots/${plot.id}`} className="block w-full">
-              <button className="w-full flex items-center justify-center space-x-2 py-3 bg-[#00022e] text-white hover:bg-[#00022e]/90 font-bold uppercase tracking-widest text-sm rounded-sm transition-all duration-300 shadow-sm">
-                <span>View Details</span>
-                <motion.div
-                  variants={{
-                    initial: { x: 0 },
-                    hover: { x: 4 }
-                  }}
-                  initial="initial"
-                  whileHover="hover"
-                >
-                  <MoveRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </motion.div>
-              </button>
+          {/* Divider */}
+          <div className="w-full h-px bg-gray-200 mb-6" />
+
+          {/* Footer Bottom Setup */}
+          <div className="mt-auto pt-4 flex items-center justify-between">
+            <Link href={`/plots/${plot.id}`} className="group/link flex items-center text-[#001738] font-bold text-[15px] tracking-wide lowercase hover:text-[#0a8a5b] transition-colors">
+              view plot <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover/link:translate-x-1" />
             </Link>
+            
+            <div className="flex items-center text-gray-400 text-[13px]">
+              <Clock className="w-3.5 h-3.5 mr-1 text-gray-300" />
+              <span className="lowercase">{plot.status === "Available" ? "available" : plot.status === "Sold" ? "sold out" : "ready to build"}</span>
+            </div>
           </div>
+          
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }

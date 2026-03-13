@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
@@ -228,11 +228,11 @@ export function ServicesDetail() {
   const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${(services.length - 1) * 100}vw`]);
 
   return (
-    <section ref={sectionRef} className="h-[600vh] relative bg-black font-sans">
-      <div className="sticky top-0 h-screen overflow-hidden flex items-center">
+    <section ref={sectionRef} className="h-[400vh] relative bg-white font-sans transition-colors duration-500">
+      <div className="sticky top-[20vh] h-[60vh] overflow-hidden flex items-center">
         {/* Dynamic Background Grid Pattern */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.05]" style={{
-          backgroundImage: "radial-gradient(circle, #e5a12d 1px, transparent 1px)",
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{
+          backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)",
           backgroundSize: "40px 40px"
         }} />
 
@@ -240,63 +240,62 @@ export function ServicesDetail() {
           {services.map((service, index) => {
             const Icon = service.Icon;
             return (
-              <li key={service.id} className="h-screen w-screen flex-shrink-0 flex items-center justify-center relative px-6 md:px-24">
+              <li key={service.id} className="h-full w-screen flex-shrink-0 flex items-center justify-center relative px-6 md:px-24">
                 {/* Background Image & Overlay */}
                 <div className="absolute inset-0 z-0">
-                  <Image src={service.image} alt={service.title} fill className="object-cover opacity-30 select-none pointer-events-none" sizes="100vw" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/85 to-black/30" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-80" />
+                  <Image src={service.image} alt={service.title} fill className="object-cover opacity-10 select-none pointer-events-none grayscale" sizes="100vw" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-white/30" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white opacity-90" />
                 </div>
 
                 {/* Content Container */}
                 <div className="relative z-10 w-full max-w-7xl">
                   {/* Decorative Background Number */}
-                  <div className="absolute -top-12 -left-6 md:-top-24 md:-left-16 pointer-events-none select-none">
-                    <span className="text-[140px] md:text-[240px] font-serif font-black text-white/5 leading-none">
+                  <div className="absolute -top-10 -left-4 md:-top-16 md:-left-12 pointer-events-none select-none">
+                    <span className="text-[100px] md:text-[160px] font-serif font-black text-black/[0.03] leading-none">
                       0{index + 1}
                     </span>
                   </div>
 
-                  <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-12 items-end mb-8 md:mb-16">
+                  <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-end mb-6 md:mb-10">
                     <div>
-                      <div className="w-16 h-16 rounded-2xl bg-gold-500/15 border border-gold-500/30 flex items-center justify-center mb-6">
-                        <Icon className="w-8 h-8 text-gold-400" />
+                      <div className="w-12 h-12 rounded-xl bg-gold-500/15 border border-gold-500/30 flex items-center justify-center mb-4">
+                        <Icon className="w-6 h-6 text-gold-400" />
                       </div>
-                      <p className="text-gold-400 text-sm md:text-base font-semibold uppercase tracking-widest mb-3">
+                      <p className="text-gold-400 text-xs md:text-sm font-semibold uppercase tracking-widest mb-2">
                         {service.tagline}
                       </p>
-                      <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/60 leading-[1.05] max-w-4xl tracking-tight">
+                      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-black via-black/80 to-black/60 leading-[1.1] max-w-4xl tracking-tight">
                         {service.title}
                       </h2>
                     </div>
-                    <div className="hidden md:flex flex-col items-center justify-center w-28 h-28 rounded-full border border-white/5 bg-white/5 backdrop-blur-md text-white/40 relative overflow-hidden group shadow-2xl">
-                      <span className="text-[10px] uppercase font-bold tracking-widest mb-1 group-hover:text-gold-400 transition-colors">Scroll</span>
-                      <ArrowRight className="w-5 h-5 text-gold-500 animate-pulse" />
+                    <div className="hidden md:flex flex-col items-center justify-center w-20 h-20 rounded-full border border-black/5 bg-black/5 backdrop-blur-md text-black/40 relative overflow-hidden group shadow-xl">
+                      <span className="text-[8px] uppercase font-bold tracking-widest mb-1 group-hover:text-gold-600 transition-colors">Scroll</span>
+                      <ArrowRight className="w-4 h-4 text-gold-500 animate-pulse" />
                     </div>
                   </div>
 
-                  <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
-                    <p className="text-white/70 font-light text-lg md:text-xl md:leading-relaxed max-w-xl">
+                  <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
+                    <p className="text-black/70 font-light text-base md:text-lg md:leading-relaxed max-w-xl">
                       {service.description}
                     </p>
                     <div>
-                      <div className="flex flex-wrap gap-2 md:gap-3 mb-10">
+                      <div className="flex flex-wrap gap-2 mb-6">
                         {service.features.map((f, i) => (
-                          <span key={i} className="flex items-center gap-2 bg-black/40 backdrop-blur-md text-white border border-white/10 px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold">
-                            <CheckCircle2 className="w-4 h-4 text-gold-500" /> {f}
+                          <span key={i} className="flex items-center gap-2 bg-black/[0.04] backdrop-blur-md text-black/80 border border-black/10 px-3 py-2 rounded-full text-[10px] md:text-xs font-semibold">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-gold-600" /> {f}
                           </span>
                         ))}
                       </div>
-
-                      <Link href="/contact" className="inline-flex items-center gap-3 bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-black font-bold uppercase tracking-wider py-4 px-10 rounded-xl text-sm transition-all hover:scale-[1.02] shadow-[0_0_30px_rgba(229,161,45,0.25)] hover:shadow-[0_0_40px_rgba(229,161,45,0.4)]">
-                        Enquire Now <ArrowRight className="w-5 h-5" />
+                      <Link href="/contact" className="inline-flex items-center gap-2.5 bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-black font-bold uppercase tracking-wider py-3 px-8 rounded-xl text-xs transition-all hover:scale-[1.02] shadow-[0_0_20px_rgba(229,161,45,0.2)] hover:shadow-[0_0_30px_rgba(229,161,45,0.35)]">
+                        Enquire Now <ArrowRight className="w-4 h-4" />
                       </Link>
                     </div>
                   </div>
                 </div>
 
                 {/* Progress Indicators */}
-                <div className="absolute bottom-6 md:bottom-12 left-6 right-6 md:left-24 md:right-24 h-1 bg-white/10 rounded-full overflow-hidden">
+                <div className="absolute bottom-4 md:bottom-8 left-6 right-6 md:left-24 md:right-24 h-0.5 bg-black/10 rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-gold-600 to-gold-400 transition-all duration-500 ease-out" style={{ width: `${((index + 1) / services.length) * 100}%` }} />
                 </div>
               </li>

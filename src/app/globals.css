@@ -6,8 +6,9 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --font-serif: var(--font-serif);
-  --font-cormorant: var(--font-cormorant);
+  --font-serif: var(--font-montserrat);
+  --font-archivo: var(--font-montserrat);
+  --font-montserrat: var(--font-montserrat);
 
   --color-gold-50: #fcf9f2;
   --color-gold-100: #f6eedc;
@@ -65,7 +66,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 600 !important;
+  font-family: var(--font-montserrat), sans-serif !important;
+  font-weight: 700 !important;
 }
 
 p {

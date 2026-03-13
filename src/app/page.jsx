@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import {
@@ -34,53 +34,11 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { mockProperties } from "@/lib/data/mockData";
-import AnimatedStats from "@/components/AnimatedStats";
-import CategoryCoverflow from "@/components/CategoryCoverflow";
-import PropertyStacking from "@/components/PropertyStacking";
+import BespokeCategoryCarousel from "@/components/BespokeCategoryCarousel";
+import AutomaticPropertyMarquee from "@/components/AutomaticPropertyMarquee";
+import EliteAboutSection from "@/components/EliteAboutSection";
 import IntroLoader from "@/components/IntroLoader";
 
-const propertyStackItems = [
-  {
-    title: "The Emerald Heights",
-    category: "Residential Plot",
-    location: "Kuttanellur, Thrissur",
-    price: "45 Lakhs",
-    rating: 4.9,
-    reviews: 124,
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000&auto=format&fit=crop",
-    desc: "A premium residential layout located in the heart of the city's fastest-growing educational hub. Perfect for families seeking peace and connectivity.",
-  },
-  {
-    title: "Golden Trade Plaza",
-    category: "Commercial Land",
-    location: "Swaraj Round, Thrissur",
-    price: "2.5 Crores",
-    rating: 5.0,
-    reviews: 86,
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop",
-    desc: "Prime commercial frontage in Thrissur's beating heart. Unmatched footfall and visibility for luxury retail and banking headquarters.",
-  },
-  {
-    title: "River Mist Retreat",
-    category: "Eco/Farm Land",
-    location: "Peechi, Thrissur",
-    price: "1.2 Crores",
-    rating: 4.8,
-    reviews: 42,
-    image: "https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?q=80&w=2000&auto=format&fit=crop",
-    desc: "Lush green acres bordering the serene backwaters. Ideal for eco-resorts, organic farming, or a private luxury farmhouse getaway.",
-  },
-  {
-    title: "Skyline Vantage",
-    category: "Premium Villa Plot",
-    location: "Puzhakkal, Thrissur",
-    price: "85 Lakhs",
-    rating: 4.9,
-    reviews: 67,
-    image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2000&auto=format&fit=crop",
-    desc: "Elevated plots along the NH-66 corridor, offering panoramic views and world-class gated community infrastructure.",
-  }
-];
 
 /* ─── Blog data ─── */
 const blogPosts = [
@@ -176,19 +134,27 @@ const faqs = [
   },
   {
     q: "How do I verify the legal status of a plot?",
-    a: "Every plot in our portfolio undergoes rigorous legal due diligence. We verify title deeds, encumbrance certificates, land conversion orders, and DTCP approvals. Our legal team accompanies you through every step.",
+    a: "Every plot in our portfolio undergoes rigorous legal due diligence. We verify title deeds, encumbrance certificates, land conversion orders, and DTCP/Panchayat approvals. Our legal team assists you with the entire verification process.",
+  },
+  {
+    q: "Are the plots DTCP or RERA approved?",
+    a: "Most of our premium layouts are DTCP approved and RERA registered where applicable. We prioritize transparency and ensure all technical clearances are in place before listing a property.",
   },
   {
     q: "Can NRI investors purchase land in Kerala?",
-    a: "Yes, NRIs with Indian citizenship can purchase non-agricultural land in Kerala. We have a dedicated NRI desk with remote documentation support, virtual tours, and power-of-attorney assistance.",
+    a: "Yes, NRIs with Indian citizenship can purchase non-agricultural land. We have a dedicated NRI desk providing virtual tours, remote documentation support, and Power of Attorney (POA) assistance for a seamless experience.",
   },
   {
-    q: "What is the typical purchase process?",
-    a: "Our process has 4 simple steps: Site Visit → Legal Verification → Token Advance → Registration & Handover. Our team assists at every stage, including bank liaison for loans.",
+    q: "What is the typical purchase and registration process?",
+    a: "Our process is streamlined: Site Visit → Legal Due Diligence → Sale Agreement (Token) → Bank Loan Approval (if needed) → Registration at SRO. We handle all documentation to ensure a stress-free handover.",
   },
   {
-    q: "Do you offer home loan assistance?",
-    a: "Yes. We partner with leading banks and NBFCs to offer preferred loan rates on our approved plots. Our team facilitates the entire loan processing on your behalf.",
+    q: "Do you offer home loan and Vastu assistance?",
+    a: "Yes. We partner with leading banks like SBI, HDFC, and ICICI to facilitate easy home loans. Additionally, we provide expert Vastu consultancy to ensure your future home is built on positive energy.",
+  },
+  {
+    q: "What are the common registration charges in Kerala?",
+    a: "Currently, registration charges in Kerala include 8% Stamp Duty and 2% Registration Fee of the fair value or sale value (whichever is higher). We provide a detailed cost break-up to help you plan your budget.",
   },
 ];
 
@@ -365,57 +331,97 @@ export default function Home() {
 
           {/* Hero Content */}
           <div
-            className="relative z-50 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center text-center mt-20 lg:mt-0"
+            className="relative z-50 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center text-center mt-28 lg:mt-0"
           >
             {/* Eyebrow badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="inline-flex items-center gap-2 bg-gold-500/10 border border-gold-500/30 backdrop-blur-sm px-4 py-2 rounded-full mb-8"
+              className="inline-flex items-center gap-2 bg-gold-500/10 border border-gold-500/30 backdrop-blur-sm px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full mb-6 sm:mb-8"
             >
-              <span className="w-2 h-2 rounded-full bg-gold-400 animate-pulse" />
-              <span className="text-gold-400 text-sm font-semibold tracking-widest uppercase">Kerala&apos;s Most Trusted Land Experts</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
+              <span className="text-gold-400 text-[9px] sm:text-xs font-bold tracking-[0.12em] sm:tracking-widest uppercase">Kerala&apos;s Most Trusted Land Experts</span>
             </motion.div>
 
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
-              }}
-              className="max-w-6xl"
-            >
-              <div className="overflow-hidden mb-6 pb-2">
-                <motion.h1
-                  variants={{
-                    hidden: { y: "100%" },
-                    visible: { y: "0%", transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } },
-                  }}
-                  className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif text-white tracking-tight leading-[1.05] drop-shadow-lg"
-                >
-                  Discover{" "}
-                  <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-600">
-                    Premium
-                  </span>{" "}
-                  Lands<br className="hidden md:block" /> in the Cultural Capital.
-                </motion.h1>
-              </div>
+            <div className="max-w-6xl">
+              {/* Animated Heading — per-word stagger reveal, fires after curtain rises */}
+              <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-serif text-white tracking-tight leading-[1.15] drop-shadow-lg mb-6">
+                {/* Line 1 — word by word */}
+                <span className="block w-full overflow-hidden mb-1 sm:mb-0">
+                  <span className="flex flex-wrap sm:flex-nowrap justify-center whitespace-nowrap sm:whitespace-normal gap-x-2 sm:gap-x-4">
+                    {/* Discover */}
+                    <span className="overflow-hidden inline-block">
+                      <motion.span
+                        className="inline-block"
+                        initial={{ y: "110%", opacity: 0 }}
+                        animate={!showIntro ? { y: "0%", opacity: 1 } : { y: "110%", opacity: 0 }}
+                        transition={{ duration: 0.8, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        Discover
+                      </motion.span>
+                    </span>
+                    {/* Premium (gold) */}
+                    <span className="overflow-hidden inline-block space-x-0">
+                      <motion.span
+                        className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-600"
+                        initial={{ y: "110%", opacity: 0 }}
+                        animate={!showIntro ? { y: "0%", opacity: 1 } : { y: "110%", opacity: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        Premium
+                      </motion.span>
+                    </span>
+                    {/* Lands */}
+                    <span className="overflow-hidden inline-block">
+                      <motion.span
+                        className="inline-block"
+                        initial={{ y: "110%", opacity: 0 }}
+                        animate={!showIntro ? { y: "0%", opacity: 1 } : { y: "110%", opacity: 0 }}
+                        transition={{ duration: 0.8, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        Land
+                      </motion.span>
+                    </span>
+                  </span>
+                </span>
 
+                {/* Line 2 — word by word */}
+                <span className="block w-full overflow-hidden mt-1 sm:mt-0">
+                  <span className="flex flex-wrap sm:flex-nowrap justify-center whitespace-nowrap sm:whitespace-normal gap-x-1.5 sm:gap-x-3 text-center">
+                    {["in", "the", "Cultural", "Capital."].map((word, i) => (
+                      <span key={`${word}-${i}`} className="overflow-hidden inline-block">
+                        <motion.span
+                          className="inline-block"
+                          initial={{ y: "110%", opacity: 0 }}
+                          animate={!showIntro ? { y: "0%", opacity: 1 } : { y: "110%", opacity: 0 }}
+                          transition={{
+                            duration: 0.75,
+                            delay: 0.5 + i * 0.12,
+                            ease: [0.22, 1, 0.36, 1],
+                          }}
+                        >
+                          {word}
+                        </motion.span>
+                      </span>
+                    ))}
+                  </span>
+                </span>
+              </h1>
+
+              {/* Subtitle */}
               <div className="overflow-hidden mb-12 pt-1">
                 <motion.p
-                  variants={{
-                    hidden: { y: "100%" },
-                    visible: { y: "0%", transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } },
-                  }}
+                  initial={{ y: "100%", opacity: 0 }}
+                  animate={!showIntro ? { y: "0%", opacity: 1 } : { y: "100%", opacity: 0 }}
+                  transition={{ duration: 0.9, delay: 1.05, ease: [0.22, 1, 0.36, 1] }}
                   className="text-lg md:text-xl text-white/75 max-w-2xl mx-auto font-sans font-light"
                 >
                   Exclusive residential plots, commercial spaces, and investment
                   opportunities curated for those who demand the best in Thrissur.
                 </motion.p>
               </div>
-            </motion.div>
+            </div>
 
             {/* Quick Search Bar */}
             <motion.div
@@ -423,11 +429,10 @@ export default function Home() {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-5xl bg-white/90 dark:bg-black border border-white/20 dark:border-gold-500/30 p-3 md:p-5 rounded-2xl md:rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.9)] z-20 relative"
+              className="w-full max-w-4xl bg-white/95 dark:bg-black/90 border border-white/20 dark:border-gold-500/30 p-4 md:p-3.5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.9)] z-20 relative"
             >
-              <p className="text-black dark:text-white/30 text-xs uppercase tracking-widest mb-3 text-left px-2 font-bold">Find Your Perfect Plot</p>
               <form
-                className="flex flex-col md:flex-row gap-3 items-center"
+                className="flex flex-col md:flex-row gap-2.5 items-center"
                 onSubmit={(e) => e.preventDefault()}
               >
                 {/* Location */}
@@ -442,7 +447,7 @@ export default function Home() {
                       onChange={(e) => { setSearchLocation(e.target.value); setIsLocationDropdownOpen(true); }}
                       onFocus={() => setIsLocationDropdownOpen(true)}
                       placeholder="Location, Area, or Property Name"
-                      className="w-full bg-black/[0.03] dark:bg-black border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-black dark:text-white font-semibold placeholder-black/70 dark:placeholder-white/20 outline-none focus:border-gold-500/50 focus:bg-black/[0.05] dark:focus:bg-white/[0.02] transition-all font-sans"
+                      className="w-full bg-black/[0.03] dark:bg-black border border-black/10 dark:border-white/10 rounded-2xl py-3 pl-12 pr-4 text-black dark:text-white font-semibold placeholder-black/70 dark:placeholder-white/20 outline-none focus:border-gold-500/50 focus:bg-black/[0.05] dark:focus:bg-white/[0.02] transition-all font-sans"
                       autoComplete="off"
                     />
                   </div>
@@ -452,18 +457,20 @@ export default function Home() {
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -5 }}
-                        className="absolute z-50 left-4 md:left-6 w-[calc(100%-2rem)] md:w-[calc(41.666%-1.5rem)] top-full mt-2 max-h-[350px] overflow-x-hidden overflow-y-auto overscroll-contain bg-primary dark:bg-black border border-border-strong rounded-xl shadow-2xl"
+                        className="absolute z-[100] left-0 md:left-6 w-full md:w-[calc(41.666%-1.5rem)] top-full mt-3 max-h-[300px] overflow-hidden bg-white dark:bg-[#00022e] border border-gold-500/20 rounded-2xl shadow-2xl"
                       >
-                        {filteredSearchOptions.map((opt) => (
-                          <button
-                            key={opt}
-                            type="button"
-                            onClick={() => { setSearchLocation(opt); setIsLocationDropdownOpen(false); }}
-                            className="w-full text-left px-5 py-3 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gold-500 dark:hover:text-gold-400 transition-colors text-sm text-text-muted border-b border-border-subtle last:border-none"
-                          >
-                            {opt}
-                          </button>
-                        ))}
+                        <div className="max-h-[300px] overflow-y-auto overscroll-contain py-2">
+                          {filteredSearchOptions.map((opt) => (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() => { setSearchLocation(opt); setIsLocationDropdownOpen(false); }}
+                              className="w-full text-left px-5 py-3 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gold-500 dark:hover:text-gold-400 transition-colors text-sm text-text-muted border-b border-border-subtle last:border-none"
+                            >
+                              {opt}
+                            </button>
+                          ))}
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -474,7 +481,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setIsPriceDropdownOpen((prev) => !prev)}
-                    className="w-full flex items-center justify-between bg-black/[0.03] dark:bg-black border border-black/10 dark:border-white/10 rounded-2xl py-4 pl-4 pr-4 text-black dark:text-white font-semibold outline-none focus:border-gold-500/50 transition-all font-sans"
+                    className="w-full flex items-center justify-between bg-black/[0.03] dark:bg-black border border-black/10 dark:border-white/10 rounded-2xl py-3 pl-4 pr-4 text-black dark:text-white font-semibold outline-none focus:border-gold-500/50 transition-all font-sans"
                   >
                     <span className={priceCategory ? "text-black dark:text-white font-semibold" : "text-black/80 dark:text-white/20 font-semibold"}>
                       {priceCategory || "Price Range"}
@@ -487,8 +494,9 @@ export default function Home() {
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -5 }}
-                        className="absolute z-50 left-0 w-full top-full mt-2 max-h-[350px] overflow-y-auto overscroll-contain bg-primary dark:bg-black border border-border-strong rounded-xl shadow-2xl"
+                        className="absolute z-[100] left-0 w-full top-full mt-3 max-h-[300px] overflow-hidden bg-white dark:bg-[#00022e] border border-gold-500/20 rounded-2xl shadow-2xl"
                       >
+                        <div className="max-h-[300px] overflow-y-auto overscroll-contain py-2">
                         {priceOptions.map((opt) => (
                           <button
                             key={opt.label}
@@ -499,6 +507,7 @@ export default function Home() {
                             {opt.label}
                           </button>
                         ))}
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -508,7 +517,7 @@ export default function Home() {
                 <div className="w-full md:w-3/12">
                   <Link
                     href={`/plots?${new URLSearchParams({ ...(searchLocation && { location: searchLocation }), ...(priceCategory && { priceCategory }) }).toString()}`}
-                    className="w-full bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-black font-bold uppercase tracking-wide py-4 px-6 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-[0_0_20px_rgba(229,161,45,0.3)] hover:shadow-[0_0_30px_rgba(229,161,45,0.5)]"
+                    className="w-full bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-black font-bold uppercase tracking-wide py-3 px-6 rounded-xl flex items-center justify-center space-x-2 transition-all shadow-[0_0_20px_rgba(229,161,45,0.3)] hover:shadow-[0_0_30px_rgba(229,161,45,0.5)]"
                   >
                     <Search className="w-5 h-5" />
                     <span>Search Plots</span>
@@ -522,28 +531,30 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 1, ease: "easeOut" }}
-              className="mt-8 flex flex-wrap justify-center gap-4"
+              className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-4 mb-20 sm:mb-0"
             >
-              <Link href="https://wa.me/919876543210" className="group relative overflow-hidden flex items-center justify-center bg-[#075E54] text-white font-semibold tracking-wide py-3 px-6 rounded-xl shadow-[0_4px_14px_rgba(7,94,84,0.4)] transition-all">
+              <Link href="https://wa.me/919876543210" className="w-full sm:w-auto group relative overflow-hidden flex items-center justify-center bg-[#075E54] text-white font-semibold tracking-wide py-3 px-6 rounded-xl shadow-[0_4px_14px_rgba(7,94,84,0.3)] transition-all">
                 <div className="absolute inset-y-0 left-0 w-0 bg-[#128C7E] transition-all duration-500 ease-out group-hover:w-full z-0" />
-                <span className="relative z-10 flex items-center gap-2"><MessageCircle className="w-5 h-5" />WhatsApp</span>
+                <span className="relative z-10 flex items-center gap-2 text-xs sm:text-base"><MessageCircle className="w-5 h-5" />WhatsApp</span>
               </Link>
-              <Link href="tel:+919876543210" className="group relative overflow-hidden flex items-center justify-center bg-gradient-to-r from-gold-500 to-gold-600 text-black font-semibold tracking-wide py-3 px-6 rounded-xl shadow-[0_4px_14px_rgba(229,161,45,0.4)] transition-all">
-                <div className="absolute inset-y-0 left-0 w-0 bg-gradient-to-r from-gold-400 to-gold-300 transition-all duration-500 ease-out group-hover:w-full z-0" />
-                <span className="relative z-10 flex items-center gap-2"><Phone className="w-5 h-5" />Call Now</span>
-              </Link>
-              <Link href="/contact" className="group relative overflow-hidden flex items-center justify-center border border-gold-500 text-gold-400 font-semibold tracking-wide py-3 px-6 rounded-xl transition-all">
-                <div className="absolute inset-y-0 left-0 w-0 bg-gradient-to-r from-gold-500 to-gold-400 transition-all duration-500 ease-out group-hover:w-full z-0" />
-                <span className="relative z-10 group-hover:text-black transition-colors duration-300">Enquire Now</span>
-              </Link>
+              <div className="flex gap-3 w-full sm:w-auto">
+                <Link href="tel:+919876543210" className="flex-1 sm:flex-none group relative overflow-hidden flex items-center justify-center bg-gradient-to-r from-gold-500 to-gold-600 text-black font-semibold tracking-wide py-3 px-6 rounded-xl shadow-[0_4px_14px_rgba(229,161,45,0.4)] transition-all">
+                  <div className="absolute inset-y-0 left-0 w-0 bg-gradient-to-r from-gold-400 to-gold-300 transition-all duration-500 ease-out group-hover:w-full z-0" />
+                  <span className="relative z-10 flex items-center gap-2 text-xs sm:text-base"><Phone className="w-5 h-5" />Call</span>
+                </Link>
+                <Link href="/contact" className="flex-1 sm:flex-none group relative overflow-hidden flex items-center justify-center border border-gold-500 text-gold-400 font-semibold tracking-wide py-3 px-6 rounded-xl transition-all">
+                  <div className="absolute inset-y-0 left-0 w-0 bg-gradient-to-r from-gold-500 to-gold-400 transition-all duration-500 ease-out group-hover:w-full z-0" />
+                  <span className="relative z-10 group-hover:text-black transition-colors duration-300 text-xs sm:text-base">Enquire</span>
+                </Link>
+              </div>
             </motion.div>
 
-            {/* Scroll indicator */}
+            {/* Scroll indicator - hidden on small mobile to avoid overlap */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.5, duration: 1 }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+              className="absolute bottom-16 sm:bottom-10 left-1/2 -translate-x-1/2 z-10 hidden sm:flex flex-col items-center gap-2"
             >
               <span className="text-white/30 text-[10px] uppercase tracking-widest">Scroll</span>
               <motion.div
@@ -565,7 +576,7 @@ export default function Home() {
             <motion.div
               animate={{ x: ["0%", "-50%"] }}
               transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-              className="flex whitespace-nowrap py-3"
+              className="flex whitespace-nowrap py-2 sm:py-3"
             >
               {[...tickerItems, ...tickerItems].map((item, i) => (
                 <span key={i} className="inline-flex items-center gap-2 shrink-0">
@@ -587,72 +598,13 @@ export default function Home() {
 
         </div>
 
-        {/* ══════════════════════════════════════════
-          STATS ROW
-      ══════════════════════════════════════════ */}
-        <AnimatedStats />
 
-        {/* ══════════════════════════════════════════
-          PROPERTY CATEGORIES
-      ══════════════════════════════════════════ */}
-        <section className="py-12 md:py-24 px-4 sm:px-6 relative overflow-hidden" style={{ background: '#00022e' }}>
-          {/* Background pattern */}
-          <div className="absolute inset-0 opacity-[0.03]" style={{
-            backgroundImage: "repeating-linear-gradient(45deg, #e5a12d 0, #e5a12d 1px, transparent 0, transparent 50%)",
-            backgroundSize: "20px 20px"
-          }} />
-
-          <div className="max-w-7xl mx-auto relative z-10">
-            <div className="text-center mb-16">
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="text-gold-500 uppercase tracking-widest text-sm font-semibold mb-3"
-              >
-                Browse by Type
-              </motion.p>
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 tracking-wide"
-              >
-                Find Your Category
-              </motion.h2>
-            </div>
-
-            <div className="mt-12">
-              <CategoryCoverflow categories={categories} />
-            </div>
-          </div>
-        </section>
 
         {/* ══════════════════════════════════════════
           EXPLORE PROPERTIES - SYNCED STACKING
       ══════════════════════════════════════════ */}
-        <section id="explore-properties" className="bg-white py-20 border-t border-black/5">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-16">
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-gold-600 uppercase tracking-widest text-sm font-semibold mb-3"
-            >
-              Curated Portfolio
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl md:text-6xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-500 via-gold-600 to-gold-800 tracking-wide"
-            >
-              Explore Masterpieces
-            </motion.h2>
-          </div>
-          <PropertyStacking items={propertyStackItems} />
+        <section id="explore-properties" className="bg-white border-t border-black/5">
+          <AutomaticPropertyMarquee />
         </section>
 
         {/* ══════════════════════════════════════════
@@ -701,6 +653,11 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════════
+          ELITE ABOUT SECTION
+      ══════════════════════════════════════════ */}
+        <EliteAboutSection />
+
+        {/* ══════════════════════════════════════════
           HOW IT WORKS
       ══════════════════════════════════════════ */}
         <section className="py-14 md:py-28 px-4 sm:px-6 bg-primary transition-colors duration-300 relative overflow-hidden">
@@ -724,7 +681,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 tracking-wide"
+                className="text-4xl md:text-5xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-400 tracking-wide"
               >
                 How It Works
               </motion.h2>
@@ -762,10 +719,10 @@ export default function Home() {
                     className="flex flex-col items-center w-full z-10"
                   >
                     <div className="relative mb-6">
-                      <div className="w-20 h-20 rounded-2xl flex items-center justify-center group-hover:border-gold-500/50 transition-colors shadow-xl" style={{ background: '#00022e', border: '1px solid rgba(229,161,45,0.25)' }}>
-                        <step.icon className="w-8 h-8 text-gold-500" />
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center group-hover:border-gold-500/50 transition-colors shadow-xl" style={{ background: '#00022e', border: '1px solid rgba(229,161,45,0.25)' }}>
+                        <step.icon className="w-6 h-6 sm:w-8 sm:h-8 text-gold-500" />
                       </div>
-                      <span className="absolute -top-3 -right-3 text-xs font-bold font-sans text-gold-500 w-7 h-7 rounded-full flex items-center justify-center" style={{ background: '#00022e', border: '1px solid rgba(229,161,45,0.4)' }}>
+                      <span className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 text-[10px] sm:text-xs font-bold font-sans text-gold-500 w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center" style={{ background: '#00022e', border: '1px solid rgba(229,161,45,0.4)' }}>
                         {step.num}
                       </span>
                     </div>
@@ -834,7 +791,7 @@ export default function Home() {
                   className="flex w-max gap-6 px-3 hover:[animation-play-state:paused]"
                 >
                   {[...reviews.slice(0, 3), ...reviews.slice(0, 3), ...reviews.slice(0, 3), ...reviews.slice(0, 3)].map((r, i) => (
-                    <div key={`top-${i}`} className="w-80 flex-shrink-0 bg-secondary border border-border-subtle rounded-2xl p-6 flex flex-col gap-4">
+                    <div key={`top-${i}`} className="w-[280px] sm:w-80 flex-shrink-0 bg-secondary border border-border-subtle rounded-2xl p-5 sm:p-6 flex flex-col gap-4">
                       <div className="flex gap-1">
                         {Array.from({ length: r.rating }).map((_, s) => (
                           <Star key={s} className="w-4 h-4 fill-gold-500 text-gold-500" />
@@ -863,7 +820,7 @@ export default function Home() {
                   className="flex w-max gap-6 px-3 hover:[animation-play-state:paused]"
                 >
                   {[...reviews.slice(3, 6), ...reviews.slice(3, 6), ...reviews.slice(3, 6), ...reviews.slice(3, 6)].map((r, i) => (
-                    <div key={`bottom-${i}`} className="w-80 flex-shrink-0 bg-secondary border border-border-subtle rounded-2xl p-6 flex flex-col gap-4">
+                    <div key={`bottom-${i}`} className="w-[280px] sm:w-80 flex-shrink-0 bg-secondary border border-border-subtle rounded-2xl p-5 sm:p-6 flex flex-col gap-4">
                       <div className="flex gap-1">
                         {Array.from({ length: r.rating }).map((_, s) => (
                           <Star key={s} className="w-4 h-4 fill-gold-500 text-gold-500" />
@@ -973,9 +930,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-500 to-gold-600 tracking-wide"
+                className="text-4xl md:text-5xl font-serif font-bold text-text-main tracking-wide"
               >
-                Frequently Asked
+                Frequently Asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-600 to-gold-400">Questions</span>
               </motion.h2>
             </div>
 
@@ -993,7 +950,7 @@ export default function Home() {
                     onClick={() => setActiveFaq(activeFaq === i ? null : i)}
                     className="w-full flex items-center justify-between p-6 text-left bg-secondary hover:bg-secondary/80 transition-colors"
                   >
-                    <span className="font-serif font-semibold text-text-main pr-4">{faq.q}</span>
+                    <span className="font-serif font-bold text-gold-600 dark:text-white pr-4">{faq.q}</span>
                     <div className={`flex-shrink-0 w-8 h-8 rounded-full border border-gold-500/30 flex items-center justify-center transition-all duration-300 ${activeFaq === i ? "bg-gold-500 border-gold-500 rotate-180" : ""}`}>
                       <ChevronDown className={`w-4 h-4 transition-colors ${activeFaq === i ? "text-black" : "text-gold-500"}`} />
                     </div>
@@ -1019,20 +976,61 @@ export default function Home() {
         {/* ══════════════════════════════════════════
           FINAL CTA
       ══════════════════════════════════════════ */}
-        <section className="relative py-16 md:py-32 px-4 sm:px-6 bg-black overflow-hidden">
-          {/* Ambient background */}
+        <section className="relative py-16 md:py-32 px-4 sm:px-6 overflow-hidden bg-black">
+          {/* Background Image Layer */}
           <div className="absolute inset-0 z-0">
             <Image
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000&auto=format&fit=crop"
-              alt="Luxury Background"
+              src="https://images.unsplash.com/photo-1542224566-6e85f2e6772f?q=80&w=2000"
+              alt="Premium Land Backdrop"
               fill
-              className="object-cover opacity-20"
+              className="object-cover opacity-[0.45]"
+              priority
+            />
+            {/* Dark Overlay */}
+            <div className="absolute inset-0 bg-black/75 z-[1]" />
+          </div>
+
+          {/* Layered Architectural Patterns */}
+          <div className="absolute inset-0 z-2 opacity-25 pointer-events-none select-none overflow-hidden">
+            {/* Topographical Lines SVG */}
+            <svg 
+              className="absolute inset-0 w-full h-full text-white/40" 
+              viewBox="0 0 1000 1000" 
+              preserveAspectRatio="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="topo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="currentColor" stopOpacity="0.3" />
+                  <stop offset="50%" stopColor="currentColor" stopOpacity="0.6" />
+                  <stop offset="100%" stopColor="currentColor" stopOpacity="0.3" />
+                </linearGradient>
+              </defs>
+              <path d="M0,200 Q250,150 500,200 T1000,200" fill="none" stroke="url(#topo-grad)" strokeWidth="1" />
+              <path d="M0,300 Q250,250 500,300 T1000,300" fill="none" stroke="url(#topo-grad)" strokeWidth="1" />
+              <path d="M0,400 Q250,350 500,400 T1000,400" fill="none" stroke="url(#topo-grad)" strokeWidth="1" />
+              <path d="M0,500 Q250,450 500,500 T1000,500" fill="none" stroke="url(#topo-grad)" strokeWidth="1" />
+              <path d="M0,600 Q250,550 500,600 T1000,600" fill="none" stroke="url(#topo-grad)" strokeWidth="1" />
+              <path d="M0,700 Q250,650 500,700 T1000,700" fill="none" stroke="url(#topo-grad)" strokeWidth="1" />
+              <path d="M0,800 Q250,750 500,800 T1000,800" fill="none" stroke="url(#topo-grad)" strokeWidth="1" />
+              {/* Organic topographic ripples */}
+              <path d="M-100,250 Q150,400 400,250 T900,250" fill="none" stroke="url(#topo-grad)" strokeWidth="1.5" strokeDasharray="10,10" />
+              <path d="M100,650 Q350,800 600,650 T1100,650" fill="none" stroke="url(#topo-grad)" strokeWidth="1.5" strokeDasharray="10,10" />
+            </svg>
+
+            {/* Refined Dot Grid Overlay */}
+            <div 
+              className="absolute inset-0 opacity-20" 
+              style={{ 
+                backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)`,
+                backgroundSize: '30px 30px' 
+              }} 
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black z-0" />
-          {/* Gold radial */}
-          <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
-            <div className="w-[800px] h-[400px] rounded-full bg-gold-500/10 blur-3xl" />
+
+          {/* Subtle gold radial glow */}
+          <div className="absolute inset-0 flex items-center justify-center z-2 pointer-events-none">
+            <div className="w-[800px] h-[400px] rounded-full bg-gold-500/[0.12] blur-3xl" />
           </div>
 
           <div className="max-w-3xl mx-auto text-center relative z-10">
@@ -1043,33 +1041,33 @@ export default function Home() {
               transition={{ duration: 0.9, ease: "easeOut" }}
             >
               <div className="inline-flex items-center gap-2 bg-gold-500/10 border border-gold-500/30 backdrop-blur-sm px-4 py-2 rounded-full mb-8">
-                <Award className="w-4 h-4 text-gold-400" />
-                <span className="text-gold-400 text-sm font-semibold tracking-widest uppercase">Join 1,800+ Satisfied Clients</span>
+                <Award className="w-4 h-4 text-gold-500" />
+                <span className="text-gold-600 text-sm font-semibold tracking-widest uppercase">Join 1,800+ Satisfied Clients</span>
               </div>
 
-              <h2 className="text-3xl sm:text-5xl md:text-6xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-600 mb-6 leading-[1.1]">
-                Ready to Find Your<br />Dream Plot?
+              <h2 className="text-3xl sm:text-5xl md:text-6xl font-serif italic font-light text-transparent bg-clip-text bg-gradient-to-r from-gold-600 via-gold-500 to-gold-400 mb-6 leading-[1.2] sm:leading-[1.1]">
+                Ready to Find Your<br className="hidden sm:block" /> Dream Plot?
               </h2>
-              <p className="text-white/60 font-light text-lg mb-12 max-w-xl mx-auto">
+              <p className="text-white/70 font-light text-lg mb-12 max-w-xl mx-auto">
                 Let our experts guide you to the perfect land in Thrissur. We&apos;re just a message away — available 7 days a week.
               </p>
 
               <div className="flex flex-wrap justify-center gap-4">
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-black font-bold py-4 px-10 rounded-xl transition-all shadow-[0_0_30px_rgba(229,161,45,0.4)] hover:shadow-[0_0_40px_rgba(229,161,45,0.6)] text-sm uppercase tracking-wide"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-black font-bold py-4 px-10 rounded-xl transition-all shadow-[0_0_30px_rgba(229,161,45,0.35)] hover:shadow-[0_0_40px_rgba(229,161,45,0.55)] text-sm uppercase tracking-wide"
                 >
                   Contact Us Now <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="/plots"
-                  className="inline-flex items-center gap-2 border border-white/20 hover:border-white/40 text-white hover:text-white font-semibold py-4 px-10 rounded-xl transition-all text-sm uppercase tracking-wide"
+                  className="inline-flex items-center gap-2 border border-white/20 hover:border-gold-500/60 text-white/70 hover:text-gold-600 font-semibold py-4 px-10 rounded-xl transition-all text-sm uppercase tracking-wide"
                 >
                   Browse Plots
                 </Link>
               </div>
 
-              <p className="mt-8 text-white/30 text-xs">No commitment required · Free consultation · Site visit in 24 hrs</p>
+              <p className="mt-8 text-white/40 text-xs">No commitment required · Free consultation · Site visit in 24 hrs</p>
             </motion.div>
           </div>
         </section>

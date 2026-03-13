@@ -55,19 +55,19 @@ export default function CategoryCoverflow({ categories }) {
             zIndex = 10;
         } else if (diff === 1 || diff === -3) {
             // Right
-            x = 220;
-            z = -100;
-            rotateY = -25;
-            opacity = 0.6;
-            scale = 0.85;
+            x = 240;
+            z = -150;
+            rotateY = -35;
+            opacity = 0.35;
+            scale = 0.8;
             zIndex = 5;
         } else if (diff === categories.length - 1) {
             // Left
-            x = -220;
-            z = -100;
-            rotateY = 25;
-            opacity = 0.6;
-            scale = 0.85;
+            x = -240;
+            z = -150;
+            rotateY = 35;
+            opacity = 0.35;
+            scale = 0.8;
             zIndex = 5;
         } else {
             // Back
@@ -89,15 +89,11 @@ export default function CategoryCoverflow({ categories }) {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            {/* Background Particles/Glow for the active item */}
+            {/* Background Radial Glow */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
                 <motion.div
-                    className="w-[300px] h-[300px] rounded-full blur-[100px]"
-                    animate={{
-                        backgroundColor: ["rgba(255, 215, 0, 0.1)", "rgba(255, 215, 0, 0.2)", "rgba(255, 215, 0, 0.1)"],
-                        scale: [1, 1.2, 1]
-                    }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="w-[500px] h-[500px] rounded-full blur-[120px]"
+                    style={{ background: "radial-gradient(circle, rgba(229, 161, 45, 0.08) 0%, transparent 70%)" }}
                 />
             </div>
 
@@ -133,6 +129,7 @@ export default function CategoryCoverflow({ categories }) {
                                     opacity: style.opacity,
                                     scale: style.scale,
                                     zIndex: style.zIndex,
+                                    filter: isCenter ? "blur(0px)" : "blur(2px)",
                                 }}
                                 transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
                                 className="absolute w-[280px] h-[360px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer"
@@ -140,25 +137,25 @@ export default function CategoryCoverflow({ categories }) {
                                 style={{ transformStyle: "preserve-3d" }}
                             >
                                 <div
-                                    className={`w-full h-full rounded-2xl p-8 flex flex-col transition-shadow duration-500 ${isCenter
-                                            ? "bg-white border-2 border-gold-300 shadow-[0_0_40px_rgba(255,215,0,0.5)]"
-                                            : "bg-[#e2e8f0]/90 dark:bg-primary border border-border-subtle"
+                                    className={`w-full h-full rounded-2xl p-8 flex flex-col transition-all duration-500 overflow-hidden ${isCenter
+                                            ? "bg-white border border-white/50 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]"
+                                            : "bg-white/10 border border-white/5 backdrop-blur-sm grayscale-[0.5]"
                                         }`}
                                 >
                                     <div className="relative z-10 flex-col h-full flex">
-                                        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-sm ${isCenter
-                                                ? "bg-gradient-to-br from-gold-300 to-gold-500 text-white"
-                                                : "bg-gradient-to-br from-gold-500/20 to-gold-600/10 text-gold-600"
+                                        <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 shadow-sm ${isCenter
+                                                ? "bg-gold-500/10 border border-gold-500/20 text-gold-600"
+                                                : "bg-white/5 text-white/30"
                                             }`}>
-                                            <cat.icon className={`w-8 h-8 ${isCenter ? "text-white drop-shadow-md" : ""}`} />
+                                            <cat.icon className="w-7 h-7" />
                                         </div>
 
-                                        <h3 className={`text-2xl font-serif font-bold mb-3 ${isCenter ? "text-black" : "text-text-main"
+                                        <h3 className={`text-2xl font-serif font-bold mb-3 ${isCenter ? "text-slate-900" : "text-white/40"
                                             }`}>
                                             {cat.title}
                                         </h3>
 
-                                        <p className={`text-sm font-medium leading-relaxed mb-6 ${isCenter ? "text-gray-700" : "text-text-muted"
+                                        <p className={`text-sm font-medium leading-relaxed mb-6 ${isCenter ? "text-slate-600" : "text-white/20"
                                             }`}>
                                             {cat.desc}
                                         </p>

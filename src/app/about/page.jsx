@@ -1,14 +1,8 @@
 import {
   AboutHero,
-  CompanyStory,
-  StatsRow,
-  JourneyTimeline,
-  ExpertiseSection,
-  OurValues,
-  MeetTheTeam,
-  TrustPillars,
-  CoverageSection,
-  AboutCTA,
+  CoreValues,
+  TheJourney,
+  FinalCTA
 } from "./AboutClientComponents";
 
 export const metadata = {
@@ -19,36 +13,18 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col w-full bg-primary text-text-main font-sans transition-colors duration-300">
+    <div className="flex flex-col w-full bg-white text-neutral-900 font-sans transition-colors duration-300">
       {/* 1. Cinematic Parallax Hero */}
       <AboutHero />
 
-      {/* 2. Company Story — Image + Text */}
-      <CompanyStory />
+      {/* 2. Core DNA & Values */}
+      <CoreValues />
 
-      {/* 3. Stats Row — 4 key numbers */}
-      <StatsRow />
+      {/* 3. Interactive Journey Timeline */}
+      <TheJourney />
 
-      {/* 4. Journey Timeline */}
-      <JourneyTimeline />
-
-      {/* 5. Expertise Cards with embedded stats */}
-      <ExpertiseSection />
-
-      {/* 6. Our Core Values — 6-card animated grid */}
-      <OurValues />
-
-      {/* 7. Meet the Team */}
-      <MeetTheTeam />
-
-      {/* 8. Pillars of Trust */}
-      <TrustPillars />
-
-      {/* 9. Coverage Areas — list + map image */}
-      <CoverageSection />
-
-      {/* 10. Cinematic Final CTA */}
-      <AboutCTA />
+      {/* 4. Final Wow CTA */}
+      <FinalCTA />
     </div>
   );
 }
